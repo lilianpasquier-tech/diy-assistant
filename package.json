@@ -1,0 +1,13 @@
+{
+  "name": "diy-assistant-ia",
+  "version": "1.0.0",
+  "description": "Application DIY intelligente propulsée par Gemini AI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
