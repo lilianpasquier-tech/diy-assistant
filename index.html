@@ -3935,6 +3935,94 @@ document.addEventListener('DOMContentLoaded', function() {
       return lines.join('\n');
     }
 
+    // ── VUE ÉCLATÉE ─────────────────────────────────────────────
+    function renderExplodedView(diagram, materials) {
+      var container = document.getElementById('explodedContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      // Build parts list from diagram or materials
+      var parts = [];
+      if (diagram && Array.isArray(diagram.parts) && diagram.parts.length) {
+        parts = diagram.parts;
+      } else if (materials && materials.length) {
+        parts = materials.slice(0, 18).map(function(m, i) {
+          return { id: String.fromCharCode(65 + i), name: m.name || m.item || ('Pièce ' + (i+1)), qty: m.quantity || 1 };
+        });
+      }
+      if (!parts.length) {
+        container.innerHTML = '<p style="color:var(--text2);text-align:center;padding:24px;">Aucune donnée de vue éclatée disponible.</p>';
+        return;
+      }
+
+      var W = 560, H = 420, CX = W/2, CY = H/2 - 20;
+      var n = parts.length;
+      var maxR = Math.min(CX, CY) - 60;
+      var colors = ['#6c63ff','#ff6b6b','#4ecdc4','#ffe66d','#a8e6cf','#ffd3b6','#ff8b94','#c7ceea',
+                    '#b5ead7','#ffdac1','#e2f0cb','#c7ceea','#f0b8d9','#b5d8f7','#d4b5f7','#f7d4b5','#b5f7d4','#f7b5d4'];
+
+      // Radial positions
+      var svgParts = parts.map(function(p, i) {
+        var angle = (2 * Math.PI * i / n) - Math.PI/2;
+        var r = n <= 4 ? maxR * 0.55 : n <= 8 ? maxR * 0.7 : maxR * 0.85;
+        return {
+          id: p.id || String.fromCharCode(65 + i),
+          name: p.name || ('Pièce ' + (i+1)),
+          qty: p.qty || p.quantity || 1,
+          x: CX + r * Math.cos(angle),
+          y: CY + r * Math.sin(angle),
+          color: colors[i % colors.length]
+        };
+      });
+
+      // Build SVG
+      var svgLines = svgParts.map(function(p) {
+        return '<line x1="' + CX + '" y1="' + CY + '" x2="' + p.x + '" y2="' + p.y +
+               '" stroke="' + p.color + '" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.5"/>';
+      }).join('');
+
+      var svgRects = svgParts.map(function(p, i) {
+        var lbl = p.id + '. ' + (p.name.length > 14 ? p.name.substring(0, 13) + '…' : p.name);
+        var rx = p.x - 44, ry = p.y - 14;
+        return '<g id="ev-part-' + i + '" class="ev-part" onclick="highlightEvPart(this,' + i + ')" style="cursor:pointer">' +
+               '<rect x="' + rx + '" y="' + ry + '" width="88" height="28" rx="6" fill="' + p.color + '" opacity="0.18" stroke="' + p.color + '" stroke-width="1.5"/>' +
+               '<text x="' + p.x + '" y="' + (p.y + 5) + '" text-anchor="middle" font-size="10" fill="' + p.color + '" font-weight="700">' + lbl + '</text>' +
+               '</g>';
+      }).join('');
+
+      // Central hub
+      var hubSvg = '<circle cx="' + CX + '" cy="' + CY + '" r="32" fill="var(--accent)" opacity="0.15" stroke="var(--accent)" stroke-width="2"/>' +
+                   '<text x="' + CX + '" y="' + (CY - 5) + '" text-anchor="middle" font-size="11" fill="var(--accent)" font-weight="800">ASSEMBLAGE</text>' +
+                   '<text x="' + CX + '" y="' + (CY + 10) + '" text-anchor="middle" font-size="10" fill="var(--text2)">' + n + ' pièces</text>';
+
+      var svgEl = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:420px;">' +
+                  svgLines + hubSvg + svgRects + '</svg>';
+
+      // Legend
+      var legendItems = svgParts.map(function(p, i) {
+        return '<div class="ev-legend-item" id="ev-leg-' + i + '" onclick="highlightEvPart(document.getElementById('ev-part-' + i + ''),' + i + ')">' +
+               '<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:' + p.color + ';margin-right:7px;flex-shrink:0;"></span>' +
+               '<strong>' + p.id + '.</strong>&nbsp;' + p.name +
+               (p.qty > 1 ? ' <span style="color:var(--text2);font-size:11px;">×' + p.qty + '</span>' : '') +
+               '</div>';
+      }).join('');
+
+      container.innerHTML = '<div class="exploded-svg-wrap">' + svgEl + '</div>' +
+                            '<div class="ev-legend">' + legendItems + '</div>';
+    }
+
+    function highlightEvPart(el, idx) {
+      // Reset all
+      document.querySelectorAll('.ev-part rect').forEach(function(r) { r.setAttribute('opacity','0.18'); });
+      document.querySelectorAll('.ev-legend-item').forEach(function(l) { l.style.background = ''; l.style.borderRadius = ''; });
+      if (!el) return;
+      // Highlight selected
+      var rect = el.querySelector('rect');
+      if (rect) rect.setAttribute('opacity','0.6');
+      var leg = document.getElementById('ev-leg-' + idx);
+      if (leg) { leg.style.background = 'var(--surface2)'; leg.style.borderRadius = '6px'; }
+    }
+
     // ── RESULTS TABS ────────────────────────────────────────────
     var activeResTab = 'synthese';
     function switchResTab(tab) {
