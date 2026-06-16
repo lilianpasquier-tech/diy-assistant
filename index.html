@@ -491,6 +491,90 @@
   .dark .buy-link.amazon { background:#431407;color:#fb923c;border-color:#9a3412; }
   .dark .buy-link.google { background:#0c1a40;color:#60a5fa;border-color:#1e3a8a; }
 
+
+    /* ── PRODUCT ICONS / PHOTOS ── */
+    .mat-thumb-cell { width: 68px; text-align: center; }
+    .mat-icon-cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .mat-emoji-icon { font-size: 32px; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
+      background: var(--surface2); border-radius: 10px; border: 1px solid var(--border); }
+    .mat-photo-link { font-size: 10px; color: var(--accent); text-decoration: none; opacity: 0.7; }
+    .mat-photo-link:hover { opacity: 1; }
+
+    /* ── BUY LINKS (improved) ── */
+    .buy-links { display: flex; flex-wrap: wrap; gap: 5px; }
+    .buy-link { display: inline-flex; align-items: center; gap: 4px; padding: 5px 9px;
+      border-radius: 8px; font-size: 11px; font-weight: 600; text-decoration: none;
+      border: 1px solid transparent; white-space: nowrap; transition: all 0.2s; }
+    .buy-link:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.3); }
+    .buy-link.lm { background: #006b3b22; border-color: #006b3b; color: #43c47a; }
+    .buy-link.amazon { background: #f9902022; border-color: #f99020; color: #f9a730; }
+    .buy-link.brico { background: #e53e3e22; border-color: #e53e3e; color: #fc8181; }
+    .buy-link.google { background: #4a90e222; border-color: #4a90e2; color: #74b3f0; }
+
+    /* ── PRELIMINARY QUESTIONS v2 ── */
+    .questions-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .btn-regen { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white;
+      border: none; border-radius: 10px; padding: 10px 20px; font-size: 13px; font-weight: 600;
+      cursor: pointer; display: none; transition: all 0.2s; }
+    .btn-regen:hover { opacity: 0.9; transform: translateY(-1px); }
+    .question-card { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+    .question-card.validated { border-color: var(--success); }
+    .question-text { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .question-why { font-size: 12px; color: var(--text2); margin-bottom: 12px; padding: 8px 12px;
+      background: rgba(108,99,255,0.08); border-radius: 8px; border-left: 3px solid var(--accent); }
+    .question-options { display: flex; flex-direction: column; gap: 8px; }
+    .question-option-label { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px;
+      border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+    .question-option-label:hover { border-color: var(--accent); background: rgba(108,99,255,0.05); }
+    .question-option-label.selected { border-color: var(--accent); background: rgba(108,99,255,0.12); }
+    .question-option-top { display: flex; align-items: center; gap: 8px; }
+    .question-option-label input[type="radio"] { accent-color: var(--accent); margin: 0; }
+    .question-option-name { font-size: 14px; font-weight: 500; }
+    .question-option-impact { font-size: 12px; color: var(--text2); padding-left: 20px;
+      border-left: 2px solid var(--accent); margin-left: 8px; line-height: 1.5; }
+    .question-option-hints { display: flex; flex-wrap: wrap; gap: 4px; padding-left: 20px; }
+    .hint-chip { font-size: 10px; background: rgba(67,233,123,0.1); border: 1px solid var(--success);
+      color: var(--success); padding: 2px 7px; border-radius: 12px; }
+    .question-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; flex-wrap: wrap; gap: 8px; }
+    .question-validate-btn { background: var(--accent); color: white; border: none; border-radius: 8px;
+      padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer; display: none; }
+    .question-validated-badge { display: none; align-items: center; gap: 6px; font-size: 13px; color: var(--success); font-weight: 600; }
+    .question-chat-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent);
+      border-radius: 8px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
+    .question-chat-btn:hover { background: rgba(108,99,255,0.1); }
+
+    /* ── INTERACTIVE PLAN ── */
+    .plan-svg-container { width: 100%; overflow-x: auto; border-radius: 12px;
+      background: linear-gradient(135deg, #0d0f1a, #12152a); padding: 20px; }
+    .plan-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; font-size: 12px; }
+    .plan-legend-item { display: flex; align-items: center; gap: 6px; color: var(--text2); }
+    .plan-legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .plan-hint { font-size: 13px; color: var(--text2); margin-bottom: 16px; }
+
+    /* ── STEP PHASE BADGE ── */
+    .step-phase-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; margin-left: 8px; }
+    .phase-Préparation { background: rgba(255,190,91,0.15); color: var(--warn); }
+    .phase-Construction { background: rgba(108,99,255,0.15); color: var(--accent); }
+    .phase-Assemblage { background: rgba(67,233,123,0.15); color: var(--success); }
+    .phase-Finition { background: rgba(255,101,132,0.15); color: var(--accent2); }
+    .phase-Vérification { background: rgba(74,144,226,0.15); color: #74b3f0; }
+
+    /* ── SUBSTEP IMPROVED ── */
+    .substep { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px;
+      border-radius: 8px; background: rgba(255,255,255,0.025); margin-bottom: 6px;
+      border-left: 3px solid transparent; transition: all 0.2s; }
+    .substep:hover { background: rgba(108,99,255,0.06); border-left-color: var(--accent); }
+    .substep.done { opacity: 0.5; }
+    .substep.done .substep-text { text-decoration: line-through; }
+    .substep-num { min-width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
+      color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center;
+      justify-content: center; margin-top: 1px; flex-shrink: 0; }
+    .substep-check { accent-color: var(--success); margin-top: 3px; flex-shrink: 0; }
+    .substep-text { font-size: 13px; line-height: 1.6; flex: 1; color: var(--text); }
+    .substep-ask-btn { background: transparent; border: 1px solid var(--border); color: var(--text2);
+      border-radius: 6px; padding: 3px 8px; font-size: 12px; cursor: pointer; flex-shrink: 0; }
+    .substep-ask-btn:hover { border-color: var(--accent); color: var(--accent); }
+
 </style>
 </head>
 <body>
@@ -620,8 +704,13 @@
 
     <!-- PRELIMINARY QUESTIONS -->
     <div class="section-card" id="questionsCard" style="display:none;">
-      <h3><span class="icon">❓</span> Questions préliminaires</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">Avant de commencer, clarifiez ces points qui influencent le projet :</p>
+      <h3><span class="icon">❓</span> Questions préliminaires &amp; Variantes</h3>
+      <div class="questions-header-row">
+        <p style="font-size:13px;color:var(--text2);">Ces choix définissent le cadre du projet. Sélectionnez chaque option pour voir son impact.</p>
+        <button class="btn-regen" id="regenBtn" onclick="regenerateWithChoices()">
+          ✨ Régénérer avec mes choix
+        </button>
+      </div>
       <div class="questions-grid" id="questionsGrid"></div>
     </div>
 
@@ -669,6 +758,19 @@
         <span class="progress-label" id="progressLabel">0 / 0 étapes</span>
       </div>
       <div class="steps-list" id="stepsList"></div>
+    </div>
+
+
+    <!-- INTERACTIVE PLAN -->
+    <div class="section-card" id="interactivePlanSection" style="display:none">
+      <h3><span class="icon">🗺️</span> Plan interactif du projet</h3>
+      <p class="plan-hint">Cliquez sur une étape pour accéder à son détail · Suivi de progression visuel</p>
+      <div id="planSvgContainer" class="plan-svg-container"></div>
+      <div class="plan-legend">
+        <div class="plan-legend-item"><div class="plan-legend-dot" style="background:#16a34a"></div> Étape terminée</div>
+        <div class="plan-legend-item"><div class="plan-legend-dot" style="background:#6366f1"></div> Étape en cours</div>
+        <div class="plan-legend-item"><div class="plan-legend-dot" style="background:#475569"></div> Étape à venir</div>
+      </div>
     </div>
 
     <!-- SAFETY -->
@@ -722,6 +824,7 @@
 
 <script>
   const API_URL = '/api/generate';
+  const CHAT_API_URL = '/api/chat';
   const TOOLS_KEY = 'diy_owned_tools_v2';
 
   let currentPlan = null;
@@ -755,19 +858,43 @@
   }
 
   // ── LINK BUILDERS ──
-  function makeLMLink(kw) { return `https://www.leroymerlin.fr/recherche?q=${encodeURIComponent(kw)}`; }
-  function makeAmazonLink(kw) { return `https://www.amazon.fr/s?k=${encodeURIComponent(kw)}`; }
-  function makeGoogleLink(kw) { return `https://www.google.fr/search?tbm=shop&q=${encodeURIComponent(kw)}`; }
+  function makeLMLink(kw) { return 'https://www.leroymerlin.fr/recherche?q=' + encodeURIComponent(kw); }
+  function makeAmazonLink(kw) { return 'https://www.amazon.fr/s?k=' + encodeURIComponent(kw) + '&language=fr_FR'; }
+  function makeBricoLink(kw) { return 'https://www.bricodepot.fr/catalogsearch/result/?q=' + encodeURIComponent(kw); }
+  function makeGoogleLink(kw) { return 'https://www.google.fr/search?q=' + encodeURIComponent(kw) + '+bricolage&tbm=shop'; }
 
   function buyLinksHTML(keyword) {
     if (!keyword) return '';
     const kw = String(keyword).trim();
     if (!kw) return '';
-    return `<div class="buy-links">
-      <a class="buy-link lm" href="${makeLMLink(kw)}" target="_blank" rel="noopener noreferrer">🟩 Leroy Merlin</a>
-      <a class="buy-link amazon" href="${makeAmazonLink(kw)}" target="_blank" rel="noopener noreferrer">📦 Amazon FR</a>
-      <a class="buy-link google" href="${makeGoogleLink(kw)}" target="_blank" rel="noopener noreferrer">🔍 Google Shopping</a>
-    </div>`;
+    return '<div class="buy-links">'
+      + '<a class="buy-link lm" href="' + makeLMLink(kw) + '" target="_blank">🟩 Leroy Merlin</a>'
+      + '<a class="buy-link amazon" href="' + makeAmazonLink(kw) + '" target="_blank">📦 Amazon FR</a>'
+      + '<a class="buy-link brico" href="' + makeBricoLink(kw) + '" target="_blank">🔴 Brico Dépôt</a>'
+      + '<a class="buy-link google" href="' + makeGoogleLink(kw) + '" target="_blank">🔍 Google</a>'
+      + '</div>';
+  }
+
+  function getMatEmoji(name) {
+    const n = (name || '').toLowerCase();
+    if (/bois|planche|madrier|lambouri|pin|chêne|sapin|noyer|hêtre|contreplaqué|osb/.test(n)) return '🪵';
+    if (/béton|ciment|mortier|chape|enduit|parpaing|brique/.test(n)) return '🧱';
+    if (/plâtre|gypse|staff|badigeon/.test(n)) return '🏛️';
+    if (/vis|boulon|écrou|cheville|rondelle|clou|fixation|ancrage/.test(n)) return '🔩';
+    if (/peinture|vernis|lasure|primer|impression|teinte|laque/.test(n)) return '🎨';
+    if (/câble|électrique|fil|gaine|disjoncteur|interrupteur|prise|tableau/.test(n)) return '⚡';
+    if (/tuyau|tube|plomberie|raccord|joint|siphon|robinet|cuivre/.test(n)) return '🚿';
+    if (/isolant|laine|roche|verre|polystyrène|mousse|liège/.test(n)) return '🧊';
+    if (/colle|joint|silicone|mastic|mousse|adhésif|époxy/.test(n)) return '💧';
+    if (/acier|aluminium|inox|zinc|métal|fer|profilé|cornière/.test(n)) return '🔨';
+    if (/sable|gravier|agrégat|grave|granulat|terre|terreau/.test(n)) return '🪨';
+    if (/tuile|ardoise|zinc|toiture|faîtière|gouttière/.test(n)) return '🏗️';
+    if (/carrelage|carreau|faïence|pavé|dalle|parquet/.test(n)) return '⬜';
+    if (/arduine|arduino|raspberry|capteur|résistance|condensateur|led/.test(n)) return '🔌';
+    if (/serre-joint|cosse|charnière|gond|verrou|serrure/.test(n)) return '🔗';
+    if (/huile|graisse|dégrippant|lubrifiant|nettoyant/.test(n)) return '🧴';
+    if (/toile|fibre|verre|renfort|mat|tissu/.test(n)) return '🧵';
+    return '📦';
   }
 
   // ── GENERATE ──
@@ -907,19 +1034,22 @@
   function renderMaterials(materials) {
     const tbody = document.getElementById('materialsBody');
     tbody.innerHTML = '';
-    materials.forEach(m => {
+    materials.forEach(function(m, idx) {
       const priceUnit = (m.priceMinUnit != null && m.priceMaxUnit != null)
         ? m.priceMinUnit + '–' + m.priceMaxUnit + '€ / ' + (m.unit || 'u.')
         : (m.estimatedPrice != null ? m.estimatedPrice + '€' : '—');
       const priceTotalStr = (m.totalPriceMin != null && m.totalPriceMax != null)
         ? m.totalPriceMin + '–' + m.totalPriceMax + '€' : '—';
-      const kw = m.searchKeyword || m.name || '';
-      const imgSrc = 'https://source.unsplash.com/56x56/?' + encodeURIComponent(kw + ' hardware construction');
+      const kw = (m.searchKeyword || m.name || '').trim();
+      const emoji = getMatEmoji(m.name || '');
+      const googleImgUrl = 'https://www.google.fr/search?q=' + encodeURIComponent(kw) + '&tbm=isch';
 
       const tr = document.createElement('tr');
-      let html = '<td class="mat-thumb-cell">'
-        + '<img class="mat-thumb" src="' + imgSrc + '" alt="' + esc(m.name) + '" loading="lazy"'
-        + ' onerror="this.hidden=true">'
+      tr.innerHTML = '<td class="mat-thumb-cell">'
+        + '<div class="mat-icon-cell">'
+        + '<div class="mat-emoji-icon">' + emoji + '</div>'
+        + '<a class="mat-photo-link" href="' + googleImgUrl + '" target="_blank" title="Voir des photos de ce produit">📷 voir</a>'
+        + '</div>'
         + '</td>'
         + '<td>'
         + '<div class="mat-name">' + esc(m.name || '') + '</div>'
@@ -930,10 +1060,9 @@
         + '<td><div class="price-unit">' + priceUnit + '</div></td>'
         + '<td><div class="price-unit">' + priceTotalStr + '</div></td>'
         + '<td>'
-        + (m.where_to_buy ? '<div style="font-size:11px;color:var(--text2);margin-bottom:4px;">' + esc(m.where_to_buy) + '</div>' : '')
+        + (m.where_to_buy ? '<div style="font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:500;">🏪 ' + esc(m.where_to_buy) + '</div>' : '')
         + buyLinksHTML(kw)
         + '</td>';
-      tr.innerHTML = html;
       tbody.appendChild(tr);
     });
   }
@@ -1023,56 +1152,171 @@
 
   // ── RENDER: STEPS ──
   function renderSteps(steps, projectId) {
-    const list = document.getElementById('stepsList');
-    const progress = getStepProgress(projectId);
+    var list = document.getElementById('stepsList');
+    var progress = getStepProgress(projectId);
+    var phaseColors = { 'Préparation': 'Préparation', 'Construction': 'Construction',
+      'Assemblage': 'Assemblage', 'Finition': 'Finition', 'Vérification': 'Vérification' };
 
-    list.innerHTML = steps.map((s, i) => {
-      const done = !!progress[i];
-      return `<div class="step-card${done ? ' completed' : ''}" id="stepcard_${i}">
-        <div class="step-header" onclick="toggleStep(${i})">
-          <input type="checkbox" class="step-done-check" id="stepdone_${i}"
-            ${done ? 'checked' : ''}
-            onclick="event.stopPropagation(); onStepCheck(event, ${i}, '${projectId}')" />
-          <div class="step-num-badge">${s.stepNumber || i + 1}</div>
-          <div class="step-header-info">
-            <div class="step-header-title">${esc(s.title || '')}</div>
-            ${s.duration ? `<div class="step-header-dur">⏱ ${esc(s.duration)}</div>` : ''}
-          </div>
-          <div class="step-toggle">▼</div>
-        </div>
-        <div class="step-body">
-          ${s.description ? `<div class="step-desc">${esc(s.description)}</div>` : ''}
-          ${(s.detailedInstructions || []).length ? `
-            <div class="substeps-title">📋 Mode opératoire détaillé</div>
-            <div class="substeps-list">
-              ${s.detailedInstructions.map((ins, j) => `
-                <div class="substep" id="substep_${i}_${j}">
-                  <input type="checkbox" class="substep-check"
-                    onchange="onSubstepCheck(this, ${i}, ${j})"
-                    title="Marquer comme fait" />
-                  <div class="substep-num">${j + 1}</div>
-                  <div class="substep-text">${esc(ins)}</div>
-                  <button class="substep-ask-btn" data-step="${i}" data-sub="${j}" onclick="onSubstepAskClick(this)" title="Demander un détail à l'IA">💬</button>
-                </div>
-              `).join('')}
-            </div>
-          ` : ''}
-          <div class="step-info-grid">
-            ${s.validationCriteria ? `<div class="step-info-box validation"><div class="box-label">✔ Critère de validation</div>${esc(s.validationCriteria)}</div>` : ''}
-            ${s.commonMistakes ? `<div class="step-info-box mistake"><div class="box-label">⚡ Erreur fréquente</div>${esc(s.commonMistakes)}</div>` : ''}
-            ${s.tips ? `<div class="step-info-box tip"><div class="box-label">💡 Astuce</div>${esc(s.tips)}</div>` : ''}
-            ${s.warnings ? `<div class="step-info-box warning"><div class="box-label">⚠ Attention</div>${esc(s.warnings)}</div>` : ''}
-          </div>
-        </div>
-      </div>`;
+    list.innerHTML = steps.map(function(s, i) {
+      var done = !!progress[i];
+      var phase = s.phase || '';
+      var phaseHtml = phase ? '<span class="step-phase-badge phase-' + phase + '">' + esc(phase) + '</span>' : '';
+
+      var subsHtml = '';
+      var instructions = s.detailedInstructions || [];
+      if (instructions.length) {
+        var subItems = instructions.map(function(ins, j) {
+          return '<div class="substep" id="substep_' + i + '_' + j + '">'
+            + '<input type="checkbox" class="substep-check" onchange="onSubstepCheck(this,' + i + ',' + j + ')" title="Marquer comme fait">'
+            + '<div class="substep-num">' + (j+1) + '</div>'
+            + '<div class="substep-text">' + esc(String(ins)) + '</div>'
+            + '<button class="substep-ask-btn" data-step="' + i + '" data-sub="' + j + '" onclick="onSubstepAskClick(this)" title="Question IA">💬</button>'
+            + '</div>';
+        }).join('');
+        subsHtml = '<div class="substeps-title">📋 Mode opératoire détaillé (' + instructions.length + ' actions)</div>'
+          + '<div class="substeps-list">' + subItems + '</div>';
+      }
+
+      var infoGrid = '<div class="step-info-grid">'
+        + (s.validationCriteria ? '<div class="step-info-box validation"><div class="box-label">✔ Critère de validation</div>' + esc(s.validationCriteria) + '</div>' : '')
+        + (s.commonMistakes ? '<div class="step-info-box mistake"><div class="box-label">⚡ Erreur fréquente</div>' + esc(s.commonMistakes) + '</div>' : '')
+        + (s.tips ? '<div class="step-info-box tip"><div class="box-label">💡 Astuce</div>' + esc(s.tips) + '</div>' : '')
+        + (s.warnings ? '<div class="step-info-box warning"><div class="box-label">⚠ Attention</div>' + esc(s.warnings) + '</div>' : '')
+        + '</div>';
+
+      return '<div class="step-card' + (done ? ' completed' : '') + '" id="stepcard_' + i + '">'
+        + '<div class="step-header" onclick="toggleStep(' + i + ')">'
+        + '<input type="checkbox" class="step-done-check" id="stepdone_' + i + '"'
+        + (done ? ' checked' : '')
+        + ' onclick="event.stopPropagation();onStepCheck(event,' + i + ',' + projectId + ')">'
+        + '<div class="step-num-badge">' + (s.stepNumber || i+1) + '</div>'
+        + '<div class="step-header-info">'
+        + '<div class="step-header-title">' + esc(s.title || '') + phaseHtml + '</div>'
+        + (s.duration ? '<div class="step-header-dur">⏱ ' + esc(s.duration) + ' · ' + instructions.length + ' actions</div>' : '')
+        + '</div>'
+        + '<div class="step-toggle">▼</div>'
+        + '</div>'
+        + '<div class="step-body">'
+        + (s.description ? '<div class="step-desc">' + esc(s.description) + '</div>' : '')
+        + subsHtml
+        + infoGrid
+        + '</div>'
+        + '</div>';
     }).join('');
 
     updateProgressBar(steps.length, projectId);
+    renderInteractivePlan(steps, projectId);
   }
 
   function toggleStep(idx) {
-    const card = document.getElementById(`stepcard_${idx}`);
+    var card = document.getElementById('stepcard_' + idx);
     if (card) card.classList.toggle('open');
+  }
+
+  function scrollToStep(idx) {
+    var card = document.getElementById('stepcard_' + idx);
+    if (card) {
+      if (!card.classList.contains('open')) card.classList.add('open');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.style.transition = 'box-shadow 0.3s';
+      card.style.boxShadow = '0 0 0 3px var(--accent)';
+      setTimeout(function() { card.style.boxShadow = ''; }, 2000);
+    }
+  }
+
+  function renderInteractivePlan(steps, projectId) {
+    var section = document.getElementById('interactivePlanSection');
+    var container = document.getElementById('planSvgContainer');
+    if (!steps || !steps.length) { section.style.display = 'none'; return; }
+    section.style.display = '';
+    var progress = getStepProgress(projectId);
+
+    var CARD_W = 150, CARD_H = 88, GAP_X = 50, GAP_Y = 36, PAD = 20;
+    var COLS = steps.length <= 3 ? steps.length : (steps.length <= 8 ? 4 : 5);
+    var ROWS = Math.ceil(steps.length / COLS);
+    var SVG_W = COLS * (CARD_W + GAP_X) + PAD * 2;
+    var SVG_H = ROWS * (CARD_H + GAP_Y) + PAD * 2;
+
+    var positions = steps.map(function(s, i) {
+      var col = i % COLS;
+      var row = Math.floor(i / COLS);
+      return { x: PAD + col * (CARD_W + GAP_X), y: PAD + row * (CARD_H + GAP_Y) };
+    });
+
+    var completedCount = Object.keys(progress).length;
+    var phaseColorMap = {
+      'Préparation': '#d97706', 'Construction': '#6366f1',
+      'Assemblage': '#16a34a', 'Finition': '#e11d48', 'Vérification': '#0ea5e9'
+    };
+
+    var svg = '<svg viewBox="0 0 ' + SVG_W + ' ' + SVG_H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;font-family:Inter,sans-serif">'
+      + '<defs>'
+      + '<marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">'
+      + '<polygon points="0 0,8 3,0 6" fill="rgba(99,102,241,0.5)"/>'
+      + '</marker>'
+      + '<filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.4)"/></filter>'
+      + '</defs>';
+
+    // Draw connecting arrows
+    steps.forEach(function(s, i) {
+      if (i >= steps.length - 1) return;
+      var from = positions[i];
+      var to = positions[i + 1];
+      var fromCol = i % COLS;
+      var toCol = (i + 1) % COLS;
+      if (fromCol < toCol) {
+        // Same row - horizontal
+        svg += '<line x1="' + (from.x + CARD_W) + '" y1="' + (from.y + CARD_H/2) + '"'
+          + ' x2="' + to.x + '" y2="' + (to.y + CARD_H/2) + '"'
+          + ' stroke="rgba(99,102,241,0.4)" stroke-width="2" marker-end="url(#arrowhead)"/>';
+      } else {
+        // Row wrap - elbow
+        var midX = SVG_W - PAD/2;
+        var midY = from.y + CARD_H + GAP_Y/2;
+        svg += '<polyline points="'
+          + (from.x + CARD_W) + ',' + (from.y + CARD_H/2) + ' '
+          + midX + ',' + (from.y + CARD_H/2) + ' '
+          + midX + ',' + (to.y + CARD_H/2) + ' '
+          + to.x + ',' + (to.y + CARD_H/2)
+          + '" fill="none" stroke="rgba(99,102,241,0.3)" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrowhead)"/>';
+      }
+    });
+
+    // Draw step cards
+    steps.forEach(function(s, i) {
+      var pos = positions[i];
+      var isDone = !!progress[i];
+      var isCurrent = !isDone && i === completedCount;
+      var phase = s.phase || '';
+      var phaseColor = phaseColorMap[phase] || '#6366f1';
+      var cardFill = isDone ? '#16a34a' : (isCurrent ? '#6366f1' : '#334155');
+      var cardOpacity = (isDone || isCurrent) ? '1' : '0.72';
+      var title = (s.title || '').slice(0, 18) + ((s.title || '').length > 18 ? '…' : '');
+      var dur = (s.duration || '').slice(0, 10);
+      var instrCount = (s.detailedInstructions || []).length;
+      var doneStr = isDone ? '✓' : (isCurrent ? '▶' : '');
+
+      svg += '<g onclick="scrollToStep(' + i + ')" style="cursor:pointer" opacity="' + cardOpacity + '" filter="url(#shadow)">'
+        + '<rect x="' + pos.x + '" y="' + pos.y + '" width="' + CARD_W + '" height="' + CARD_H + '" rx="14" fill="' + cardFill + '"/>'
+        + '<rect x="' + pos.x + '" y="' + pos.y + '" width="' + CARD_W + '" height="5" rx="3" fill="' + phaseColor + '" opacity="0.9"/>'
+        + '<circle cx="' + (pos.x + 22) + '" cy="' + (pos.y + 28) + '" r="13" fill="rgba(255,255,255,0.2)"/>'
+        + '<text x="' + (pos.x + 22) + '" y="' + (pos.y + 34) + '" text-anchor="middle" fill="white" font-size="13" font-weight="700">'
+        + (i + 1) + '</text>';
+      if (doneStr) {
+        svg += '<text x="' + (pos.x + CARD_W - 16) + '" y="' + (pos.y + 22) + '" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="14">' + doneStr + '</text>';
+      }
+      svg += '<text x="' + (pos.x + CARD_W/2) + '" y="' + (pos.y + 50) + '" text-anchor="middle" fill="white" font-size="11" font-weight="600">' + escSvg(title) + '</text>'
+        + '<text x="' + (pos.x + CARD_W/2) + '" y="' + (pos.y + 65) + '" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="9">⏱ ' + escSvg(dur) + '</text>'
+        + '<text x="' + (pos.x + CARD_W/2) + '" y="' + (pos.y + 78) + '" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">' + instrCount + ' actions</text>'
+        + '</g>';
+    });
+
+    svg += '</svg>';
+    container.innerHTML = svg;
+  }
+
+  function escSvg(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
   function onStepCheck(event, stepIdx, projectId) {
@@ -1209,11 +1453,11 @@
 
   // ── INIT ──
   // ── CHAT ──
-  const CHAT_API_URL = '/api/chat';
+
   let chatMessages = [];
   let chatOpen = false;
 
-  function toggleChat() {
+  function toggleChat(prefill) {
     chatOpen = !chatOpen;
     document.getElementById('chatPanel').classList.toggle('open', chatOpen);
     if (chatOpen && chatMessages.length === 0) {
