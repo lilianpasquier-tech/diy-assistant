@@ -575,6 +575,40 @@
       border-radius: 6px; padding: 3px 8px; font-size: 12px; cursor: pointer; flex-shrink: 0; }
     .substep-ask-btn:hover { border-color: var(--accent); color: var(--accent); }
 
+
+    /* ── REAL PRODUCT PHOTOS ── */
+    .mat-thumb-cell { width: 90px; text-align: center; }
+    .mat-photo-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .mat-photo-img { width: 80px; height: 60px; object-fit: cover; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface2); }
+    .mat-photo-fallback { width: 80px; height: 60px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface2); display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 2px; }
+    .mat-photo-fallback .emoji { font-size: 28px; }
+    .mat-photo-link { font-size: 10px; color: var(--accent); text-decoration: none; opacity: 0.7; }
+    .mat-photo-link:hover { opacity: 1; }
+
+    /* ── TECHNICAL SCHEMA SECTION ── */
+    .schema-section { background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px; margin-bottom: 24px; }
+    .schema-section h3 { font-size: 18px; font-weight: 600; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px; }
+    .schema-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    .schema-tab { padding: 7px 16px; border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--text2); font-size: 13px; cursor: pointer; transition: all 0.2s; }
+    .schema-tab.active { background: var(--accent); border-color: var(--accent); color: white; }
+    .schema-tab:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+    .schema-view { width: 100%; border-radius: 12px; overflow: hidden; background: #0d1117; min-height: 200px;
+      display: flex; align-items: center; justify-content: center; }
+    .schema-view svg { width: 100%; height: auto; max-height: 520px; }
+    .schema-loading { color: var(--text2); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+    .schema-loading .spin { animation: spin 1s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .schema-error { color: var(--warn); font-size: 13px; padding: 20px; text-align: center; }
+    .schema-regen-btn { background: transparent; border: 1px solid var(--border); color: var(--text2);
+      padding: 6px 14px; border-radius: 8px; font-size: 12px; cursor: pointer; margin-top: 12px; }
+    .schema-regen-btn:hover { border-color: var(--accent); color: var(--accent); }
+
 </style>
 </head>
 <body>
@@ -712,6 +746,23 @@
         </button>
       </div>
       <div class="questions-grid" id="questionsGrid"></div>
+    </div>
+
+    <!-- TECHNICAL SCHEMA -->
+    <div class="schema-section" id="schemaSection" style="display:none">
+      <h3><span>📐</span> Schéma technique &amp; Plan visuel</h3>
+      <div class="schema-tabs">
+        <button class="schema-tab active" onclick="showSchemaView('plan')">📐 Plan technique</button>
+        <button class="schema-tab" onclick="showSchemaView('iso')">📦 Vue 3D / Modélisme</button>
+      </div>
+      <div class="schema-view" id="schemaView">
+        <div class="schema-loading"><span class="spin">⚙️</span> Génération du schéma en cours…</div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center;">
+        <button class="schema-regen-btn" onclick="loadSchema('plan')">🔄 Regénérer le plan</button>
+        <button class="schema-regen-btn" onclick="loadSchema('iso')">🔄 Regénérer la vue 3D</button>
+        <span style="font-size:11px;color:var(--text2)">Schéma généré par IA · peut varier</span>
+      </div>
     </div>
 
     <!-- CONSTRAINTS -->
@@ -897,6 +948,24 @@
     return '📦';
   }
 
+  function getFlickrKeyword(name) {
+    var n = (name || '').toLowerCase();
+    if (/bois|planche|madrier|pin|chêne|sapin|noyer|contreplaqué|osb/.test(n)) return 'wood,lumber,plank';
+    if (/vis|boulon|écrou|cheville|clou|fixation/.test(n)) return 'screw,bolt,hardware,fastener';
+    if (/béton|ciment|mortier|parpaing|brique/.test(n)) return 'concrete,brick,cement';
+    if (/plâtre|enduit/.test(n)) return 'plaster,wall';
+    if (/peinture|vernis|lasure|primer/.test(n)) return 'paint,roller,brush';
+    if (/câble|électrique|fil|gaine/.test(n)) return 'cable,wire,electric';
+    if (/tuyau|tube|plomberie|raccord/.test(n)) return 'pipe,plumbing,tube';
+    if (/isolant|laine|roche|polystyrène/.test(n)) return 'insulation,foam';
+    if (/colle|silicone|mastic|adhésif/.test(n)) return 'glue,adhesive,sealant';
+    if (/acier|aluminium|inox|métal/.test(n)) return 'steel,metal,aluminum';
+    if (/sable|gravier/.test(n)) return 'sand,gravel,aggregate';
+    if (/carrelage|carreau|faïence/.test(n)) return 'tile,ceramic,floor';
+    if (/arduino|capteur|led|résistance/.test(n)) return 'electronic,component,arduino';
+    return name.split(' ').slice(0,2).join(',') + ',hardware';
+  }
+
   // ── GENERATE ──
   async function generatePlan() {
     const description = document.getElementById('description').value.trim();
@@ -921,6 +990,7 @@
 
       currentPlan = data;
       currentProjectId = Date.now();
+      schemaCache = {};
       displayResults(data, description, currentProjectId);
       saveToHistory(description, data, currentProjectId);
     } catch (err) {
@@ -974,6 +1044,11 @@
     const resultsEl = document.getElementById('results');
     resultsEl.classList.add('visible');
     resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Trigger schema generation
+    document.getElementById('schemaSection').style.display = '';
+    window._currentSchemaType = 'plan';
+    loadSchema('plan');
   }
 
   // ── RENDER: PRELIMINARY QUESTIONS ──
@@ -1041,14 +1116,18 @@
       const priceTotalStr = (m.totalPriceMin != null && m.totalPriceMax != null)
         ? m.totalPriceMin + '–' + m.totalPriceMax + '€' : '—';
       const kw = (m.searchKeyword || m.name || '').trim();
-      const emoji = getMatEmoji(m.name || '');
-      const googleImgUrl = 'https://www.google.fr/search?q=' + encodeURIComponent(kw) + '&tbm=isch';
+      var emoji = getMatEmoji(m.name || '');
+      var flickrKw = getFlickrKeyword(m.name || '');
+      var photoSrc = 'https://loremflickr.com/80/60/' + encodeURIComponent(flickrKw) + '?lock=' + idx;
+      var googleImgUrl = 'https://www.google.fr/search?q=' + encodeURIComponent(kw + ' bricolage') + '&tbm=isch';
 
-      const tr = document.createElement('tr');
+      var tr = document.createElement('tr');
       tr.innerHTML = '<td class="mat-thumb-cell">'
-        + '<div class="mat-icon-cell">'
-        + '<div class="mat-emoji-icon">' + emoji + '</div>'
-        + '<a class="mat-photo-link" href="' + googleImgUrl + '" target="_blank" title="Voir des photos de ce produit">📷 voir</a>'
+        + '<div class="mat-photo-wrap">'
+        + '<img class="mat-photo-img" src="' + photoSrc + '" alt="' + esc(m.name||'') + '" loading="lazy"'
+        + ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+        + '<div class="mat-photo-fallback" style="display:none"><span class="emoji">' + emoji + '</span></div>'
+        + '<a class="mat-photo-link" href="' + googleImgUrl + '" target="_blank">📷 voir</a>'
         + '</div>'
         + '</td>'
         + '<td>'
@@ -1388,6 +1467,57 @@
     history = history.slice(0, 10);
     localStorage.setItem('diy_history', JSON.stringify(history));
     renderHistory();
+  }
+
+  // ── SCHEMA TECHNIQUE ──
+  var schemaCache = {};
+
+  async function loadSchema(type) {
+    if (!currentPlan) return;
+    var view = document.getElementById('schemaView');
+    if (schemaCache[type]) {
+      view.innerHTML = schemaCache[type];
+      return;
+    }
+    view.innerHTML = '<div class="schema-loading"><span class="spin">⚙️</span> Génération du schéma ' + (type === 'iso' ? '3D/Modélisme' : 'technique') + '…</div>';
+    window._currentSchemaType = type;
+
+    var steps = currentPlan.steps || [];
+    var materials = currentPlan.materials || [];
+    var desc = document.getElementById('description').value.trim();
+    var projType = document.getElementById('projectType').value;
+
+    // For ISO/3D view, add instruction to the description
+    var augDesc = type === 'iso'
+      ? desc + ' — Vue 3D isométrique style modélisme : montrer le résultat final assemblé en 3D avec perspective isométrique, numérotation des pièces, liste de nomenclature'
+      : desc;
+
+    try {
+      var resp = await fetch('/api/schema', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectDescription: augDesc, projectType: projType, steps: steps, materials: materials }),
+      });
+      var data = await resp.json();
+      if (data.svg) {
+        schemaCache[type] = data.svg;
+        view.innerHTML = data.svg;
+      } else {
+        view.innerHTML = '<div class="schema-error">⚠ ' + (data.error || 'Erreur de génération') + '</div>';
+      }
+    } catch (err) {
+      view.innerHTML = '<div class="schema-error">⚠ Erreur réseau : ' + err.message + '</div>';
+    }
+  }
+
+  function showSchemaView(type) {
+    document.querySelectorAll('.schema-tab').forEach(function(t) { t.classList.remove('active'); });
+    event.target.classList.add('active');
+    if (schemaCache[type]) {
+      document.getElementById('schemaView').innerHTML = schemaCache[type];
+    } else {
+      loadSchema(type);
+    }
   }
 
   function renderHistory() {
