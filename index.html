@@ -686,5 +686,421 @@
     if (!keyword) return '';
     return `<div class="buy-links">
       <a class="buy-link lm" href="${makeLMLink(keyword)}" target="_blank" rel="noopener">🟢 LM</a>
-      <a class="buy-link amazon" href="${makeAmazonLink(keyword)}" target="_blank" rel="noopener">📦 Amazon</a>
-      <a class="
+      <a class="buy-link amazon" href="${makeAmazonLink(keyword)}" target="_blank" rel="noopener">📦 Amazon</a>      <a class="buy-link google" href="${makeGoogleLink(keyword)}" target="_blank" rel="noopener">🔍 Google</a>
+    </div>`;
+  }
+
+  // ── GENERATE ──
+  async function generatePlan() {
+    const description = document.getElementById('description').value.trim();
+    const projectType = document.getElementById('projectType').value;
+    const level = document.getElementById('level').value;
+    const budget = document.getElementById('budget').value;
+
+    if (!description) { showError('Veuillez décrire votre projet avant de générer le plan.'); return; }
+    if (description.length < 10) { showError('Description trop courte. Donnez plus de détails sur votre projet.'); return; }
+
+    hideError();
+    setLoading(true);
+
+    try {
+      const resp = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectDescription: description, projectType, level, budget }),
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || 'Erreur lors de la génération');
+
+      currentPlan = data;
+      currentProjectId = Date.now();
+      displayResults(data, description, currentProjectId);
+      saveToHistory(description, data, currentProjectId);
+    } catch (err) {
+      showError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // ── DISPLAY RESULTS ──
+  function displayResults(plan, description, projectId) {
+    document.getElementById('resultsTitle').textContent =
+      `📋 ${description.slice(0, 60)}${description.length > 60 ? '…' : ''}`;
+
+    const budgetStr = plan.totalBudgetMin != null && plan.totalBudgetMax != null
+      ? `${plan.totalBudgetMin}–${plan.totalBudgetMax}€` : '—';
+    document.getElementById('statsBar').innerHTML = `
+      <div class="stat"><div class="val">${budgetStr}</div><div class="key">Budget estimé</div></div>
+      <div class="stat"><div class="val">${plan.duration || '—'}</div><div class="key">Durée totale</div></div>
+      <div class="stat"><div class="val">${(plan.materials || []).length}</div><div class="key">Matériaux</div></div>
+      <div class="stat"><div class="val">${(plan.steps || []).length}</div><div class="key">Étapes</div></div>
+    `;
+
+    document.getElementById('overviewText').textContent = plan.overview || '';
+    const diff = plan.difficulty || {};
+    document.getElementById('difficultyText').innerHTML = diff.level
+      ? `<strong>Difficulté :</strong> <span style="color:var(--accent)">${diff.level}</span> — ${diff.explanation || ''}`
+      : '';
+
+    renderPreliminaryQuestions(plan.preliminary_questions || []);
+    renderConstraints(plan.constraints || []);
+    renderMaterials(plan.materials || []);
+    renderTools(plan.tools || [], projectId);
+    renderSteps(plan.steps || [], projectId);
+
+    const safety = Array.isArray(plan.safety) ? plan.safety : [];
+    document.getElementById('safetyItems').innerHTML = safety.map(s =>
+      `<div class="safety-item"><span class="icon">⚠️</span><span>${esc(s)}</span></div>`
+    ).join('');
+
+    document.getElementById('altsGrid').innerHTML = (plan.alternatives || []).map(a =>
+      `<div class="alt-item">🔀 ${esc(a)}</div>`
+    ).join('');
+
+    renderOptimizations(plan.optimizations || []);
+
+    document.getElementById('tipsList').innerHTML = (plan.proTips || []).map(t =>
+      `<div class="tip-item"><span class="tip-icon">💡</span><span>${esc(t)}</span></div>`
+    ).join('');
+
+    const resultsEl = document.getElementById('results');
+    resultsEl.classList.add('visible');
+    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── RENDER: PRELIMINARY QUESTIONS ──
+  function renderPreliminaryQuestions(questions) {
+    const card = document.getElementById('questionsCard');
+    const grid = document.getElementById('questionsGrid');
+    if (!questions.length) { card.style.display = 'none'; return; }
+    card.style.display = '';
+    grid.innerHTML = questions.map(q => `
+      <div class="question-card">
+        <div class="question-text">❓ ${esc(q.question)}</div>
+        <div class="question-why">${esc(q.why || '')}</div>
+        <div class="question-options">
+          ${(q.options || []).map(o => `<div class="question-option">▸ ${esc(o)}</div>`).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── RENDER: CONSTRAINTS ──
+  function renderConstraints(constraints) {
+    const card = document.getElementById('constraintsCard');
+    const list = document.getElementById('constraintsList');
+    if (!constraints.length) { card.style.display = 'none'; return; }
+    card.style.display = '';
+    list.innerHTML = constraints.map(c =>
+      `<div class="constraint-item"><span class="constraint-icon">⚙️</span><span>${esc(c)}</span></div>`
+    ).join('');
+  }
+
+  // ── RENDER: MATERIALS ──
+  function renderMaterials(materials) {
+    const tbody = document.getElementById('materialsBody');
+    tbody.innerHTML = '';
+    materials.forEach(m => {
+      const priceUnit = (m.priceMinUnit != null && m.priceMaxUnit != null)
+        ? `${m.priceMinUnit}–${m.priceMaxUnit}€ / ${m.unit || 'u.'}`
+        : (m.estimatedPrice != null ? `${m.estimatedPrice}€` : '—');
+      const priceTotal = (m.totalPriceMin != null && m.totalPriceMax != null)
+        ? `Total : ${m.totalPriceMin}–${m.totalPriceMax}€` : '';
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <div class="mat-name">${esc(m.name || '')}</div>
+          ${m.specifications ? `<div class="mat-specs">📐 ${esc(m.specifications)}</div>` : ''}
+          ${m.criticalPoints ? `<div class="mat-critical">⚠ ${esc(m.criticalPoints)}</div>` : ''}
+        </td>
+        <td class="qty-cell">${esc(String(m.quantity || ''))} ${esc(m.unit || '')}</td>
+        <td>
+          <div class="price-unit">${priceUnit}</div>
+          ${priceTotal ? `<div class="price-total">${priceTotal}</div>` : ''}
+        </td>
+        <td>
+          ${m.where_to_buy ? `<div style="font-size:12px;color:var(--text2);margin-bottom:4px;">${esc(m.where_to_buy)}</div>` : ''}
+          ${buyLinksHTML(m.searchKeyword || m.name)}
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ── RENDER: TOOLS ──
+  function renderTools(tools, projectId) {
+    const grid = document.getElementById('toolsGrid');
+    const badge = document.getElementById('toolsCountBadge');
+
+    const missing = tools.filter(t => t.isEssential !== false && !isToolOwned(t.name));
+    badge.textContent = `${tools.length} outils — ${missing.length} essentiel(s) à acheter`;
+
+    grid.innerHTML = tools.map((t, i) => {
+      const owned = isToolOwned(t.name);
+      const essential = t.isEssential !== false;
+      const cardClass = owned ? 'tool-card owned' : (essential ? 'tool-card essential-missing' : 'tool-card');
+      const priceStr = (t.approxPriceMin != null && t.approxPriceMax != null)
+        ? `${t.approxPriceMin}–${t.approxPriceMax}€`
+        : (t.approxPrice != null ? `≈ ${t.approxPrice}€` : '');
+
+      return `<div class="${cardClass}" id="toolcard_${i}">
+        <div class="tool-check-row">
+          <input type="checkbox" id="tool_${i}"
+            ${owned ? 'checked' : ''}
+            onchange="onToolCheck(this, '${esc(t.name).replace(/'/g, "\\'")}', ${i})"
+            title="Je possède cet outil" />
+          <div class="tool-info">
+            <div class="tool-name">${esc(t.name)}</div>
+            <div class="tool-badges">
+              <span class="tool-badge ${essential ? 'essential' : 'optional'}">${essential ? 'Essentiel' : 'Optionnel'}</span>
+              ${t.category ? `<span class="tool-badge cat">${esc(t.category)}</span>` : ''}
+            </div>
+            ${owned ? `<div class="tool-owned-tag">✅ Déjà possédé</div>` : ''}
+            ${!owned && priceStr ? `<div class="tool-price">💰 ${priceStr}</div>` : ''}
+            ${t.alternative ? `<div class="tool-alt">Alternative : ${esc(t.alternative)}</div>` : ''}
+            ${t.searchKeyword && !owned ? `<div class="tool-links">${buyLinksHTML(t.searchKeyword)}</div>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function onToolCheck(checkbox, toolName, cardIdx) {
+    setToolOwned(toolName, checkbox.checked);
+    const card = document.getElementById(`toolcard_${cardIdx}`);
+    if (!card) return;
+    if (checkbox.checked) {
+      card.className = 'tool-card owned';
+    } else {
+      const tool = currentPlan?.tools?.[cardIdx];
+      const essential = tool?.isEssential !== false;
+      card.className = essential ? 'tool-card essential-missing' : 'tool-card';
+    }
+    const info = card.querySelector('.tool-info');
+    const existingOwned = info.querySelector('.tool-owned-tag');
+    const existingPrice = info.querySelector('.tool-price');
+    const existingLinks = info.querySelector('.tool-links');
+    const tool = currentPlan?.tools?.[cardIdx];
+    const priceStr = tool ? ((tool.approxPriceMin != null && tool.approxPriceMax != null)
+      ? `${tool.approxPriceMin}–${tool.approxPriceMax}€`
+      : (tool.approxPrice != null ? `≈ ${tool.approxPrice}€` : '')) : '';
+
+    if (checkbox.checked) {
+      if (!existingOwned) {
+        const div = document.createElement('div'); div.className = 'tool-owned-tag'; div.textContent = '✅ Déjà possédé';
+        info.appendChild(div);
+      }
+      if (existingPrice) existingPrice.remove();
+      if (existingLinks) existingLinks.remove();
+    } else {
+      if (existingOwned) existingOwned.remove();
+      if (!existingPrice && priceStr) {
+        const div = document.createElement('div'); div.className = 'tool-price'; div.textContent = `💰 ${priceStr}`;
+        const altEl = info.querySelector('.tool-alt');
+        info.insertBefore(div, altEl || null);
+      }
+      if (!existingLinks && tool?.searchKeyword) {
+        const div = document.createElement('div'); div.className = 'tool-links'; div.innerHTML = buyLinksHTML(tool.searchKeyword);
+        info.appendChild(div);
+      }
+    }
+    const tools = currentPlan?.tools || [];
+    const missing = tools.filter(t => t.isEssential !== false && !isToolOwned(t.name));
+    document.getElementById('toolsCountBadge').textContent =
+      `${tools.length} outils — ${missing.length} essentiel(s) à acheter`;
+  }
+
+  // ── RENDER: STEPS ──
+  function renderSteps(steps, projectId) {
+    const list = document.getElementById('stepsList');
+    const progress = getStepProgress(projectId);
+
+    list.innerHTML = steps.map((s, i) => {
+      const done = !!progress[i];
+      return `<div class="step-card${done ? ' completed' : ''}" id="stepcard_${i}">
+        <div class="step-header" onclick="toggleStep(${i})">
+          <input type="checkbox" class="step-done-check" id="stepdone_${i}"
+            ${done ? 'checked' : ''}
+            onclick="event.stopPropagation(); onStepCheck(event, ${i}, '${projectId}')" />
+          <div class="step-num-badge">${s.stepNumber || i + 1}</div>
+          <div class="step-header-info">
+            <div class="step-header-title">${esc(s.title || '')}</div>
+            ${s.duration ? `<div class="step-header-dur">⏱ ${esc(s.duration)}</div>` : ''}
+          </div>
+          <div class="step-toggle">▼</div>
+        </div>
+        <div class="step-body">
+          ${s.description ? `<div class="step-desc">${esc(s.description)}</div>` : ''}
+          ${(s.detailedInstructions || []).length ? `
+            <div class="substeps-title">Mode opératoire</div>
+            <div class="substeps-list">
+              ${s.detailedInstructions.map((ins, j) => `
+                <div class="substep">
+                  <div class="substep-num">${j + 1}</div>
+                  <span>${esc(ins)}</span>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+          <div class="step-info-grid">
+            ${s.validationCriteria ? `<div class="step-info-box validation"><div class="box-label">✔ Critère de validation</div>${esc(s.validationCriteria)}</div>` : ''}
+            ${s.commonMistakes ? `<div class="step-info-box mistake"><div class="box-label">⚡ Erreur fréquente</div>${esc(s.commonMistakes)}</div>` : ''}
+            ${s.tips ? `<div class="step-info-box tip"><div class="box-label">💡 Astuce</div>${esc(s.tips)}</div>` : ''}
+            ${s.warnings ? `<div class="step-info-box warning"><div class="box-label">⚠ Attention</div>${esc(s.warnings)}</div>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    updateProgressBar(steps.length, projectId);
+  }
+
+  function toggleStep(idx) {
+    const card = document.getElementById(`stepcard_${idx}`);
+    if (card) card.classList.toggle('open');
+  }
+
+  function onStepCheck(event, stepIdx, projectId) {
+    const done = event.target.checked;
+    setStepDone(projectId, stepIdx, done);
+    const card = document.getElementById(`stepcard_${stepIdx}`);
+    if (card) { if (done) card.classList.add('completed'); else card.classList.remove('completed'); }
+    updateProgressBar((currentPlan?.steps || []).length, projectId);
+  }
+
+  function updateProgressBar(totalSteps, projectId) {
+    const progress = getStepProgress(projectId);
+    const done = Object.keys(progress).length;
+    const pct = totalSteps > 0 ? Math.round((done / totalSteps) * 100) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `${done} / ${totalSteps} étapes`;
+  }
+
+  // ── RENDER: OPTIMIZATIONS ──
+  function renderOptimizations(opts) {
+    const card = document.getElementById('optsCard');
+    const list = document.getElementById('optsList');
+    if (!opts.length) { card.style.display = 'none'; return; }
+    card.style.display = '';
+    list.innerHTML = opts.map(o =>
+      `<div class="opt-item"><span style="font-size:16px;flex-shrink:0;">✨</span><span>${esc(o)}</span></div>`
+    ).join('');
+  }
+
+  // ── EXPORT PURCHASE LIST ──
+  function exportPurchaseList() {
+    const tools = currentPlan?.tools || [];
+    const missing = tools.filter(t => !isToolOwned(t.name));
+    if (!missing.length) { alert('Vous possédez déjà tous les outils !'); return; }
+
+    const lines = ["=== LISTE D'ACHATS — OUTILS MANQUANTS ===", ''];
+    const essential = missing.filter(t => t.isEssential !== false);
+    const optional = missing.filter(t => t.isEssential === false);
+
+    if (essential.length) {
+      lines.push('-- OUTILS ESSENTIELS --');
+      essential.forEach(t => {
+        const price = (t.approxPriceMin != null && t.approxPriceMax != null)
+          ? `${t.approxPriceMin}–${t.approxPriceMax}€` : '';
+        lines.push(`• ${t.name}${price ? ' (' + price + ')' : ''}`);
+        if (t.searchKeyword) lines.push(`  Amazon : ${makeAmazonLink(t.searchKeyword)}`);
+      });
+      lines.push('');
+    }
+    if (optional.length) {
+      lines.push('-- OUTILS OPTIONNELS --');
+      optional.forEach(t => {
+        const price = (t.approxPriceMin != null && t.approxPriceMax != null)
+          ? `${t.approxPriceMin}–${t.approxPriceMax}€` : '';
+        lines.push(`• ${t.name}${price ? ' (' + price + ')' : ''}`);
+      });
+    }
+
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `outils-manquants-${Date.now()}.txt`; a.click();
+  }
+
+  // ── HISTORY ──
+  function saveToHistory(description, plan, projectId) {
+    let history = JSON.parse(localStorage.getItem('diy_history') || '[]');
+    history.unshift({ id: projectId, description, plan, date: new Date().toLocaleDateString('fr-FR') });
+    history = history.slice(0, 10);
+    localStorage.setItem('diy_history', JSON.stringify(history));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const history = JSON.parse(localStorage.getItem('diy_history') || '[]');
+    const section = document.getElementById('historySection');
+    const list = document.getElementById('historyList');
+    if (!history.length) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    list.innerHTML = history.map((h, i) => `
+      <div class="history-item" onclick="loadFromHistory(${i})">
+        <div>
+          <div class="name">${esc(h.description.slice(0, 80))}${h.description.length > 80 ? '…' : ''}</div>
+          <div class="date">📅 ${h.date}</div>
+        </div>
+        <button class="load-btn">Charger →</button>
+      </div>
+    `).join('');
+  }
+
+  function loadFromHistory(index) {
+    const history = JSON.parse(localStorage.getItem('diy_history') || '[]');
+    const item = history[index];
+    if (!item) return;
+    document.getElementById('description').value = item.description;
+    currentPlan = item.plan;
+    currentProjectId = item.id;
+    displayResults(item.plan, item.description, item.id);
+  }
+
+  // ── EXPORT JSON ──
+  function exportJSON() {
+    if (!currentPlan) return;
+    const blob = new Blob([JSON.stringify(currentPlan, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `diy-plan-${Date.now()}.json`; a.click();
+  }
+
+  // ── UI HELPERS ──
+  function setLoading(on) {
+    document.getElementById('loader').classList.toggle('visible', on);
+    document.getElementById('generateBtn').disabled = on;
+    if (on) {
+      document.getElementById('results').classList.remove('visible');
+      document.querySelectorAll('.loader-step').forEach(s => {
+        s.style.animation = 'none'; void s.offsetWidth; s.style.animation = '';
+      });
+    }
+  }
+  function showError(msg) {
+    document.getElementById('errorMsg').textContent = msg;
+    document.getElementById('errorBox').classList.add('visible');
+  }
+  function hideError() { document.getElementById('errorBox').classList.remove('visible'); }
+
+  function esc(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ── INIT ──
+  document.addEventListener('DOMContentLoaded', () => {
+    renderHistory();
+    document.getElementById('description').addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') generatePlan();
+    });
+  });
+</script>
+</body>
+</html>
