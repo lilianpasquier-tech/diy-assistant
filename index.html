@@ -432,7 +432,66 @@
       main { padding: 0; }
       .stats-bar { grid-template-columns: repeat(4, 1fr); }
     }
-  </style>
+  
+  /* ── PRODUCT IMAGES ── */
+  .mat-thumb { width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);flex-shrink:0; }
+  .mat-thumb-cell { width:64px;padding:8px 4px 8px 8px; }
+  td.mat-thumb-cell { vertical-align:middle; }
+
+  /* ── QUESTION VALIDATION ── */
+  .question-card { background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;transition:.2s; }
+  .question-card.validated { border-color:#22c55e;background:#f0fdf4; }
+  .dark .question-card.validated { background:#052e16; }
+  .question-radio-group { display:flex;flex-direction:column;gap:6px;margin-top:10px; }
+  .question-radio-label { display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:.15s;font-size:13px; }
+  .question-radio-label:hover { border-color:var(--accent);background:rgba(99,102,241,.06); }
+  .question-radio-label input[type=radio] { accent-color:var(--accent);width:15px;height:15px;flex-shrink:0; }
+  .question-radio-label.selected { border-color:var(--accent);background:rgba(99,102,241,.1);font-weight:600; }
+  .question-validate-btn { margin-top:10px;padding:6px 14px;font-size:12px;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:.15s; }
+  .question-validate-btn:hover { opacity:.85; }
+  .question-validated-badge { display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#16a34a;font-weight:600;margin-top:8px; }
+
+  /* ── SUBSTEP DETAIL ── */
+  .substep { display:flex;gap:10px;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;align-items:flex-start;transition:.2s; }
+  .substep.substep-done { opacity:.55;text-decoration:line-through; }
+  .substep-num { min-width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .substep-check { accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;margin-top:5px; }
+  .substep-text { flex:1;font-size:14px;line-height:1.6;color:var(--text1); }
+  .substep-ask-btn { flex-shrink:0;background:none;border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;color:var(--text2);transition:.15s;white-space:nowrap;margin-top:3px; }
+  .substep-ask-btn:hover { border-color:var(--accent);color:var(--accent); }
+
+  /* ── CHAT PANEL ── */
+  .chat-fab { position:fixed;bottom:24px;right:24px;width:54px;height:54px;border-radius:50%;background:var(--accent);color:#fff;font-size:22px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(99,102,241,.5);z-index:900;transition:.2s;display:flex;align-items:center;justify-content:center; }
+  .chat-fab:hover { transform:scale(1.08); }
+  .chat-panel { position:fixed;bottom:90px;right:24px;width:340px;height:520px;background:var(--card);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.25);z-index:901;transform:translateY(20px) scale(.97);opacity:0;pointer-events:none;transition:.25s; }
+  .chat-panel.open { transform:translateY(0) scale(1);opacity:1;pointer-events:all; }
+  .chat-panel-header { display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);font-weight:700;font-size:15px; }
+  .chat-panel-close { background:none;border:none;cursor:pointer;font-size:18px;color:var(--text2);line-height:1; }
+  .chat-messages { flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px; }
+  .chat-msg { max-width:85%;padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.55; }
+  .chat-msg.user { background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:4px; }
+  .chat-msg.ai { background:var(--bg);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px;color:var(--text1); }
+  .chat-msg.ai.typing { opacity:.6; }
+  .chat-input-row { display:flex;gap:8px;padding:12px;border-top:1px solid var(--border); }
+  .chat-input-row textarea { flex:1;border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:13px;resize:none;height:40px;background:var(--bg);color:var(--text1);font-family:inherit;outline:none; }
+  .chat-input-row textarea:focus { border-color:var(--accent); }
+  .chat-send-btn { width:40px;height:40px;border-radius:10px;background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+  .chat-send-btn:hover { opacity:.85; }
+  .chat-context-hint { font-size:11px;color:var(--text2);padding:6px 12px;text-align:center;border-bottom:1px solid var(--border); }
+
+  /* ── BUY LINKS IMPROVED ── */
+  .buy-links { display:flex;gap:6px;flex-wrap:wrap; }
+  .buy-link { display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:600;text-decoration:none;transition:.15s;border:1px solid transparent; }
+  .buy-link:hover { transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.15); }
+  .buy-link.lm { background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7; }
+  .buy-link.amazon { background:#fff8e1;color:#e65100;border-color:#ffcc80; }
+  .buy-link.google { background:#e3f2fd;color:#1565c0;border-color:#90caf9; }
+  .buy-link.bricorama { background:#fce4ec;color:#880e4f;border-color:#f48fb1; }
+  .dark .buy-link.lm { background:#052e16;color:#4ade80;border-color:#166534; }
+  .dark .buy-link.amazon { background:#431407;color:#fb923c;border-color:#9a3412; }
+  .dark .buy-link.google { background:#0c1a40;color:#60a5fa;border-color:#1e3a8a; }
+
+</style>
 </head>
 <body>
 
@@ -579,11 +638,12 @@
         <table class="materials-table" id="materialsTable">
           <thead>
             <tr>
+              <th class="mat-thumb-cell"></th>
               <th>Matériau</th>
-              <th>Quantité</th>
-              <th>Prix / unité</th>
+              <th>Qté</th>
+              <th>Prix unitaire</th>
               <th>Prix total</th>
-              <th>Liens d'achat</th>
+              <th>Acheter</th>
             </tr>
           </thead>
           <tbody id="materialsBody"></tbody>
@@ -641,6 +701,23 @@
     <h3>📁 Projets récents</h3>
     <div class="history-list" id="historyList"></div>
   </div>
+
+<!-- CHAT FAB + PANEL -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" title="Poser une question à l'IA">💬</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-panel-header">
+    <span>🤖 Assistant DIY</span>
+    <button class="chat-panel-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-context-hint" id="chatContextHint">Posez une question sur votre projet</div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-row">
+    <textarea id="chatInput" placeholder="Ex: Puis-je utiliser du contreplaqué à la place ?" rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage();}"></textarea>
+    <button class="chat-send-btn" onclick="sendChatMessage()">↗</button>
+  </div>
+</div>
+
 </main>
 
 <script>
@@ -684,9 +761,12 @@
 
   function buyLinksHTML(keyword) {
     if (!keyword) return '';
+    const kw = String(keyword).trim();
+    if (!kw) return '';
     return `<div class="buy-links">
-      <a class="buy-link lm" href="${makeLMLink(keyword)}" target="_blank" rel="noopener">🟢 LM</a>
-      <a class="buy-link amazon" href="${makeAmazonLink(keyword)}" target="_blank" rel="noopener">📦 Amazon</a>      <a class="buy-link google" href="${makeGoogleLink(keyword)}" target="_blank" rel="noopener">🔍 Google</a>
+      <a class="buy-link lm" href="${makeLMLink(kw)}" target="_blank" rel="noopener noreferrer">🟩 Leroy Merlin</a>
+      <a class="buy-link amazon" href="${makeAmazonLink(kw)}" target="_blank" rel="noopener noreferrer">📦 Amazon FR</a>
+      <a class="buy-link google" href="${makeGoogleLink(kw)}" target="_blank" rel="noopener noreferrer">🔍 Google Shopping</a>
     </div>`;
   }
 
@@ -775,15 +855,41 @@
     const grid = document.getElementById('questionsGrid');
     if (!questions.length) { card.style.display = 'none'; return; }
     card.style.display = '';
-    grid.innerHTML = questions.map(q => `
-      <div class="question-card">
+    grid.innerHTML = questions.map((q, qi) => `
+      <div class="question-card" id="qcard_${qi}">
         <div class="question-text">❓ ${esc(q.question)}</div>
-        <div class="question-why">${esc(q.why || '')}</div>
-        <div class="question-options">
-          ${(q.options || []).map(o => `<div class="question-option">▸ ${esc(o)}</div>`).join('')}
+        ${q.why ? `<div class="question-why">💡 ${esc(q.why)}</div>` : ''}
+        <div class="question-radio-group">
+          ${(q.options || []).map((o, oi) => `
+            <label class="question-radio-label" id="qlabel_${qi}_${oi}">
+              <input type="radio" name="question_${qi}" value="${oi}"
+                onchange="onQuestionSelect(${qi}, ${oi}, '${esc(o).replace(/'/g,"\'")}')">
+              ${esc(o)}
+            </label>
+          `).join('')}
         </div>
+        <button class="question-validate-btn" id="qbtn_${qi}" onclick="validateQuestion(${qi})" style="display:none">
+          ✔ Valider ce choix
+        </button>
+        <div class="question-validated-badge" id="qvalidated_${qi}" style="display:none">✅ Choix validé</div>
       </div>
     `).join('');
+  }
+
+  function onQuestionSelect(qi, oi, value) {
+    document.querySelectorAll(`[id^="qlabel_${qi}_"]`).forEach(l => l.classList.remove('selected'));
+    document.getElementById(`qlabel_${qi}_${oi}`)?.classList.add('selected');
+    const btn = document.getElementById(`qbtn_${qi}`);
+    if (btn) btn.style.display = 'inline-block';
+    if (!window.questionChoices) window.questionChoices = {};
+    window.questionChoices[qi] = value;
+  }
+
+  function validateQuestion(qi) {
+    const card = document.getElementById(`qcard_${qi}`);
+    card?.classList.add('validated');
+    document.getElementById(`qbtn_${qi}`).style.display = 'none';
+    document.getElementById(`qvalidated_${qi}`).style.display = 'flex';
   }
 
   // ── RENDER: CONSTRAINTS ──
@@ -805,26 +911,30 @@
       const priceUnit = (m.priceMinUnit != null && m.priceMaxUnit != null)
         ? `${m.priceMinUnit}–${m.priceMaxUnit}€ / ${m.unit || 'u.'}`
         : (m.estimatedPrice != null ? `${m.estimatedPrice}€` : '—');
-      const priceTotal = (m.totalPriceMin != null && m.totalPriceMax != null)
-        ? `Total : ${m.totalPriceMin}–${m.totalPriceMax}€` : '';
+      const priceTotalStr = (m.totalPriceMin != null && m.totalPriceMax != null)
+        ? `${m.totalPriceMin}–${m.totalPriceMax}€` : '—';
+      const kw = m.searchKeyword || m.name || '';
+      const imgSrc = `https://source.unsplash.com/56x56/?${encodeURIComponent(kw + ',hardware,construction')}`;
 
       const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>
-          <div class="mat-name">${esc(m.name || '')}</div>
-          ${m.specifications ? `<div class="mat-specs">📐 ${esc(m.specifications)}</div>` : ''}
-          ${m.criticalPoints ? `<div class="mat-critical">⚠ ${esc(m.criticalPoints)}</div>` : ''}
-        </td>
-        <td class="qty-cell">${esc(String(m.quantity || ''))} ${esc(m.unit || '')}</td>
-        <td>
-          <div class="price-unit">${priceUnit}</div>
-          ${priceTotal ? `<div class="price-total">${priceTotal}</div>` : ''}
+      tr.innerHTML = \`
+        <td class="mat-thumb-cell">
+          <img class="mat-thumb" src="\${imgSrc}" alt="\${esc(m.name)}" loading="lazy"
+            onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'56\' height=\'56\'><rect width=\'100%\' height=\'100%\' fill=\'%23e5e7eb\'/><text x=\'50%\' y=\'55%\' text-anchor=\'middle\' font-size=\'22\'>🧱</text></svg>'">
         </td>
         <td>
-          ${m.where_to_buy ? `<div style="font-size:12px;color:var(--text2);margin-bottom:4px;">${esc(m.where_to_buy)}</div>` : ''}
-          ${buyLinksHTML(m.searchKeyword || m.name)}
+          <div class="mat-name">\${esc(m.name || '')}</div>
+          \${m.specifications ? \`<div class="mat-specs">📐 \${esc(m.specifications)}</div>\` : ''}
+          \${m.criticalPoints ? \`<div class="mat-critical">⚠ \${esc(m.criticalPoints)}</div>\` : ''}
         </td>
-      `;
+        <td class="qty-cell">\${esc(String(m.quantity || ''))} \${esc(m.unit || '')}</td>
+        <td><div class="price-unit">\${priceUnit}</div></td>
+        <td><div class="price-unit">\${priceTotalStr}</div></td>
+        <td>
+          \${m.where_to_buy ? \`<div style="font-size:11px;color:var(--text2);margin-bottom:4px;">\${esc(m.where_to_buy)}</div>\` : ''}
+          \${buyLinksHTML(kw)}
+        </td>
+      \`;
       tbody.appendChild(tr);
     });
   }
@@ -934,12 +1044,17 @@
         <div class="step-body">
           ${s.description ? `<div class="step-desc">${esc(s.description)}</div>` : ''}
           ${(s.detailedInstructions || []).length ? `
-            <div class="substeps-title">Mode opératoire</div>
+            <div class="substeps-title">📋 Mode opératoire détaillé</div>
             <div class="substeps-list">
               ${s.detailedInstructions.map((ins, j) => `
-                <div class="substep">
+                <div class="substep" id="substep_${i}_${j}">
+                  <input type="checkbox" class="substep-check"
+                    onchange="onSubstepCheck(this, ${i}, ${j})"
+                    title="Marquer comme fait" />
                   <div class="substep-num">${j + 1}</div>
-                  <span>${esc(ins)}</span>
+                  <div class="substep-text">${esc(ins)}</div>
+                  <button class="substep-ask-btn" onclick="askAboutSubstep(${i}, ${j}, '${esc(ins).replace(/'/g,"\'").replace(/
+/g,' ')}')" title="Demander un détail à l'IA">💬</button>
                 </div>
               `).join('')}
             </div>
@@ -1095,6 +1210,78 @@
   }
 
   // ── INIT ──
+  // ── CHAT ──
+  const CHAT_API_URL = '/api/chat';
+  let chatMessages = [];
+  let chatOpen = false;
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chatPanel').classList.toggle('open', chatOpen);
+    if (chatOpen && chatMessages.length === 0) {
+      const hint = currentPlan
+        ? `Projet : ${document.getElementById('description')?.value?.slice(0, 80) || ''}…`
+        : 'Posez une question sur votre projet';
+      document.getElementById('chatContextHint').textContent = hint;
+      addChatMsg('ai', 'Bonjour ! Je connais votre projet. Posez-moi une question : matériaux, étapes, outils, alternatives…');
+    }
+    if (chatOpen) setTimeout(() => document.getElementById('chatInput')?.focus(), 150);
+  }
+
+  function addChatMsg(role, text) {
+    const el = document.createElement('div');
+    el.className = `chat-msg ${role}`;
+    el.textContent = text;
+    document.getElementById('chatMessages').appendChild(el);
+    el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    return el;
+  }
+
+  async function sendChatMessage(prefill) {
+    const input = document.getElementById('chatInput');
+    const text = (prefill || input.value).trim();
+    if (!text) return;
+    if (!prefill) input.value = '';
+    addChatMsg('user', text);
+    chatMessages.push({ role: 'user', content: text });
+
+    const typingEl = addChatMsg('ai', '…');
+    typingEl.classList.add('typing');
+
+    const projectContext = currentPlan
+      ? `Plan DIY — Description: ${document.getElementById('description')?.value || ''}. Vue d'ensemble: ${currentPlan.overview || ''}. Matériaux: ${(currentPlan.materials||[]).map(m=>m.name).join(', ')}. Outils: ${(currentPlan.tools||[]).map(t=>t.name).join(', ')}. Étapes: ${(currentPlan.steps||[]).map(s=>s.title).join(', ')}.`
+      : null;
+
+    try {
+      const resp = await fetch(CHAT_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatMessages.slice(-10), projectContext }),
+      });
+      const data = await resp.json();
+      const reply = data.reply || 'Désolé, pas de réponse.';
+      typingEl.textContent = reply;
+      typingEl.classList.remove('typing');
+      chatMessages.push({ role: 'assistant', content: reply });
+    } catch (err) {
+      typingEl.textContent = 'Erreur de connexion. Réessayez.';
+      typingEl.classList.remove('typing');
+    }
+  }
+
+  function askAboutSubstep(stepIdx, subIdx, text) {
+    if (!chatOpen) toggleChat();
+    const step = currentPlan?.steps?.[stepIdx];
+    const question = `Pour l'étape "${step?.title || stepIdx+1}", sous-étape ${subIdx+1} : "${text}" — peux-tu expliquer comment faire ça concrètement avec plus de détails ?`;
+    document.getElementById('chatInput').value = question;
+    sendChatMessage();
+  }
+
+  function onSubstepCheck(checkbox, stepIdx, subIdx) {
+    const el = document.getElementById(`substep_${stepIdx}_${subIdx}`);
+    if (el) el.classList.toggle('substep-done', checkbox.checked);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     renderHistory();
     document.getElementById('description').addEventListener('keydown', e => {
