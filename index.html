@@ -4000,7 +4000,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // Legend
       var legendItems = svgParts.map(function(p, i) {
-        return '<div class="ev-legend-item" id="ev-leg-' + i + '" onclick="highlightEvPart(document.getElementById('ev-part-' + i + ''),' + i + ')">' +
+        return '<div class="ev-legend-item" id="ev-leg-' + i + '" onclick="evSelectPart(' + i + ')">' +
                '<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:' + p.color + ';margin-right:7px;flex-shrink:0;"></span>' +
                '<strong>' + p.id + '.</strong>&nbsp;' + p.name +
                (p.qty > 1 ? ' <span style="color:var(--text2);font-size:11px;">×' + p.qty + '</span>' : '') +
@@ -4011,6 +4011,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             '<div class="ev-legend">' + legendItems + '</div>';
     }
 
+    function evSelectPart(idx) {
+      highlightEvPart(document.getElementById('ev-part-' + idx), idx);
+    }
     function highlightEvPart(el, idx) {
       // Reset all
       document.querySelectorAll('.ev-part rect').forEach(function(r) { r.setAttribute('opacity','0.18'); });
