@@ -1132,6 +1132,20 @@
     /* ══════════════════════════════════════════════════════
        RESULTS TABS
     ══════════════════════════════════════════════════════ */
+    /* ── Inspirations tab ── */
+    .inspire-grid { display:flex; flex-direction:column; gap:28px; padding-bottom:40px; }
+    .inspire-category {}
+    .inspire-cat-title { font-size:13px; font-weight:700; color:var(--text2); text-transform:uppercase;
+      letter-spacing:.7px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+    .inspire-cards-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+    .inspire-card { background:var(--surface); border:1.5px solid var(--border); border-radius:14px;
+      padding:16px; cursor:pointer; transition:all .18s; display:flex; flex-direction:column; gap:6px; }
+    .inspire-card:hover { border-color:var(--accent); transform:translateY(-2px);
+      box-shadow:0 6px 20px rgba(108,99,255,0.15); }
+    .inspire-card-icon { font-size:28px; }
+    .inspire-card-name { font-size:13px; font-weight:700; line-height:1.3; }
+    .inspire-card-desc { font-size:12px; color:var(--text2); line-height:1.4; }
+
     .res-tabs-bar { display:flex; gap:0; overflow-x:auto; border-bottom:2px solid var(--border);
       margin-bottom:20px; scrollbar-width:none; }
     .res-tabs-bar::-webkit-scrollbar { display:none; }
@@ -1159,6 +1173,7 @@
 <!-- APP NAV TABS -->
 <div class="app-nav" id="appNav">
   <button class="app-nav-tab-create active" onclick="switchTab('new')" id="tab-new">✨ Créer un projet</button>
+  <button class="app-nav-tab" onclick="switchTab('inspire')" id="tab-inspire">💡 Inspirations</button>
   <button class="app-nav-tab" onclick="switchTab('recent')" id="tab-recent">📂 Projets récents <span class="tab-count" id="count-recent">0</span></button>
   <button class="app-nav-tab" onclick="switchTab('done')" id="tab-done">✅ Projets terminés <span class="tab-count" id="count-done">0</span></button>
 </div>
@@ -1195,20 +1210,6 @@
   <!-- FORM -->
   <div class="form-card">
     <h3>🚀 Nouveau projet</h3>
-
-    <div class="examples">
-      <p>Exemples de projets :</p>
-      <div class="example-chips">
-        <span class="chip" onclick="setExample(this)">Installer une prise électrique 220V</span>
-        <span class="chip" onclick="setExample(this)">Construire une cabane en bois pour enfant</span>
-        <span class="chip" onclick="setExample(this)">Station météo Arduino avec écran LCD</span>
-        <span class="chip" onclick="setExample(this)">Poser du carrelage dans une cuisine</span>
-        <span class="chip" onclick="setExample(this)">Fabriquer une étagère murale en bois</span>
-        <span class="chip" onclick="setExample(this)">Créer un système d'arrosage automatique</span>
-        <span class="chip" onclick="setExample(this)">Peindre une pièce avec préparation des murs</span>
-        <span class="chip" onclick="setExample(this)">Construire une terrasse en bois 20m²</span>
-      </div>
-    </div>
 
     <!-- PROJECT CONFIGURATION WIZARD -->
     <!-- ═══════════════════════════════════════════════
@@ -1725,6 +1726,174 @@
     <p style="color:var(--text2);font-size:14px;margin-bottom:0;">Vos réalisations complètes avec journal de chantier et photos</p>
   </div>
   <div class="projects-grid" id="grid-done"></div>
+</div>
+
+<!-- TAB: INSPIRATIONS -->
+<div class="app-view" id="view-inspire">
+  <div style="padding:20px 0 16px;">
+    <h2 style="font-size:22px;font-weight:700;margin-bottom:6px;">💡 Inspirations & exemples</h2>
+    <p style="color:var(--text2);font-size:14px;margin-bottom:0;">Cliquez sur un projet pour le charger dans le formulaire et démarrer</p>
+  </div>
+
+  <div class="inspire-grid" id="inspireGrid">
+
+    <div class="inspire-category">
+      <div class="inspire-cat-title">⚡ Électricité & Électronique</div>
+      <div class="inspire-cards-row">
+        <div class="inspire-card" onclick="loadInspiration('Installer une prise électrique 220V en toute sécurité')">
+          <div class="inspire-card-icon">🔌</div>
+          <div class="inspire-card-name">Prise électrique 220V</div>
+          <div class="inspire-card-desc">Installation sécurisée avec mise à la terre</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Station météo connectée avec Arduino, capteurs DHT22 et BMP280, écran LCD 16x2 et envoi des données via WiFi')">
+          <div class="inspire-card-icon">🌡️</div>
+          <div class="inspire-card-name">Station météo Arduino</div>
+          <div class="inspire-card-desc">Capteurs temp/humidité/pression + WiFi</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Créer un système dalarrosage automatique avec Arduino, électrovannes 12V, capteurs dhumidité du sol et application mobile')">
+          <div class="inspire-card-icon">💧</div>
+          <div class="inspire-card-name">Arrosage automatique</div>
+          <div class="inspire-card-desc">Arduino + électrovannes + capteurs sol</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Construire un oscilloscope DIY avec ESP32 et écran TFT pour mesures électroniques')">
+          <div class="inspire-card-icon">📊</div>
+          <div class="inspire-card-name">Oscilloscope DIY</div>
+          <div class="inspire-card-desc">ESP32 + écran TFT pour mesures</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inspire-category">
+      <div class="inspire-cat-title">🤖 Robotique & Drones</div>
+      <div class="inspire-cards-row">
+        <div class="inspire-card" onclick="loadInspiration('Construire un drone FPV racing quadricoptère avec châssis carbone, moteurs brushless 2300KV, ESC 30A, contrôleur de vol Betaflight F4 et émetteur vidéo 5.8GHz')">
+          <div class="inspire-card-icon">🚁</div>
+          <div class="inspire-card-name">Drone FPV Racing</div>
+          <div class="inspire-card-desc">Châssis carbone, brushless, Betaflight</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Fabriquer un bras robotique 6 axes contrôlé par Arduino avec servomoteurs MG996R et interface de contrôle sur PC')">
+          <div class="inspire-card-icon">🦾</div>
+          <div class="inspire-card-name">Bras robotique 6 axes</div>
+          <div class="inspire-card-desc">Servomoteurs MG996R + contrôle PC</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Robot suiveur de ligne autonome avec capteurs infrarouges, moteurs DC et pont en H L298N sur Raspberry Pi')">
+          <div class="inspire-card-icon">🤖</div>
+          <div class="inspire-card-name">Robot suiveur de ligne</div>
+          <div class="inspire-card-desc">IR + L298N + Raspberry Pi</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Construire une imprimante 3D CoreXY de type Voron 2.4 avec rails linéaires, moteurs NEMA17 et hotend haute température')">
+          <div class="inspire-card-icon">🖨️</div>
+          <div class="inspire-card-name">Imprimante 3D Voron</div>
+          <div class="inspire-card-desc">CoreXY rails linéaires haute temp</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inspire-category">
+      <div class="inspire-cat-title">🪵 Menuiserie & Construction</div>
+      <div class="inspire-cards-row">
+        <div class="inspire-card" onclick="loadInspiration('Construire une cabane en bois pour enfant dans le jardin avec terrasse, fenêtres et toit en bardage')">
+          <div class="inspire-card-icon">🏠</div>
+          <div class="inspire-card-name">Cabane enfant</div>
+          <div class="inspire-card-desc">Terrasse, fenêtres, bardage bois</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Construire une terrasse en bois composite de 25m² avec lambourdes, plots réglables et lames de terrasse')">
+          <div class="inspire-card-icon">🪵</div>
+          <div class="inspire-card-name">Terrasse bois 25m²</div>
+          <div class="inspire-card-desc">Composite, lambourdes, plots réglables</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Fabriquer une bibliothèque murale intégrée en MDF avec portes vitrées, éclairage LED et finition laquée blanc')">
+          <div class="inspire-card-icon">📚</div>
+          <div class="inspire-card-name">Bibliothèque intégrée</div>
+          <div class="inspire-card-desc">MDF, portes vitrées, éclairage LED</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Construire un établi de menuisier en bois massif avec plateau en hêtre, valet et rangements intégrés')">
+          <div class="inspire-card-icon">🔨</div>
+          <div class="inspire-card-name">Établi menuisier</div>
+          <div class="inspire-card-desc">Hêtre massif, valet, rangements</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inspire-category">
+      <div class="inspire-cat-title">🏗️ Maçonnerie & Rénovation</div>
+      <div class="inspire-cards-row">
+        <div class="inspire-card" onclick="loadInspiration('Poser du carrelage 60x60 dans une cuisine de 15m² avec ragréage, colle époxy et joints colorés')">
+          <div class="inspire-card-icon">🏗️</div>
+          <div class="inspire-card-name">Carrelage cuisine 60x60</div>
+          <div class="inspire-card-desc">Ragréage, colle époxy, joints colorés</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Peindre un salon de 30m² avec préparation des murs, enduit de lissage et peinture mate premium deux tons')">
+          <div class="inspire-card-icon">🎨</div>
+          <div class="inspire-card-name">Peinture salon 2 tons</div>
+          <div class="inspire-card-desc">Enduit lissage + peinture mate premium</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Monter des cloisons en placo plâtre BA13 pour créer une chambre supplémentaire avec isolation phonique')">
+          <div class="inspire-card-icon">🧱</div>
+          <div class="inspire-card-name">Cloison placo BA13</div>
+          <div class="inspire-card-desc">Chambre + isolation phonique</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Rénover une salle de bain complète : carrelage mural, receveur douche à litalienne, meuble vasque et robinetterie')">
+          <div class="inspire-card-icon">🚿</div>
+          <div class="inspire-card-name">Salle de bain complète</div>
+          <div class="inspire-card-desc">Douche italienne, vasque, carrelage</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inspire-category">
+      <div class="inspire-cat-title">🔧 Mécanique & Motorisation</div>
+      <div class="inspire-cards-row">
+        <div class="inspire-card" onclick="loadInspiration('Convertir un vélo classique en vélo électrique avec moteur moyeu 250W, batterie 36V lithium et contrôleur')">
+          <div class="inspire-card-icon">🚲</div>
+          <div class="inspire-card-name">Vélo électrique DIY</div>
+          <div class="inspire-card-desc">Moteur 250W, batterie 36V lithium</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Construire une fraiseuse CNC 3 axes pour bois et aluminium avec vis à billes, stepper NEMA23 et Mach3')">
+          <div class="inspire-card-icon">⚙️</div>
+          <div class="inspire-card-name">Fraiseuse CNC 3 axes</div>
+          <div class="inspire-card-desc">Vis à billes, NEMA23, Mach3</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Fabriquer un tour à bois DIY avec moteur 1.5kW, variateur de vitesse et porte-outil réglable')">
+          <div class="inspire-card-icon">🔩</div>
+          <div class="inspire-card-name">Tour à bois DIY</div>
+          <div class="inspire-card-desc">Moteur 1.5kW + variateur de vitesse</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Construire un karting électrique avec moteur brushless 5kW, batteries LiPo 48V et châssis acier soudé')">
+          <div class="inspire-card-icon">🏎️</div>
+          <div class="inspire-card-name">Karting électrique</div>
+          <div class="inspire-card-desc">Brushless 5kW, LiPo 48V, châssis soudé</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inspire-category">
+      <div class="inspire-cat-title">🏡 Domotique & Énergie</div>
+      <div class="inspire-cards-row">
+        <div class="inspire-card" onclick="loadInspiration('Installer un système domotique complet avec Home Assistant, relais Sonoff, capteurs Zigbee et panneau de contrôle')">
+          <div class="inspire-card-icon">🏡</div>
+          <div class="inspire-card-name">Domotique Home Assistant</div>
+          <div class="inspire-card-desc">Sonoff, Zigbee, tableau de bord</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Installer des panneaux solaires 1kWc en autoconsommation avec micro-onduleurs, monitoring et revente surplus')">
+          <div class="inspire-card-icon">☀️</div>
+          <div class="inspire-card-name">Panneaux solaires 1kWc</div>
+          <div class="inspire-card-desc">Micro-onduleurs + monitoring + revente</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Fabriquer un boîtier de rechargement solaire portable avec panneau 200W, batterie LiFePO4 100Ah et onduleur 1000W')">
+          <div class="inspire-card-icon">🔋</div>
+          <div class="inspire-card-name">Générateur solaire portable</div>
+          <div class="inspire-card-desc">200W, LiFePO4 100Ah, onduleur 1000W</div>
+        </div>
+        <div class="inspire-card" onclick="loadInspiration('Construire une serre automatisée avec ventilation thermostatique, arrosage programmé et surveillance via caméra')">
+          <div class="inspire-card-icon">🌱</div>
+          <div class="inspire-card-name">Serre automatisée</div>
+          <div class="inspire-card-desc">Ventilation thermo + arrosage + caméra</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- SHARE MODAL -->
@@ -2913,6 +3082,20 @@ function compressImage(file, maxW, maxH, quality) {
 // APP TABS
 // ═══════════════════════════════════════════════════════════════════
 var currentTab = 'new';
+
+function loadInspiration(text) {
+  // Remplir la description et basculer sur l'onglet Créer
+  var descEl = document.getElementById('description');
+  if (descEl) descEl.value = text;
+  switchTab('new');
+  // Scroll vers le wizard
+  setTimeout(function() {
+    var wz = document.getElementById('wizardWrap');
+    if (wz) wz.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Focus description
+    if (descEl) descEl.focus();
+  }, 150);
+}
 
 function switchTab(tab) {
   currentTab = tab;
