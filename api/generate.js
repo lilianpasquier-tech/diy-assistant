@@ -270,20 +270,20 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises mar
     let usedModel = null;
 
     for (const model of MODELS) {
-      const res = await callGroq(model);
-      if (res.ok) {
-        response = res;
+      const groqRes = await callGroq(model);
+      if (groqRes.ok) {
+        response = groqRes;
         usedModel = model;
         break;
       }
-      const errBody = await res.text();
+      const errBody = await groqRes.text();
       // Only retry on rate-limit (429) errors
-      if (res.status === 429) {
+      if (groqRes.status === 429) {
         console.warn(`[generate] Rate limit on ${model}, trying next model…`);
         continue;
       }
       // Any other error: return immediately
-      return res.status(res.status).json({ error: 'Erreur API Groq (' + model + ') : ' + errBody });
+      return res.status(groqRes.status).json({ error: 'Erreur API Groq (' + model + ') : ' + errBody });
     }
 
     if (!response) {
