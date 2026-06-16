@@ -242,22 +242,59 @@ INSTRUCTIONS CRITIQUES selon la configuration maker :
 - Les pièces de assembly_diagram doivent correspondre exactement à la liste matériaux
 Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises markdown.`;
 
-  try {
+  // Fallback chain: 70b (best quality, 100k TPD) → 70b alt → 8b instant (500k TPD) → gemma2 (500k TPD)
+  const MODELS = [
+    'llama-3.3-70b-versatile',
+    'llama3-70b-8192',
+    'llama-3.1-8b-instant',
+    'gemma2-9b-it',
+  ];
+
+  const callGroq = async (model) => {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.55,
-        max_tokens: 8000,
+        max_tokens: 5500,
         response_format: { type: 'json_object' },
       }),
     });
-    if (!response.ok) { const err = await response.text(); return res.status(response.status).json({ error: 'Erreur API Groq : ' + err }); }
+    return response;
+  };
+
+  try {
+    let response = null;
+    let usedModel = null;
+
+    for (const model of MODELS) {
+      const res = await callGroq(model);
+      if (res.ok) {
+        response = res;
+        usedModel = model;
+        break;
+      }
+      const errBody = await res.text();
+      // Only retry on rate-limit (429) errors
+      if (res.status === 429) {
+        console.warn(`[generate] Rate limit on ${model}, trying next model…`);
+        continue;
+      }
+      // Any other error: return immediately
+      return res.status(res.status).json({ error: 'Erreur API Groq (' + model + ') : ' + errBody });
+    }
+
+    if (!response) {
+      return res.status(429).json({
+        error: 'Limite journalière Groq atteinte sur tous les modèles. Réessayez demain ou upgradez sur console.groq.com/settings/billing'
+      });
+    }
+
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content;
-    if (!content) return res.status(500).json({ error: 'Réponse vide de Groq' });
+    if (!content) return res.status(500).json({ error: 'Réponse vide de Groq (modèle: ' + usedModel + ')' });
     const cleaned = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     const parsed = JSON.parse(cleaned);
     return res.status(200).json(parsed);

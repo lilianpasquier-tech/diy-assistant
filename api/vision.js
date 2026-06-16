@@ -55,7 +55,7 @@ Analyse cette photo de chantier et donne tes observations et conseils.`;
     // Fallback: text-only analysis if vision model unavailable
     try {
       const textCompletion = await groq.chat.completions.create({
-        model: 'llama-3.3-70b-versatile',
+        model: 'llama-3.1-8b-instant',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `Projet : ${projectTitle || 'DIY'}. Note du chantier : ${note || 'Photo ajoutée'}. Donne un conseil général sur l'avancement de ce type de projet.` }
