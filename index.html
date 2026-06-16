@@ -970,7 +970,181 @@
       padding:10px 14px; background:var(--surface2); border-left:3px solid var(--accent);
       border-radius:0 8px 8px 0; margin-bottom:16px; }
 
-</style>
+
+    /* ══════════════════════════════════════════════════════
+       WIZARD V2 — 5 ÉTAPES LOGIQUES
+    ══════════════════════════════════════════════════════ */
+    .wizard-wrap { background:var(--surface); border:1px solid var(--border);
+      border-radius:20px; overflow:hidden; margin-bottom:24px; }
+
+    /* Stepper top bar */
+    .wz-stepper { display:flex; align-items:center; padding:20px 28px 0;
+      border-bottom:1px solid var(--border); margin-bottom:0; background:var(--surface2); }
+    .wz-step-item { display:flex; flex-direction:column; align-items:center;
+      flex:1; position:relative; cursor:pointer; padding-bottom:16px; }
+    .wz-step-item::after { content:''; position:absolute; top:16px; left:50%;
+      width:100%; height:2px; background:var(--border); z-index:0; }
+    .wz-step-item:last-child::after { display:none; }
+    .wz-step-circle { width:32px; height:32px; border-radius:50%; background:var(--surface);
+      border:2px solid var(--border); display:flex; align-items:center; justify-content:center;
+      font-size:13px; font-weight:700; color:var(--text2); position:relative; z-index:1;
+      transition:all 0.25s; flex-shrink:0; }
+    .wz-step-label { font-size:10px; font-weight:600; color:var(--text2); margin-top:6px;
+      text-transform:uppercase; letter-spacing:0.5px; text-align:center; white-space:nowrap; }
+    .wz-step-item.active .wz-step-circle { background:var(--accent); border-color:var(--accent);
+      color:white; box-shadow:0 0 0 4px rgba(108,99,255,0.2); }
+    .wz-step-item.active .wz-step-label { color:var(--accent); font-weight:700; }
+    .wz-step-item.done .wz-step-circle { background:var(--success,#10b981);
+      border-color:var(--success,#10b981); color:white; }
+    .wz-step-item.done::after { background:var(--success,#10b981); }
+    .wz-step-item.done .wz-step-label { color:var(--success,#10b981); }
+
+    /* Step panels */
+    .wz-panel { display:none; padding:28px 32px 24px; animation:fadeInUp 0.25s ease; }
+    .wz-panel.active { display:block; }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+    .wz-title { font-size:18px; font-weight:700; margin:0 0 4px; }
+    .wz-subtitle { font-size:13px; color:var(--text2); margin:0 0 22px; }
+
+    /* Step 1: Description */
+    .wz-textarea { width:100%; min-height:110px; padding:14px 16px; border:1.5px solid var(--border);
+      border-radius:12px; font-size:14px; font-family:inherit; background:var(--surface2);
+      color:var(--text); resize:vertical; transition:border-color 0.2s; box-sizing:border-box; }
+    .wz-textarea:focus { outline:none; border-color:var(--accent); }
+    .wz-label { font-size:12px; font-weight:700; color:var(--text2); text-transform:uppercase;
+      letter-spacing:0.7px; margin:18px 0 8px; display:block; }
+    .wz-input { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:10px;
+      font-size:13px; font-family:inherit; background:var(--surface2); color:var(--text);
+      box-sizing:border-box; }
+    .wz-input:focus { outline:none; border-color:var(--accent); }
+
+    /* Finality cards (row) */
+    .wz-finality { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:0; }
+    @media(min-width:600px){ .wz-finality { grid-template-columns:repeat(4,1fr); } }
+    .wz-fin-card { border:2px solid var(--border); border-radius:12px; padding:14px 12px;
+      cursor:pointer; text-align:center; transition:all 0.18s; background:var(--surface2); }
+    .wz-fin-card:hover { border-color:var(--accent); }
+    .wz-fin-card.selected { border-color:var(--accent); background:rgba(108,99,255,0.08); }
+    .wz-fin-icon { font-size:24px; margin-bottom:6px; }
+    .wz-fin-label { font-size:12px; font-weight:600; }
+
+    /* Step 2: Starting base cards */
+    .wz-base-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
+    .wz-base-card { border:2px solid var(--border); border-radius:14px; padding:18px 14px;
+      cursor:pointer; text-align:center; transition:all 0.18s; background:var(--surface2); }
+    .wz-base-card:hover { border-color:var(--accent); transform:translateY(-2px);
+      box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+    .wz-base-card.selected { border-color:var(--accent); background:rgba(108,99,255,0.1);
+      box-shadow:0 0 0 1px var(--accent); }
+    .wz-base-icon { font-size:32px; margin-bottom:10px; }
+    .wz-base-title { font-size:13px; font-weight:700; margin-bottom:4px; }
+    .wz-base-desc { font-size:11px; color:var(--text2); line-height:1.4; }
+    .wz-base-sub { margin-top:14px; padding:14px; background:var(--surface2);
+      border:1px solid var(--border); border-radius:10px; display:none; }
+    .wz-base-sub.visible { display:block; }
+    .wz-base-sub-title { font-size:11px; font-weight:700; color:var(--text2);
+      text-transform:uppercase; margin-bottom:8px; }
+
+    /* Step 3: Domains + sub-options */
+    .wz-chips { display:flex; flex-wrap:wrap; gap:8px; }
+    .wz-chip { display:flex; align-items:center; gap:6px; padding:8px 14px;
+      border:2px solid var(--border); border-radius:30px; cursor:pointer; font-size:13px;
+      font-weight:500; transition:all 0.15s; background:var(--surface2); white-space:nowrap; }
+    .wz-chip:hover { border-color:var(--accent); }
+    .wz-chip.sel { border-color:var(--accent); background:rgba(108,99,255,0.1);
+      color:var(--accent); font-weight:700; }
+    .wz-subopts-zone { margin-top:18px; display:flex; flex-direction:column; gap:12px; }
+    .wz-subopt-block { background:var(--surface2); border:1px solid var(--border);
+      border-radius:12px; padding:14px 16px; }
+    .wz-subopt-title { font-size:11px; font-weight:700; color:var(--text2);
+      text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px; }
+    .wz-subopt-row { display:flex; flex-wrap:wrap; gap:6px; }
+    .wz-so { padding:5px 13px; border:1.5px solid var(--border); border-radius:20px;
+      font-size:12px; cursor:pointer; background:transparent; color:var(--text2); }
+    .wz-so:hover { border-color:var(--accent); color:var(--accent); }
+    .wz-so.sel { border-color:var(--accent); background:rgba(108,99,255,0.1);
+      color:var(--accent); font-weight:600; }
+
+    /* Step 4: Profile & constraints */
+    .wz-level-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    @media(min-width:600px){ .wz-level-grid { grid-template-columns:repeat(4,1fr); } }
+    .wz-level-card { border:2px solid var(--border); border-radius:12px; padding:16px 12px;
+      cursor:pointer; text-align:center; transition:all 0.18s; background:var(--surface2); }
+    .wz-level-card:hover { border-color:var(--accent); }
+    .wz-level-card.sel { border-color:var(--accent); background:rgba(108,99,255,0.1); }
+    .wz-level-icon { font-size:28px; margin-bottom:8px; }
+    .wz-level-label { font-size:13px; font-weight:700; margin-bottom:4px; }
+    .wz-level-desc { font-size:11px; color:var(--text2); line-height:1.4; }
+    .wz-slider-row { display:flex; align-items:center; gap:14px; margin-top:10px; }
+    .wz-slider { flex:1; -webkit-appearance:none; height:6px; border-radius:3px;
+      background:var(--border); outline:none; }
+    .wz-slider::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px;
+      border-radius:50%; background:var(--accent); cursor:pointer;
+      box-shadow:0 1px 6px rgba(108,99,255,0.4); }
+    .wz-slider-val { font-size:14px; font-weight:700; color:var(--accent); min-width:70px; text-align:right; }
+    .wz-dur-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .wz-dur-chip { padding:7px 16px; border:1.5px solid var(--border); border-radius:20px;
+      font-size:12px; cursor:pointer; font-weight:500; background:var(--surface2); }
+    .wz-dur-chip:hover { border-color:var(--accent); }
+    .wz-dur-chip.sel { border-color:var(--accent); background:rgba(108,99,255,0.1);
+      color:var(--accent); font-weight:700; }
+    .wz-tools-chips { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+    .wz-tool-chip { padding:6px 13px; border:1.5px solid var(--border); border-radius:20px;
+      font-size:12px; cursor:pointer; background:var(--surface2); color:var(--text2); }
+    .wz-tool-chip:hover { border-color:var(--accent); }
+    .wz-tool-chip.sel { border-color:var(--success,#10b981); background:rgba(16,185,129,0.1);
+      color:var(--success,#10b981); font-weight:600; }
+
+    /* Step 5: Récap */
+    .wz-recap-section { margin-bottom:16px; }
+    .wz-recap-label { font-size:11px; font-weight:700; text-transform:uppercase;
+      letter-spacing:0.7px; color:var(--text2); margin-bottom:8px; }
+    .wz-recap-chips { display:flex; flex-wrap:wrap; gap:6px; }
+    .wz-recap-chip { padding:5px 13px; background:rgba(108,99,255,0.1);
+      border:1px solid rgba(108,99,255,0.3); border-radius:20px; font-size:12px;
+      color:var(--accent); font-weight:600; }
+    .wz-recap-chip.green { background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.3);
+      color:var(--success,#10b981); }
+    .wz-desc-preview { padding:14px 16px; background:var(--surface2); border-radius:10px;
+      font-size:14px; color:var(--text); font-style:italic; border-left:3px solid var(--accent); }
+    .btn-generate-big { width:100%; padding:18px; font-size:16px; font-weight:700;
+      background:linear-gradient(135deg,var(--accent),#9c88ff); color:white; border:none;
+      border-radius:14px; cursor:pointer; display:flex; align-items:center;
+      justify-content:center; gap:10px; margin-top:20px;
+      box-shadow:0 4px 20px rgba(108,99,255,0.4); transition:all 0.2s; }
+    .btn-generate-big:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(108,99,255,0.5); }
+    .btn-generate-big:active { transform:translateY(0); }
+
+    /* Wizard nav bar */
+    .wz-nav { display:flex; align-items:center; gap:10px; margin-top:24px;
+      padding-top:20px; border-top:1px solid var(--border); }
+    .wz-btn-back { padding:10px 20px; border:1.5px solid var(--border); border-radius:10px;
+      background:transparent; color:var(--text2); font-size:13px; cursor:pointer;
+      font-weight:600; transition:all 0.15s; }
+    .wz-btn-back:hover { border-color:var(--accent); color:var(--accent); }
+    .wz-btn-next { padding:11px 24px; background:var(--accent); color:white; border:none;
+      border-radius:10px; font-size:13px; font-weight:700; cursor:pointer;
+      margin-left:auto; transition:all 0.15s; }
+    .wz-btn-next:hover { background:#5a52d5; transform:translateY(-1px); }
+    .wz-skip-btn { font-size:12px; color:var(--text2); cursor:pointer; background:none;
+      border:none; text-decoration:underline; padding:8px; }
+
+    /* ══════════════════════════════════════════════════════
+       RESULTS TABS
+    ══════════════════════════════════════════════════════ */
+    .res-tabs-bar { display:flex; gap:0; overflow-x:auto; border-bottom:2px solid var(--border);
+      margin-bottom:20px; scrollbar-width:none; }
+    .res-tabs-bar::-webkit-scrollbar { display:none; }
+    .res-tab-btn { display:flex; align-items:center; gap:6px; padding:12px 18px;
+      font-size:13px; font-weight:600; color:var(--text2); cursor:pointer; background:none;
+      border:none; border-bottom:2px solid transparent; margin-bottom:-2px;
+      white-space:nowrap; transition:all 0.15s; }
+    .res-tab-btn:hover { color:var(--text); }
+    .res-tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+    .res-tab-panel { display:none; }
+    .res-tab-panel.active { display:block; }
+
+    </style>
 </head>
 <body>
 
@@ -1037,140 +1211,269 @@
     </div>
 
     <!-- PROJECT CONFIGURATION WIZARD -->
-    <div class="wizard-section" id="wizardSection">
+    <!-- ═══════════════════════════════════════════════
+         WIZARD V2 — 5 ÉTAPES LOGIQUES
+    ═══════════════════════════════════════════════ -->
+    <div class="wizard-wrap" id="wizardWrap">
 
-      <!-- Summary (shown after wizard completed) -->
-      <div id="wizardSummary" style="display:none;margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-          <span style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;">Configuration du projet</span>
-          <button class="wizard-edit-btn" onclick="resetWizard()">✏️ Modifier</button>
+      <!-- STEPPER -->
+      <div class="wz-stepper" id="wzStepper">
+        <div class="wz-step-item active" id="wzsItem1" onclick="gotoWzStep(1)">
+          <div class="wz-step-circle" id="wzsCircle1">1</div>
+          <div class="wz-step-label">Étude</div>
         </div>
-        <div class="wizard-summary" id="wizardSummaryChips"></div>
-      </div>
-
-      <!-- STEP 1: Point de départ -->
-      <div class="wizard-step active" id="wstep1">
-        <div class="wizard-step-label"><span>1</span> Point de départ
-          <div class="wizard-progress">
-            <div class="wizard-dot active" id="wdot1"></div>
-            <div class="wizard-dot" id="wdot2"></div>
-            <div class="wizard-dot" id="wdot3"></div>
-          </div>
+        <div class="wz-step-item" id="wzsItem2" onclick="gotoWzStep(2)">
+          <div class="wz-step-circle" id="wzsCircle2">2</div>
+          <div class="wz-step-label">Base</div>
         </div>
-        <div class="wizard-cards" id="wStartCards">
-          <div class="wizard-card" onclick="selectStart(this,'scratch')" data-val="scratch">
-            <div class="wizard-card-icon">🏗️</div>
-            <div class="wizard-card-title">Partir de zéro</div>
-            <div class="wizard-card-desc">Matériaux bruts, pièces neuves — construction complète</div>
-          </div>
-          <div class="wizard-card" onclick="selectStart(this,'existing')" data-val="existing">
-            <div class="wizard-card-icon">🔄</div>
-            <div class="wizard-card-title">Base existante</div>
-            <div class="wizard-card-desc">Modification, amélioration ou réparation d'un existant</div>
-          </div>
-          <div class="wizard-card" onclick="selectStart(this,'kit')" data-val="kit">
-            <div class="wizard-card-icon">📦</div>
-            <div class="wizard-card-title">Kit / Pièces déjà achetées</div>
-            <div class="wizard-card-desc">J'ai les composants, j'ai besoin du plan d'assemblage</div>
-          </div>
-          <div class="wizard-card" onclick="selectStart(this,'design_only')" data-val="design_only">
-            <div class="wizard-card-icon">✏️</div>
-            <div class="wizard-card-title">Conception uniquement</div>
-            <div class="wizard-card-desc">Je veux les plans et la liste avant d'acheter quoi que ce soit</div>
-          </div>
+        <div class="wz-step-item" id="wzsItem3" onclick="gotoWzStep(3)">
+          <div class="wz-step-circle" id="wzsCircle3">3</div>
+          <div class="wz-step-label">Domaines</div>
         </div>
-        <div class="wizard-nav">
-          <button class="wizard-btn-skip" onclick="skipWizard()">Passer la configuration →</button>
+        <div class="wz-step-item" id="wzsItem4" onclick="gotoWzStep(4)">
+          <div class="wz-step-circle" id="wzsCircle4">4</div>
+          <div class="wz-step-label">Profil</div>
+        </div>
+        <div class="wz-step-item" id="wzsItem5" onclick="gotoWzStep(5)">
+          <div class="wz-step-circle" id="wzsCircle5">5</div>
+          <div class="wz-step-label">Lancer</div>
         </div>
       </div>
 
-      <!-- STEP 2: Catégories de conception -->
-      <div class="wizard-step" id="wstep2">
-        <div class="wizard-step-label"><span>2</span> Domaines de conception
-          <span style="font-size:11px;color:var(--text2);font-weight:400;font-style:italic;margin-left:4px;">— Plusieurs choix possibles</span>
-          <div class="wizard-progress">
-            <div class="wizard-dot done" id="wdot1b"></div>
-            <div class="wizard-dot active" id="wdot2b"></div>
-            <div class="wizard-dot" id="wdot3b"></div>
+      <!-- ── ÉTAPE 1 : ÉTUDE PRÉLIMINAIRE ── -->
+      <div class="wz-panel active" id="wzPanel1">
+        <div class="wz-title">📋 Étude préliminaire</div>
+        <div class="wz-subtitle">Décrivez votre projet — plus vous êtes précis, meilleur sera le plan de l'IA.</div>
+
+        <textarea class="wz-textarea" id="description"
+          placeholder="Ex : Je veux construire un drone FPV racing avec des matériaux bruts — châssis carbone découpé, moteurs brushless, ESC 30A, contrôleur de vol Betaflight...&#10;Ex : Modifier un vélo électrique existant pour augmenter l'autonomie...&#10;Ex : Concevoir une serre automatisée avec Arduino, capteurs d'humidité et irrigation programmée..."></textarea>
+
+        <span class="wz-label">Finalité du projet</span>
+        <div class="wz-finality" id="wzFinalityCards">
+          <div class="wz-fin-card" onclick="selectFinality(this,'prototype')" data-val="prototype">
+            <div class="wz-fin-icon">🧪</div>
+            <div class="wz-fin-label">Prototype rapide</div>
+          </div>
+          <div class="wz-fin-card" onclick="selectFinality(this,'learning')" data-val="learning">
+            <div class="wz-fin-icon">🔬</div>
+            <div class="wz-fin-label">Test & Apprentissage</div>
+          </div>
+          <div class="wz-fin-card sel" onclick="selectFinality(this,'functional')" data-val="functional">
+            <div class="wz-fin-icon">✅</div>
+            <div class="wz-fin-label">Produit fonctionnel</div>
+          </div>
+          <div class="wz-fin-card" onclick="selectFinality(this,'series')" data-val="series">
+            <div class="wz-fin-icon">🚀</div>
+            <div class="wz-fin-label">Série / Réplication</div>
           </div>
         </div>
-        <div class="wizard-chips" id="wCategoryChips">
-          <div class="wizard-chip" onclick="toggleCategory(this,'meca_metal')" data-val="meca_metal"><span class="wizard-chip-icon">🔩</span>Méca. Métal (acier/alu)</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'meca_bois')" data-val="meca_bois"><span class="wizard-chip-icon">🪵</span>Menuiserie / Bois brut</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'meca_plastique')" data-val="meca_plastique"><span class="wizard-chip-icon">🧊</span>Plastique / Composite</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'impression_3d')" data-val="impression_3d"><span class="wizard-chip-icon">🖨️</span>Impression 3D</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'electronique')" data-val="electronique"><span class="wizard-chip-icon">⚡</span>Électronique</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'automatisme')" data-val="automatisme"><span class="wizard-chip-icon">🤖</span>Automatisme / IoT</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'electrique')" data-val="electrique"><span class="wizard-chip-icon">🔌</span>Électricité (install.)</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'motorisation')" data-val="motorisation"><span class="wizard-chip-icon">⚙️</span>Motorisation</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'plomberie')" data-val="plomberie"><span class="wizard-chip-icon">💧</span>Plomberie / Hydraulique</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'maconnerie')" data-val="maconnerie"><span class="wizard-chip-icon">🧱</span>Maçonnerie / Béton</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'finition')" data-val="finition"><span class="wizard-chip-icon">🎨</span>Finitions / Revêtement</div>
-          <div class="wizard-chip" onclick="toggleCategory(this,'soudure')" data-val="soudure"><span class="wizard-chip-icon">🔥</span>Soudure / Brasure</div>
-        </div>
-        <div class="wizard-nav">
-          <button class="wizard-btn-back" onclick="goWizardStep(1)">← Retour</button>
-          <button class="wizard-btn-next" onclick="goWizardStep(3)">Suivant →</button>
+
+        <span class="wz-label" style="margin-top:16px;">Référence / inspiration (optionnel)</span>
+        <input class="wz-input" id="wzReference" type="text"
+          placeholder="Ex : DJI FPV, contrôleur CNC open-source, imprimante Voron...">
+
+        <div class="wz-nav">
+          <button class="wz-skip-btn" onclick="skipWizardV2()">Passer la configuration</button>
+          <button class="wz-btn-next" onclick="gotoWzStep(2)">Suivant — Base de départ →</button>
         </div>
       </div>
 
-      <!-- STEP 3: Sous-options contextuelles -->
-      <div class="wizard-step" id="wstep3">
-        <div class="wizard-step-label"><span>3</span> Précisions techniques
-          <div class="wizard-progress">
-            <div class="wizard-dot done"></div>
-            <div class="wizard-dot done"></div>
-            <div class="wizard-dot active"></div>
+      <!-- ── ÉTAPE 2 : BASE DE DÉPART ── -->
+      <div class="wz-panel" id="wzPanel2">
+        <div class="wz-title">🏗️ Base de départ</div>
+        <div class="wz-subtitle">Quel est votre point de départ ? Cela détermine le type de plan généré.</div>
+
+        <div class="wz-base-grid" id="wzBaseGrid">
+          <div class="wz-base-card" onclick="selectBaseV2(this,'existing_object')">
+            <div class="wz-base-icon">🔄</div>
+            <div class="wz-base-title">Objet existant</div>
+            <div class="wz-base-desc">Modifier, améliorer ou réparer un objet existant (drone, véhicule, appareil…)</div>
+          </div>
+          <div class="wz-base-card" onclick="selectBaseV2(this,'raw_meca')">
+            <div class="wz-base-icon">🏗️</div>
+            <div class="wz-base-title">Matériaux bruts méca.</div>
+            <div class="wz-base-desc">Acier, aluminium, bois, profilés — construction mécanique depuis zéro</div>
+          </div>
+          <div class="wz-base-card" onclick="selectBaseV2(this,'raw_elec')">
+            <div class="wz-base-icon">⚡</div>
+            <div class="wz-base-title">Composants électro. bruts</div>
+            <div class="wz-base-desc">Microcontrôleurs, capteurs, modules, PCB — assemblage électronique</div>
+          </div>
+          <div class="wz-base-card" onclick="selectBaseV2(this,'kit')">
+            <div class="wz-base-icon">📦</div>
+            <div class="wz-base-title">Kit déjà acheté</div>
+            <div class="wz-base-desc">J'ai les pièces / le kit, besoin du plan d'assemblage et de câblage</div>
+          </div>
+          <div class="wz-base-card" onclick="selectBaseV2(this,'hybrid')">
+            <div class="wz-base-icon">🔀</div>
+            <div class="wz-base-title">Projet hybride</div>
+            <div class="wz-base-desc">Combinaison mécanique + électronique + code (robot, CNC, véhicule autonome…)</div>
+          </div>
+          <div class="wz-base-card" onclick="selectBaseV2(this,'design_only')">
+            <div class="wz-base-icon">✏️</div>
+            <div class="wz-base-title">Conception seule</div>
+            <div class="wz-base-desc">Générer les plans, la nomenclature et le budget avant tout achat</div>
           </div>
         </div>
-        <div id="wSubopts"></div>
-        <div class="wizard-nav">
-          <button class="wizard-btn-back" onclick="goWizardStep(2)">← Retour</button>
-          <button class="wizard-btn-next" onclick="finishWizard()">✅ Confirmer la configuration</button>
+
+        <!-- Sub-options for "objet existant" -->
+        <div class="wz-base-sub" id="wzBaseSub_existing_object">
+          <div class="wz-base-sub-title">Type d'objet à modifier</div>
+          <div class="wz-subopt-row" id="wzBaseSubRow_existing">
+            <button class="wz-so" onclick="toggleBaseSub(this,'drone')">🚁 Drone</button>
+            <button class="wz-so" onclick="toggleBaseSub(this,'vehicle_rc')">🚗 Véhicule RC</button>
+            <button class="wz-so" onclick="toggleBaseSub(this,'machine')">🏭 Machine-outil</button>
+            <button class="wz-so" onclick="toggleBaseSub(this,'appliance')">🔌 Appareil électrique</button>
+            <button class="wz-so" onclick="toggleBaseSub(this,'bicycle')">🚲 Vélo / Trottinette</button>
+            <button class="wz-so" onclick="toggleBaseSub(this,'other_obj')">📦 Autre objet</button>
+          </div>
+        </div>
+
+        <div class="wz-nav">
+          <button class="wz-btn-back" onclick="gotoWzStep(1)">← Retour</button>
+          <button class="wz-btn-next" onclick="gotoWzStep(3)">Suivant — Domaines →</button>
+        </div>
+      </div>
+
+      <!-- ── ÉTAPE 3 : DOMAINES TECHNIQUES ── -->
+      <div class="wz-panel" id="wzPanel3">
+        <div class="wz-title">⚙️ Domaines techniques</div>
+        <div class="wz-subtitle">Sélectionnez tous les domaines impliqués dans votre projet (multi-choix).</div>
+
+        <div class="wz-chips" id="wzDomainChips">
+          <div class="wz-chip" onclick="toggleDomainV2(this,'meca_metal')" data-val="meca_metal">🔩 Méca. Métal</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'meca_bois')" data-val="meca_bois">🪵 Menuiserie / Bois</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'meca_plastique')" data-val="meca_plastique">🧊 Plastique</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'impression_3d')" data-val="impression_3d">🖨️ Impression 3D</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'electronique')" data-val="electronique">⚡ Électronique</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'automatisme')" data-val="automatisme">🤖 Arduino / ESP / IoT</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'code')" data-val="code">💻 Code / Firmware</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'electrique')" data-val="electrique">🔌 Électricité</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'motorisation')" data-val="motorisation">⚙️ Motorisation</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'plomberie')" data-val="plomberie">💧 Hydraulique</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'maconnerie')" data-val="maconnerie">🧱 Maçonnerie</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'soudure')" data-val="soudure">🔥 Soudure</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'optique')" data-val="optique">🔭 Optique / Laser</div>
+          <div class="wz-chip" onclick="toggleDomainV2(this,'finition')" data-val="finition">🎨 Finitions</div>
+        </div>
+
+        <!-- Dynamic sub-options zone -->
+        <div class="wz-subopts-zone" id="wzSuboptsZone"></div>
+
+        <div class="wz-nav">
+          <button class="wz-btn-back" onclick="gotoWzStep(2)">← Retour</button>
+          <button class="wz-btn-next" onclick="gotoWzStep(4)">Suivant — Profil →</button>
+        </div>
+      </div>
+
+      <!-- ── ÉTAPE 4 : PROFIL & CONTRAINTES ── -->
+      <div class="wz-panel" id="wzPanel4">
+        <div class="wz-title">👤 Profil & Contraintes</div>
+        <div class="wz-subtitle">Votre niveau, votre budget et vos contraintes permettent à l'IA d'adapter le plan.</div>
+
+        <span class="wz-label">Niveau du maker</span>
+        <div class="wz-level-grid" id="wzLevelCards">
+          <div class="wz-level-card" onclick="selectLevelV2(this,'Débutant')">
+            <div class="wz-level-icon">🟢</div>
+            <div class="wz-level-label">Débutant</div>
+            <div class="wz-level-desc">Premiers projets, outils de base</div>
+          </div>
+          <div class="wz-level-card sel" onclick="selectLevelV2(this,'Intermédiaire')">
+            <div class="wz-level-icon">🟡</div>
+            <div class="wz-level-label">Intermédiaire</div>
+            <div class="wz-level-desc">Quelques projets réussis, outillage correct</div>
+          </div>
+          <div class="wz-level-card" onclick="selectLevelV2(this,'Avancé')">
+            <div class="wz-level-icon">🟠</div>
+            <div class="wz-level-label">Avancé</div>
+            <div class="wz-level-desc">Atelier équipé, maîtrise des techniques</div>
+          </div>
+          <div class="wz-level-card" onclick="selectLevelV2(this,'Expert')">
+            <div class="wz-level-icon">🔴</div>
+            <div class="wz-level-label">Expert / Pro</div>
+            <div class="wz-level-desc">Professionnel ou passionné avancé</div>
+          </div>
+        </div>
+
+        <span class="wz-label">Budget maximum</span>
+        <div class="wz-slider-row">
+          <input type="range" class="wz-slider" id="wzBudgetSlider" min="0" max="5000" step="50" value="500"
+            oninput="document.getElementById('wzBudgetVal').textContent=this.value+'€'; document.getElementById('budget').value=this.value;">
+          <div class="wz-slider-val" id="wzBudgetVal">500€</div>
+        </div>
+        <input type="number" class="wz-input" id="budget" value="500" min="0"
+          style="margin-top:8px;width:140px;"
+          oninput="document.getElementById('wzBudgetSlider').value=this.value||0; document.getElementById('wzBudgetVal').textContent=(this.value||0)+'€';"
+          placeholder="Budget €">
+
+        <span class="wz-label">Durée souhaitée</span>
+        <div class="wz-dur-chips" id="wzDurChips">
+          <div class="wz-dur-chip" onclick="selectDur(this,'1 weekend')">1 weekend</div>
+          <div class="wz-dur-chip" onclick="selectDur(this,'1 semaine')">1 semaine</div>
+          <div class="wz-dur-chip sel" onclick="selectDur(this,'1 mois')">1 mois</div>
+          <div class="wz-dur-chip" onclick="selectDur(this,'3 mois')">3 mois</div>
+          <div class="wz-dur-chip" onclick="selectDur(this,'6 mois')">6 mois</div>
+          <div class="wz-dur-chip" onclick="selectDur(this,'Sans limite')">Sans limite</div>
+        </div>
+
+        <span class="wz-label">Outillage déjà disponible</span>
+        <div class="wz-tools-chips" id="wzToolChips">
+          <div class="wz-tool-chip sel" onclick="toggleTool(this,'perceuse')">🔩 Perceuse</div>
+          <div class="wz-tool-chip" onclick="toggleTool(this,'fraiseuse')">🏭 Fraiseuse</div>
+          <div class="wz-tool-chip sel" onclick="toggleTool(this,'imprimante_3d')">🖨️ Imprimante 3D</div>
+          <div class="wz-tool-chip" onclick="toggleTool(this,'laser_cutter')">✂️ Découpe laser</div>
+          <div class="wz-tool-chip sel" onclick="toggleTool(this,'soudure_elec')">⚡ Fer à souder</div>
+          <div class="wz-tool-chip" onclick="toggleTool(this,'soudure_mig')">🔥 Poste MIG</div>
+          <div class="wz-tool-chip" onclick="toggleTool(this,'soudure_tig')">🔥 Poste TIG</div>
+          <div class="wz-tool-chip sel" onclick="toggleTool(this,'multimetre')">📏 Multimètre</div>
+          <div class="wz-tool-chip" onclick="toggleTool(this,'oscilloscope')">📡 Oscilloscope</div>
+          <div class="wz-tool-chip sel" onclick="toggleTool(this,'tour')">🔧 Tour</div>
+          <div class="wz-tool-chip" onclick="toggleTool(this,'cnc')">🤖 CNC</div>
+          <div class="wz-tool-chip sel" onclick="toggleTool(this,'scie_circulaire')">⚙️ Scie circulaire</div>
+          <div class="wz-tool-chip" onclick="toggleTool(this,'raboteuse')">🪵 Raboteuse</div>
+        </div>
+
+        <div class="wz-nav">
+          <button class="wz-btn-back" onclick="gotoWzStep(3)">← Retour</button>
+          <button class="wz-btn-next" onclick="gotoWzStep(5)">Suivant — Récap →</button>
+        </div>
+      </div>
+
+      <!-- ── ÉTAPE 5 : RÉCAPITULATIF & GÉNÉRATION ── -->
+      <div class="wz-panel" id="wzPanel5">
+        <div class="wz-title">🚀 Récapitulatif & Génération</div>
+        <div class="wz-subtitle">Vérifiez votre configuration avant de lancer la génération du plan complet.</div>
+
+        <div class="wz-recap-section">
+          <div class="wz-recap-label">Projet</div>
+          <div class="wz-desc-preview" id="wzRecapDesc">—</div>
+        </div>
+        <div class="wz-recap-section">
+          <div class="wz-recap-label">Configuration</div>
+          <div class="wz-recap-chips" id="wzRecapChips"></div>
+        </div>
+        <div class="wz-recap-section">
+          <div class="wz-recap-label">Domaines techniques</div>
+          <div class="wz-recap-chips" id="wzRecapDomains"></div>
+        </div>
+
+        <div class="error-box" id="errorBox" style="margin-top:14px;">⚠️ <span id="errorMsg"></span></div>
+
+        <button class="btn-generate-big" id="generateBtn" onclick="generatePlan()">
+          <span>⚡</span> Générer le plan complet
+        </button>
+
+        <div class="wz-nav" style="border-top:none;padding-top:0;margin-top:12px;">
+          <button class="wz-btn-back" onclick="gotoWzStep(4)">← Modifier le profil</button>
         </div>
       </div>
 
     </div>
-    <!-- END WIZARD -->
+    <!-- END WIZARD V2 -->
 
-<div class="form-grid">
-      <div class="form-group full">
-        <label>Description du projet *</label>
-        <textarea id="description" placeholder="Décrivez votre projet en détail... Plus vous êtes précis, meilleur sera le plan. Ex: Je veux construire une terrasse en bois en ipé de 20m² avec une rambarde, sur une dalle béton existante."></textarea>
-      </div>
-      <div class="form-group">
-        <label>Type de projet</label>
-        <select id="projectType">
-          <option value="">Tous types</option>
-          <option value="Construction / Rénovation">🏗️ Construction / Rénovation</option>
-          <option value="Menuiserie / Bois">🪵 Menuiserie / Bois</option>
-          <option value="Électronique / Arduino">⚡ Électronique / Arduino</option>
-          <option value="Plomberie">🔧 Plomberie</option>
-          <option value="Électricité">💡 Électricité</option>
-          <option value="Jardin / Extérieur">🌿 Jardin / Extérieur</option>
-          <option value="Peinture / Décoration">🎨 Peinture / Décoration</option>
-          <option value="Mécanique">⚙️ Mécanique</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Niveau du bricoleur</label>
-        <select id="level">
-          <option value="Débutant">🟢 Débutant</option>
-          <option value="Intermédiaire" selected>🟡 Intermédiaire</option>
-          <option value="Avancé">🔴 Avancé / Expert</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Budget maximum (€)</label>
-        <input type="number" id="budget" placeholder="Ex: 500" min="0" />
-      </div>
-    </div>
-
-    <div class="error-box" id="errorBox">⚠️ <span id="errorMsg"></span></div>
-
-    <button class="btn-generate" id="generateBtn" onclick="generatePlan()">
-      <span>⚡</span> Générer le plan complet
-    </button>
+    <!-- Hidden legacy fields (read by generatePlan) -->
+    <select id="level" style="display:none;"><option value="Intermédiaire" selected>Intermédiaire</option></select>
+    <select id="projectType" style="display:none;"><option value="" selected></option></select>
 
     <div class="loader" id="loader">
       <div class="spinner"></div>
@@ -1186,6 +1489,17 @@
 
   <!-- RESULTS -->
   <div id="results">
+
+    <!-- RESULTS TAB BAR -->
+    <div class="res-tabs-bar" id="resTabsBar" style="display:none;">
+      <button class="res-tab-btn active" onclick="switchResTab('synthese')" id="rtab-synthese">📋 Synthèse</button>
+      <button class="res-tab-btn" onclick="switchResTab('exploded')" id="rtab-exploded">🔩 Vue éclatée</button>
+      <button class="res-tab-btn" onclick="switchResTab('programme')" id="rtab-programme">📐 Programme</button>
+      <button class="res-tab-btn" onclick="switchResTab('materiaux')" id="rtab-materiaux">🛒 Matériaux</button>
+      <button class="res-tab-btn" onclick="switchResTab('outils')" id="rtab-outils">🔧 Outils</button>
+      <button class="res-tab-btn" onclick="switchResTab('etapes')" id="rtab-etapes">📝 Étapes</button>
+      <button class="res-tab-btn" onclick="switchResTab('journal')" id="rtab-journal">📖 Journal</button>
+    </div>
     <div class="results-header">
       <h2 id="resultsTitle">Plan du projet</h2>
       <div class="results-actions">
@@ -1195,11 +1509,11 @@
       </div>
     </div>
 
-    <div class="stats-bar" id="statsBar"></div>
+    <div class="stats-bar" id="statsBar" data-restab="synthese"></div>
 
     <!-- OVERVIEW -->
     <!-- HERO IMAGE -->
-    <div id="projectHeroCard" style="display:none;position:relative;border-radius:20px;overflow:hidden;margin-bottom:24px;height:280px;">
+    <div id="projectHeroCard" data-restab="synthese" style="display:none;position:relative;border-radius:20px;overflow:hidden;margin-bottom:24px;height:280px;">
       <img id="projectHeroImg" src="" alt="Projet" style="width:100%;height:100%;object-fit:cover;">
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,17,23,0.9) 0%,rgba(13,17,23,0.2) 60%,transparent 100%)"></div>
       <div style="position:absolute;bottom:24px;left:28px;right:28px;">
@@ -1208,33 +1522,33 @@
       </div>
     </div>
 
-    <div class="section-card" id="overviewCard">
+    <div class="section-card" id="overviewCard" data-restab="synthese">
       <h3><span class="icon">📌</span> Vue d'ensemble</h3>
       <p id="overviewText" style="font-size:15px;line-height:1.8;color:var(--text2);"></p>
       <p id="difficultyText" style="font-size:14px;margin-top:12px;"></p>
     </div>
 
     <!-- PROJECT PHASES (cycle de vie) -->
-    <div class="section-card" id="phasesCard" style="display:none">
+    <div class="section-card" id="phasesCard" data-restab="programme" style="display:none">
       <h3><span class="icon">🗺️</span> Programme complet — De l'étude à la réalisation</h3>
       <div id="phasesContainer"></div>
     </div>
 
     <!-- 3D PRINT INFO -->
-    <div class="section-card" id="print3dCard" style="display:none">
+    <div class="section-card" id="print3dCard" data-restab="exploded" style="display:none">
       <h3><span class="icon">🖨️</span> Impression 3D</h3>
       <div id="print3dContainer"></div>
     </div>
 
 
     <!-- EXPLODED VIEW / ASSEMBLY DIAGRAM -->
-    <div class="section-card" id="explodedCard" style="display:none">
+    <div class="section-card" id="explodedCard" data-restab="exploded" style="display:none">
       <h3><span class="icon">🔩</span> Vue éclatée — Nomenclature d'assemblage</h3>
       <div id="explodedContainer"></div>
     </div>
 
     <!-- PRELIMINARY QUESTIONS -->
-    <div class="section-card" id="questionsCard" style="display:none;">
+    <div class="section-card" id="questionsCard" data-restab="synthese" style="display:none;">
       <h3><span class="icon">❓</span> Questions préliminaires &amp; Variantes</h3>
       <div class="questions-header-row">
         <p style="font-size:13px;color:var(--text2);">Ces choix définissent le cadre du projet. Sélectionnez chaque option pour voir son impact.</p>
@@ -1246,7 +1560,7 @@
     </div>
 
     <!-- TECHNICAL SCHEMA -->
-    <div class="schema-section" id="schemaSection" style="display:none">
+    <div class="schema-section" id="schemaSection" data-restab="etapes" style="display:none">
       <h3><span>📐</span> Schéma technique &amp; Plan visuel</h3>
       <div class="schema-tabs">
         <button class="schema-tab active" onclick="showSchemaView('plan')">📐 Plan technique</button>
@@ -1263,13 +1577,13 @@
     </div>
 
     <!-- CONSTRAINTS -->
-    <div class="section-card" id="constraintsCard" style="display:none;">
+    <div class="section-card" id="constraintsCard" data-restab="synthese" style="display:none;">
       <h3><span class="icon">⚙️</span> Contraintes techniques</h3>
       <div class="constraints-list" id="constraintsList"></div>
     </div>
 
     <!-- MATERIALS -->
-    <div class="section-card" id="materialsCard">
+    <div class="section-card" id="materialsCard" data-restab="materiaux">
       <h3><span class="icon">🛒</span> Liste de matériaux</h3>
       <div class="mat-table-wrap">
         <table class="materials-table" id="materialsTable">
@@ -1289,7 +1603,7 @@
     </div>
 
     <!-- TOOLS -->
-    <div class="section-card" id="toolsCard">
+    <div class="section-card" id="toolsCard" data-restab="outils">
       <h3><span class="icon">🔧</span> Outils nécessaires</h3>
       <div class="tools-section-header">
         <span class="tools-count-badge" id="toolsCountBadge"></span>
@@ -1299,7 +1613,7 @@
     </div>
 
     <!-- STEPS -->
-    <div class="section-card" id="stepsCard">
+    <div class="section-card" id="stepsCard" data-restab="etapes">
       <h3><span class="icon">📝</span> Guide étape par étape</h3>
       <div class="steps-progress-row">
         <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
@@ -1310,7 +1624,7 @@
 
 
     <!-- INTERACTIVE PLAN -->
-    <div class="section-card" id="interactivePlanSection" style="display:none">
+    <div class="section-card" id="interactivePlanSection" data-restab="etapes" style="display:none">
       <h3><span class="icon">🗺️</span> Plan interactif du projet</h3>
       <p class="plan-hint">Cliquez sur une étape pour accéder à son détail · Suivi de progression visuel</p>
       <div id="planSvgContainer" class="plan-svg-container"></div>
@@ -1322,25 +1636,25 @@
     </div>
 
     <!-- SAFETY -->
-    <div class="section-card" id="safetyCard">
+    <div class="section-card" id="safetyCard" data-restab="etapes">
       <h3><span class="icon">⚠️</span> Sécurité</h3>
       <div class="safety-items" id="safetyItems"></div>
     </div>
 
     <!-- ALTERNATIVES -->
-    <div class="section-card" id="altsCard">
+    <div class="section-card" id="altsCard" data-restab="etapes">
       <h3><span class="icon">🔀</span> Variantes & alternatives</h3>
       <div class="alts-grid" id="altsGrid"></div>
     </div>
 
     <!-- OPTIMIZATIONS -->
-    <div class="section-card" id="optsCard" style="display:none;">
+    <div class="section-card" id="optsCard" data-restab="etapes" style="display:none;">
       <h3><span class="icon">✨</span> Optimisations possibles</h3>
       <div class="opt-list" id="optsList"></div>
     </div>
 
     <!-- PRO TIPS -->
-    <div class="section-card" id="tipsCard">
+    <div class="section-card" id="tipsCard" data-restab="etapes">
       <h3><span class="icon">💡</span> Conseils de pro</h3>
       <div class="tips-list" id="tipsList"></div>
     </div>
@@ -1353,7 +1667,7 @@
   </div>
 
   <!-- JOURNAL DE CHANTIER -->
-  <div class="journal-section" id="journalSection" style="display:none">
+  <div class="journal-section" id="journalSection" data-restab="journal" style="display:none">
     <h3>
       <span>📓 Journal de chantier</span>
       <div style="display:flex;gap:8px;">
@@ -1566,6 +1880,7 @@
   async function generatePlan() {
     const description = document.getElementById('description').value.trim();
     const projectType = document.getElementById('projectType').value;
+    document.getElementById('level').value = wzState.level;
     const level = document.getElementById('level').value;
     const budget = document.getElementById('budget').value;
 
@@ -1591,7 +1906,8 @@
       saveToHistory(description, data, currentProjectId);
       // Set currentProject for journal
       var hist = JSON.parse(localStorage.getItem('diy_history') || '[]');
-      currentProject = hist.find(function(p) { return p.id === currentProjectId; }) || {
+      showResTabsBar();
+    currentProject = hist.find(function(p) { return p.id === currentProjectId; }) || {
         id: currentProjectId, title: description, description: description, status: 'inprogress'
       };
       showJournal(currentProjectId);
@@ -3153,590 +3469,319 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+
     // ══════════════════════════════════════════════════════════
-    // PROJECT CONFIGURATION WIZARD
+    // WIZARD V2 — STATE & LOGIC
     // ══════════════════════════════════════════════════════════
-    var wizardConfig = {
-      startingPoint: null,
-      categories: [],
-      subOptions: {}
-    };
-    var wizardCompleted = false;
-
-    var SUBOPT_DEFS = {
-      meca_metal: {
-        title: '🔩 Assemblage métal',
-        opts: [
-          {val:'soudure_mig',label:'Soudure MIG/MAG'},
-          {val:'soudure_tig',label:'Soudure TIG'},
-          {val:'soudure_arc',label:'Soudure à l’arc'},
-          {val:'boulonnerie',label:'Boulons / Visserie'},
-          {val:'rivetage',label:'Rivetage'},
-          {val:'collage_struct',label:'Collage structural'}
-        ]
-      },
-      meca_bois: {
-        title: '🪵 Assemblage bois',
-        opts: [
-          {val:'mortaise_tenon',label:'Mortaise / Tenon'},
-          {val:'lamello',label:'Lamelles / Tourillons'},
-          {val:'visserie_colle',label:'Visserie + Colle'},
-          {val:'cnc_decoupe',label:'Découpe CNC'},
-          {val:'sciage_manuel',label:'Sciage manuel'},
-          {val:'rabotage',label:'Rabotage / Ponçage'}
-        ]
-      },
-      meca_plastique: {
-        title: '🧊 Travail plastique',
-        opts: [
-          {val:'decoupe_laser',label:'Découpe laser'},
-          {val:'thermoformage',label:'Thermoformage'},
-          {val:'collage_solvant',label:'Collage solvant'},
-          {val:'usinage_fraisage',label:'Usinage / Fraisage'}
-        ]
-      },
-      impression_3d: {
-        title: '🖨️ Type d’impression 3D',
-        opts: [
-          {val:'fdm_pla',label:'FDM – PLA'},
-          {val:'fdm_petg',label:'FDM – PETG'},
-          {val:'fdm_abs',label:'FDM – ABS/ASA'},
-          {val:'fdm_tpu',label:'FDM – TPU (flexible)'},
-          {val:'resine',label:'Résine (SLA/MSLA)'},
-          {val:'pas_imprimante',label:'Pas d’imprimante (sous-traité)'}
-        ]
-      },
-      electronique: {
-        title: '⚡ Niveau électronique',
-        opts: [
-          {val:'composants_th',label:'Composants traversants (THT)'},
-          {val:'composants_cms',label:'Composants CMS (SMD)'},
-          {val:'module_arduino',label:'Module Arduino / ESP'},
-          {val:'pcb_custom',label:'PCB sur mesure (EasyEDA/KiCad)'},
-          {val:'raspberry',label:'Raspberry Pi / SBC'},
-          {val:'capteurs_seuls',label:'Capteurs & modules simples'}
-        ]
-      },
-      automatisme: {
-        title: '🤖 Plateforme de contrôle',
-        opts: [
-          {val:'arduino_nano',label:'Arduino Nano/Uno'},
-          {val:'arduino_mega',label:'Arduino Mega'},
-          {val:'esp32',label:'ESP32 (WiFi/BLE)'},
-          {val:'esp8266',label:'ESP8266'},
-          {val:'raspberry_pi',label:'Raspberry Pi'},
-          {val:'stm32',label:'STM32 / bluepill'},
-          {val:'plc',label:'Automate PLC industriel'}
-        ]
-      },
-      motorisation: {
-        title: '⚙️ Type de motorisation',
-        opts: [
-          {val:'moteur_brushless',label:'Brushless (BLDC)'},
-          {val:'moteur_dc',label:'Moteur DC brushed'},
-          {val:'servo',label:'Servomoteur'},
-          {val:'pas_a_pas',label:'Moteur pas à pas (stepper)'},
-          {val:'verin_elec',label:'Vérin électrique'},
-          {val:'verin_pneum',label:'Vérin pneumatique'},
-          {val:'hydraulique',label:'Hydraulique'},
-          {val:'moteur_thermique',label:'Moteur thermique'}
-        ]
-      },
-      electrique: {
-        title: '🔌 Type d’installation',
-        opts: [
-          {val:'monophase_220',label:'Monophasé 220V'},
-          {val:'triphase',label:'Triphasé 380V'},
-          {val:'basse_tension',label:'Basse tension (12/24/48V)'},
-          {val:'tableau_elec',label:'Tableau électrique / Coffret'}
-        ]
-      },
-      plomberie: {
-        title: '💧 Type de réseau',
-        opts: [
-          {val:'eau_froide',label:'Eau froide'},
-          {val:'eau_chaude',label:'Eau chaude sanitaire'},
-          {val:'circuit_ferme',label:'Circuit fermé (hydraulique)'},
-          {val:'pneumatique',label:'Circuit pneumatique'}
-        ]
-      },
-      soudure: {
-        title: '🔥 Procédé de soudure',
-        opts: [
-          {val:'tig',label:'TIG'},
-          {val:'mig_mag',label:'MIG / MAG'},
-          {val:'arc_mma',label:'Arc (MMA)'},
-          {val:'brasure_etain',label:'Brasure à l’étain'},
-          {val:'brasure_argent',label:'Brasure argent'}
-        ]
-      }
+    var wzState = {
+      step: 1,
+      finality: 'functional',
+      baseStart: null,
+      baseSubOpts: [],
+      domains: [],
+      subOptions: {},
+      level: 'Intermédiaire',
+      duration: '1 mois',
+      tools: ['perceuse','imprimante_3d','soudure_elec','multimetre','tour','scie_circulaire']
     };
 
-    var START_LABELS = {
-      scratch: '🏗️ De zéro',
-      existing: '🔄 Base existante',
-      kit: '📦 Kit / Pièces dispo',
-      design_only: '✏️ Conception seule'
+    var WZ_DOMAIN_SUBS = {
+      meca_metal: { title:'🔩 Assemblage métal', opts:[
+        {v:'soudure_mig',l:'MIG/MAG'},{v:'soudure_tig',l:'TIG'},
+        {v:'soudure_arc',l:'Arc MMA'},{v:'boulonnerie',l:'Boulonnerie'},
+        {v:'rivetage',l:'Rivetage'},{v:'collage_struct',l:'Collage structural'}
+      ]},
+      meca_bois: { title:'🪵 Assemblage bois', opts:[
+        {v:'mortaise',l:'Mortaise/Tenon'},{v:'lamello',l:'Lamelles/Tourillons'},
+        {v:'visserie_colle',l:'Visserie+Colle'},{v:'cnc',l:'Découpe CNC'},
+        {v:'sciage',l:'Sciage manuel'},{v:'rabotage',l:'Rabotage'}
+      ]},
+      impression_3d: { title:'🖨️ Technologie 3D', opts:[
+        {v:'fdm_pla',l:'FDM PLA'},{v:'fdm_petg',l:'FDM PETG'},
+        {v:'fdm_abs',l:'FDM ABS/ASA'},{v:'fdm_tpu',l:'FDM TPU (flex)'},
+        {v:'resine',l:'Résine SLA'},{v:'sous_traite',l:'Sous-traité'}
+      ]},
+      electronique: { title:'⚡ Niveau électro.', opts:[
+        {v:'tht',l:'Composants THT'},{v:'cms',l:'CMS/SMD'},
+        {v:'module_arduino',l:'Module Arduino/ESP'},{v:'pcb_custom',l:'PCB sur mesure'},
+        {v:'raspberry',l:'Raspberry Pi'},{v:'capteurs',l:'Capteurs/modules'}
+      ]},
+      automatisme: { title:'🤖 Plateforme contrôle', opts:[
+        {v:'arduino_nano',l:'Arduino Nano/Uno'},{v:'arduino_mega',l:'Arduino Mega'},
+        {v:'esp32',l:'ESP32'},{v:'esp8266',l:'ESP8266'},
+        {v:'raspberry_pi',l:'Raspberry Pi'},{v:'stm32',l:'STM32'},
+        {v:'plc',l:'Automate PLC'}
+      ]},
+      motorisation: { title:'⚙️ Type moteur', opts:[
+        {v:'brushless',l:'Brushless BLDC'},{v:'dc_brush',l:'DC brushed'},
+        {v:'servo',l:'Servomoteur'},{v:'stepper',l:'Pas à pas'},
+        {v:'verin_elec',l:'Vérin élec.'},{v:'verin_pneum',l:'Vérin pneum.'},
+        {v:'moteur_thermique',l:'Thermique'}
+      ]},
+      soudure: { title:'🔥 Procédé soudure', opts:[
+        {v:'tig',l:'TIG'},{v:'mig',l:'MIG/MAG'},{v:'mma',l:'Arc MMA'},
+        {v:'brasure_etain',l:'Étain'},{v:'brasure_argent',l:'Argent'}
+      ]},
+      electrique: { title:'🔌 Installation', opts:[
+        {v:'mono_220',l:'Monophasé 220V'},{v:'triphase',l:'Triphasé 380V'},
+        {v:'basse_tension',l:'BT 12/24/48V'},{v:'tableau',l:'Tableau élec.'}
+      ]},
+      code: { title:'💻 Langage / Plateforme', opts:[
+        {v:'c_cpp',l:'C/C++'},{v:'python',l:'Python'},{v:'micropython',l:'MicroPython'},
+        {v:'arduino_ide',l:'Arduino IDE'},{v:'platformio',l:'PlatformIO'},
+        {v:'ros',l:'ROS'},{v:'javascript',l:'JavaScript/Node'}
+      ]}
     };
 
-    var CAT_LABELS = {
+    var WZ_DOMAIN_LABELS = {
       meca_metal:'🔩 Métal', meca_bois:'🪵 Bois', meca_plastique:'🧊 Plastique',
       impression_3d:'🖨️ Impression 3D', electronique:'⚡ Électronique',
-      automatisme:'🤖 Automatisme', electrique:'🔌 Électricité',
-      motorisation:'⚙️ Motorisation', plomberie:'💧 Plomberie',
-      maconnerie:'🧱 Maçonnerie', finition:'🎨 Finition', soudure:'🔥 Soudure'
+      automatisme:'🤖 Automatisme', code:'💻 Code', electrique:'🔌 Électricité',
+      motorisation:'⚙️ Motorisation', plomberie:'💧 Hydraulique',
+      maconnerie:'🧱 Maçonnerie', soudure:'🔥 Soudure', optique:'🔭 Optique',
+      finition:'🎨 Finition'
     };
 
-    function selectStart(el, val) {
-      document.querySelectorAll('#wStartCards .wizard-card').forEach(function(c){ c.classList.remove('selected'); });
-      el.classList.add('selected');
-      wizardConfig.startingPoint = val;
-      setTimeout(function(){ goWizardStep(2); }, 220);
+    var WZ_BASE_LABELS = {
+      existing_object:'🔄 Objet existant', raw_meca:'🏗️ Matériaux bruts méca.',
+      raw_elec:'⚡ Composants élec.', kit:'📦 Kit acheté',
+      hybrid:'🔀 Projet hybride', design_only:'✏️ Conception seule'
+    };
+
+    var WZ_FIN_LABELS = {
+      prototype:'🧪 Prototype', learning:'🔬 Apprentissage',
+      functional:'✅ Produit fonctionnel', series:'🚀 Série'
+    };
+
+    function gotoWzStep(n) {
+      // Validate step 1: description required
+      if (n > 1 && !document.getElementById('description').value.trim()) {
+        document.getElementById('description').focus();
+        document.getElementById('description').style.borderColor = '#f56565';
+        setTimeout(function(){ document.getElementById('description').style.borderColor = ''; }, 2000);
+        return;
+      }
+      wzState.step = n;
+      // Update panels
+      for (var i = 1; i <= 5; i++) {
+        var panel = document.getElementById('wzPanel' + i);
+        var item  = document.getElementById('wzsItem' + i);
+        var circle = document.getElementById('wzsCircle' + i);
+        if (!panel) continue;
+        panel.classList.toggle('active', i === n);
+        item.classList.remove('active','done');
+        if (i === n) item.classList.add('active');
+        else if (i < n) { item.classList.add('done'); circle.textContent = '✓'; }
+        else circle.textContent = String(i);
+      }
+      // If going to step 5: build recap
+      if (n === 5) buildWzRecap();
+      // Update domain sub-options when entering step 3
+      if (n === 3) rebuildSubopts();
     }
 
-    function toggleCategory(el, val) {
-      el.classList.toggle('selected');
-      var idx = wizardConfig.categories.indexOf(val);
-      if (idx === -1) wizardConfig.categories.push(val);
-      else wizardConfig.categories.splice(idx, 1);
+    function selectFinality(el, val) {
+      document.querySelectorAll('#wzFinalityCards .wz-fin-card').forEach(function(c){ c.classList.remove('sel'); });
+      el.classList.add('sel');
+      wzState.finality = val;
     }
 
-    function goWizardStep(n) {
-      document.querySelectorAll('.wizard-step').forEach(function(s){ s.classList.remove('active'); });
-      var step = document.getElementById('wstep' + n);
-      if (step) step.classList.add('active');
-      if (n === 3) buildSubopts();
+    function selectBaseV2(el, val) {
+      document.querySelectorAll('#wzBaseGrid .wz-base-card').forEach(function(c){ c.classList.remove('sel'); });
+      el.classList.add('sel');
+      wzState.baseStart = val;
+      // Show/hide sub-option blocks
+      document.querySelectorAll('[id^="wzBaseSub_"]').forEach(function(d){ d.classList.remove('visible'); });
+      var subBlock = document.getElementById('wzBaseSub_' + val);
+      if (subBlock) subBlock.classList.add('visible');
+      // Auto-advance after 300ms
+      setTimeout(function(){ gotoWzStep(3); }, 350);
     }
 
-    function buildSubopts() {
-      var container = document.getElementById('wSubopts');
-      container.innerHTML = '';
-      var hasSub = false;
-      wizardConfig.categories.forEach(function(cat) {
-        if (!SUBOPT_DEFS[cat]) return;
-        hasSub = true;
-        var def = SUBOPT_DEFS[cat];
-        var div = document.createElement('div');
-        div.className = 'wizard-subopts';
+    function toggleBaseSub(btn, val) {
+      btn.classList.toggle('sel');
+      var idx = wzState.baseSubOpts.indexOf(val);
+      if (idx === -1) wzState.baseSubOpts.push(val);
+      else wzState.baseSubOpts.splice(idx, 1);
+    }
+
+    function toggleDomainV2(el, val) {
+      el.classList.toggle('sel');
+      var idx = wzState.domains.indexOf(val);
+      if (idx === -1) wzState.domains.push(val);
+      else { wzState.domains.splice(idx, 1); delete wzState.subOptions[val]; }
+      rebuildSubopts();
+    }
+
+    function rebuildSubopts() {
+      var zone = document.getElementById('wzSuboptsZone');
+      zone.innerHTML = '';
+      wzState.domains.forEach(function(dom) {
+        var def = WZ_DOMAIN_SUBS[dom];
+        if (!def) return;
+        var block = document.createElement('div');
+        block.className = 'wz-subopt-block';
         var title = document.createElement('div');
-        title.className = 'wizard-subopts-title';
+        title.className = 'wz-subopt-title';
         title.textContent = def.title;
-        div.appendChild(title);
+        block.appendChild(title);
         var row = document.createElement('div');
-        row.className = 'wizard-subopt-row';
+        row.className = 'wz-subopt-row';
         def.opts.forEach(function(opt) {
           var btn = document.createElement('button');
-          btn.className = 'wizard-subopt';
-          if (wizardConfig.subOptions[cat] && wizardConfig.subOptions[cat].indexOf(opt.val) !== -1) {
-            btn.classList.add('selected');
-          }
-          btn.textContent = opt.label;
+          btn.className = 'wz-so' + (wzState.subOptions[dom] && wzState.subOptions[dom].indexOf(opt.v) !== -1 ? ' sel' : '');
+          btn.textContent = opt.l;
           btn.onclick = function() {
-            btn.classList.toggle('selected');
-            if (!wizardConfig.subOptions[cat]) wizardConfig.subOptions[cat] = [];
-            var i = wizardConfig.subOptions[cat].indexOf(opt.val);
-            if (i === -1) wizardConfig.subOptions[cat].push(opt.val);
-            else wizardConfig.subOptions[cat].splice(i, 1);
+            btn.classList.toggle('sel');
+            if (!wzState.subOptions[dom]) wzState.subOptions[dom] = [];
+            var i = wzState.subOptions[dom].indexOf(opt.v);
+            if (i === -1) wzState.subOptions[dom].push(opt.v);
+            else wzState.subOptions[dom].splice(i, 1);
           };
           row.appendChild(btn);
         });
-        div.appendChild(row);
-        container.appendChild(div);
+        block.appendChild(row);
+        zone.appendChild(block);
       });
-      if (!hasSub) {
-        container.innerHTML = '<p style="color:var(--text2);font-size:13px;text-align:center;padding:20px 0;">Aucune précision nécessaire pour vos catégories — vous pouvez confirmer directement.</p>';
-      }
     }
 
-    function finishWizard() {
-      wizardCompleted = true;
-      // Hide all steps, show summary
-      document.querySelectorAll('.wizard-step').forEach(function(s){ s.style.display='none'; });
-      document.getElementById('wizardSummary').style.display = 'block';
-      // Build summary chips
-      var chips = document.getElementById('wizardSummaryChips');
-      chips.innerHTML = '';
-      if (wizardConfig.startingPoint) {
+    function selectLevelV2(el, val) {
+      document.querySelectorAll('#wzLevelCards .wz-level-card').forEach(function(c){ c.classList.remove('sel'); });
+      el.classList.add('sel');
+      wzState.level = val;
+      document.getElementById('level').value = val;
+    }
+
+    function selectDur(el, val) {
+      document.querySelectorAll('#wzDurChips .wz-dur-chip').forEach(function(c){ c.classList.remove('sel'); });
+      el.classList.add('sel');
+      wzState.duration = val;
+    }
+
+    function toggleTool(el, val) {
+      el.classList.toggle('sel');
+      var idx = wzState.tools.indexOf(val);
+      if (idx === -1) wzState.tools.push(val);
+      else wzState.tools.splice(idx, 1);
+    }
+
+    function buildWzRecap() {
+      // Description preview
+      var desc = document.getElementById('description').value.trim();
+      document.getElementById('wzRecapDesc').textContent = desc || '—';
+
+      // Config chips
+      var chipsEl = document.getElementById('wzRecapChips');
+      chipsEl.innerHTML = '';
+      function addChip(text, green) {
         var c = document.createElement('div');
-        c.className = 'wizard-summary-chip';
-        c.textContent = START_LABELS[wizardConfig.startingPoint] || wizardConfig.startingPoint;
-        chips.appendChild(c);
+        c.className = 'wz-recap-chip' + (green ? ' green' : '');
+        c.textContent = text;
+        chipsEl.appendChild(c);
       }
-      wizardConfig.categories.forEach(function(cat) {
+      if (wzState.finality) addChip(WZ_FIN_LABELS[wzState.finality] || wzState.finality);
+      if (wzState.baseStart) addChip(WZ_BASE_LABELS[wzState.baseStart] || wzState.baseStart);
+      addChip(wzState.level, true);
+      addChip('💰 ' + (document.getElementById('budget').value || '500') + '€', true);
+      addChip('⏱ ' + wzState.duration, true);
+      if (wzState.tools.length) addChip('🔧 ' + wzState.tools.length + ' outils dispo', true);
+
+      // Domain chips
+      var domsEl = document.getElementById('wzRecapDomains');
+      domsEl.innerHTML = '';
+      wzState.domains.forEach(function(d) {
         var c = document.createElement('div');
-        c.className = 'wizard-summary-chip';
-        c.textContent = CAT_LABELS[cat] || cat;
-        chips.appendChild(c);
-      });
-      // Add sub-opts summary
-      Object.keys(wizardConfig.subOptions).forEach(function(cat) {
-        var subs = wizardConfig.subOptions[cat];
-        if (subs && subs.length) {
-          var def = SUBOPT_DEFS[cat];
-          subs.forEach(function(sv) {
-            var optDef = def ? def.opts.find(function(o){ return o.val === sv; }) : null;
+        c.className = 'wz-recap-chip';
+        c.textContent = WZ_DOMAIN_LABELS[d] || d;
+        domsEl.appendChild(c);
+        if (wzState.subOptions[d] && wzState.subOptions[d].length) {
+          wzState.subOptions[d].forEach(function(sv) {
+            var def = WZ_DOMAIN_SUBS[d];
+            var optDef = def ? def.opts.find(function(o){ return o.v === sv; }) : null;
             if (optDef) {
-              var c = document.createElement('div');
-              c.className = 'wizard-summary-chip';
-              c.style.opacity = '0.75';
-              c.textContent = optDef.label;
-              chips.appendChild(c);
+              var sc = document.createElement('div');
+              sc.className = 'wz-recap-chip';
+              sc.style.opacity = '0.7';
+              sc.textContent = optDef.l;
+              domsEl.appendChild(sc);
             }
           });
         }
       });
+      if (!wzState.domains.length) domsEl.textContent = 'Non spécifiés';
     }
 
-    function skipWizard() {
-      wizardCompleted = false;
-      wizardConfig = { startingPoint: null, categories: [], subOptions: {} };
-      document.getElementById('wizardSection').style.display = 'none';
-    }
-
-    function resetWizard() {
-      wizardCompleted = false;
-      wizardConfig = { startingPoint: null, categories: [], subOptions: {} };
-      document.getElementById('wizardSummary').style.display = 'none';
-      document.querySelectorAll('.wizard-step').forEach(function(s){
-        s.style.display = '';
-        s.classList.remove('active');
-      });
-      document.getElementById('wstep1').classList.add('active');
-      // Reset selections
-      document.querySelectorAll('#wStartCards .wizard-card').forEach(function(c){ c.classList.remove('selected'); });
-      document.querySelectorAll('#wCategoryChips .wizard-chip').forEach(function(c){ c.classList.remove('selected'); });
-      wizardConfig.categories = [];
+    function skipWizardV2() {
+      document.getElementById('wizardWrap').style.display = 'none';
     }
 
     function buildWizardContext() {
-      if (!wizardCompleted && !wizardConfig.startingPoint) return '';
       var lines = [];
-      if (wizardConfig.startingPoint) {
-        var spMap = { scratch: 'Construction from scratch with raw materials',
-          existing: 'Modification or improvement of an existing base',
-          kit: 'Assembly of already purchased parts/kit',
-          design_only: 'Design-only phase (no purchase yet)' };
-        lines.push('Starting point: ' + (spMap[wizardConfig.startingPoint] || wizardConfig.startingPoint));
+      var desc = document.getElementById('description').value.trim();
+      if (!desc) return '';
+      if (wzState.finality) {
+        var fmap = {prototype:'Rapid prototype',learning:'Learning/testing',
+          functional:'Functional finished product',series:'Limited series'};
+        lines.push('Project finality: ' + (fmap[wzState.finality] || wzState.finality));
       }
-      if (wizardConfig.categories.length) {
-        var catMap = {
-          meca_metal: 'Metal mechanics (steel/aluminium)',
-          meca_bois: 'Woodworking (raw wood)',
-          meca_plastique: 'Plastics/Composites',
-          impression_3d: '3D Printing',
-          electronique: 'Electronics',
-          automatisme: 'Automation/IoT (Arduino/ESP/RPi)',
-          electrique: 'Domestic electrical installation',
-          motorisation: 'Motorization',
-          plomberie: 'Plumbing/Hydraulics',
-          maconnerie: 'Masonry/Concrete',
-          finition: 'Finishing/Coating',
-          soudure: 'Welding/Brazing'
-        };
-        lines.push('Conception domains: ' + wizardConfig.categories.map(function(c){ return catMap[c]||c; }).join(', '));
+      var ref = document.getElementById('wzReference') ? document.getElementById('wzReference').value.trim() : '';
+      if (ref) lines.push('Reference/inspiration: ' + ref);
+      if (wzState.baseStart) {
+        var bmap = {existing_object:'Modifying an existing object',raw_meca:'Raw mechanical materials (metal/wood/plastic) from scratch',
+          raw_elec:'Raw electronic components assembly',kit:'Pre-purchased kit/parts assembly',
+          hybrid:'Hybrid project (mechanical + electronic + code)',design_only:'Design phase only (plans before purchase)'};
+        lines.push('Starting base: ' + (bmap[wzState.baseStart] || wzState.baseStart));
       }
-      Object.keys(wizardConfig.subOptions).forEach(function(cat) {
-        var subs = wizardConfig.subOptions[cat];
+      if (wzState.baseSubOpts.length) lines.push('Object type: ' + wzState.baseSubOpts.join(', '));
+      if (wzState.domains.length) {
+        lines.push('Technical domains: ' + wzState.domains.map(function(d){ return WZ_DOMAIN_LABELS[d]||d; }).join(', '));
+      }
+      Object.keys(wzState.subOptions).forEach(function(dom) {
+        var subs = wzState.subOptions[dom];
         if (subs && subs.length) {
-          var def = SUBOPT_DEFS[cat];
+          var def = WZ_DOMAIN_SUBS[dom];
           var subLabels = subs.map(function(sv) {
-            var optDef = def ? def.opts.find(function(o){ return o.val === sv; }) : null;
-            return optDef ? optDef.label : sv;
+            var optDef = def ? def.opts.find(function(o){ return o.v === sv; }) : null;
+            return optDef ? optDef.l : sv;
           });
-          lines.push('  ↳ ' + (def ? def.title : cat) + ': ' + subLabels.join(', '));
+          lines.push('  ' + (def ? def.title : dom) + ': ' + subLabels.join(', '));
         }
       });
+      if (wzState.duration) lines.push('Target duration: ' + wzState.duration);
+      if (wzState.tools.length) lines.push('Available tools: ' + wzState.tools.join(', '));
       return lines.join('\n');
     }
 
-    // ══════════════════════════════════════════════════════════
-    // EXPLODED VIEW / ASSEMBLY DIAGRAM
-    // ══════════════════════════════════════════════════════════
-    function renderExplodedView(diagram, materials) {
-      var card = document.getElementById('explodedCard');
-      var container = document.getElementById('explodedContainer');
-      if (!diagram || !diagram.parts || !diagram.parts.length) {
-        card.style.display = 'none';
-        return;
-      }
-      card.style.display = '';
-      container.innerHTML = '';
-
-      var parts = diagram.parts;
-      var seq = diagram.assembly_sequence || parts.map(function(p){ return p.id; });
-      var note = diagram.exploded_note || '';
-
-      // ── Assembly sequence bar
-      if (seq.length) {
-        var seqDiv = document.createElement('div');
-        seqDiv.className = 'ev-seq';
-        var seqLabel = document.createElement('span');
-        seqLabel.className = 'ev-seq-label';
-        seqLabel.textContent = 'Ordre d\'assemblage :';
-        seqDiv.appendChild(seqLabel);
-        seq.forEach(function(sid, i) {
-          var chip = document.createElement('div');
-          chip.className = 'ev-seq-item';
-          chip.textContent = sid;
-          chip.title = (parts.find(function(p){ return p.id === sid; }) || {}).name || sid;
-          seqDiv.appendChild(chip);
-          if (i < seq.length - 1) {
-            var arr = document.createElement('span');
-            arr.className = 'ev-seq-arrow';
-            arr.textContent = '→';
-            seqDiv.appendChild(arr);
-          }
-        });
-        container.appendChild(seqDiv);
-      }
-
-      // ── Note
-      if (note) {
-        var noteDiv = document.createElement('div');
-        noteDiv.className = 'ev-note';
-        noteDiv.textContent = note;
-        container.appendChild(noteDiv);
-      }
-
-      // ── SVG exploded diagram
-      var W = 800, H = 500;
-      var cx = W / 2, cy = H / 2;
-      var n = parts.length;
-
-      // Position parts in an explosion pattern:
-      // center = assembly point, parts radiate outward
-      var POSITION_MAP = {
-        'top-left': {ax:-0.6, ay:-0.7},
-        'top-center': {ax:0, ay:-0.85},
-        'top-right': {ax:0.6, ay:-0.7},
-        'center-left': {ax:-0.85, ay:-0.1},
-        'center': {ax:0, ay:0},
-        'center-right': {ax:0.85, ay:0.1},
-        'bottom-left': {ax:-0.6, ay:0.65},
-        'bottom-center': {ax:0, ay:0.8},
-        'bottom-right': {ax:0.6, ay:0.65},
-        'left': {ax:-0.85, ay:-0.4},
-        'right': {ax:0.85, ay:-0.4},
-        'top': {ax:0.2, ay:-0.85},
-        'bottom': {ax:-0.2, ay:0.8}
-      };
-
-      // Assign positions: use position hint or distribute evenly
-      function getPartPos(p, idx) {
-        var hint = (p.position || '').toLowerCase().replace(' ','-');
-        var mapped = POSITION_MAP[hint];
-        if (mapped) return mapped;
-        // Spiral fallback
-        var angle = (idx / n) * 2 * Math.PI - Math.PI / 2;
-        var r = 0.62 + (idx % 3) * 0.12;
-        return { ax: Math.cos(angle) * r, ay: Math.sin(angle) * r };
-      }
-
-      var BOX_W = 110, BOX_H = 48;
-      var MARGIN_X = 160, MARGIN_Y = 110;
-      var AREA_W = W - MARGIN_X * 2;
-      var AREA_H = H - MARGIN_Y * 2;
-
-      // Create SVG
-      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-      svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-      svg.style.background = 'transparent';
-
-      // Defs: arrow marker
-      var defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-      var marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
-      marker.setAttribute('id', 'arrowhead');
-      marker.setAttribute('markerWidth', '8');
-      marker.setAttribute('markerHeight', '6');
-      marker.setAttribute('refX', '8');
-      marker.setAttribute('refY', '3');
-      marker.setAttribute('orient', 'auto');
-      var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-      poly.setAttribute('points', '0 0, 8 3, 0 6');
-      poly.setAttribute('fill', '#aaa');
-      marker.appendChild(poly);
-      defs.appendChild(marker);
-      svg.appendChild(defs);
-
-      // Center assembly point
-      var centerG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      var centerCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      centerCircle.setAttribute('cx', cx);
-      centerCircle.setAttribute('cy', cy);
-      centerCircle.setAttribute('r', '18');
-      centerCircle.setAttribute('fill', 'rgba(108,99,255,0.15)');
-      centerCircle.setAttribute('stroke', 'var(--accent)');
-      centerCircle.setAttribute('stroke-width', '1.5');
-      centerCircle.setAttribute('stroke-dasharray', '4,3');
-      centerG.appendChild(centerCircle);
-      var centerText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      centerText.setAttribute('x', cx);
-      centerText.setAttribute('y', cy + 4);
-      centerText.setAttribute('text-anchor', 'middle');
-      centerText.setAttribute('font-size', '11');
-      centerText.setAttribute('font-weight', '700');
-      centerText.setAttribute('fill', 'var(--accent)');
-      centerText.textContent = '★';
-      centerG.appendChild(centerText);
-      svg.appendChild(centerG);
-
-      // Place parts
-      var partCoords = [];
-      parts.forEach(function(p, idx) {
-        var pos = getPartPos(p, idx);
-        var px = cx + pos.ax * AREA_W / 2;
-        var py = cy + pos.ay * AREA_H / 2;
-        partCoords.push({x: px, y: py, p: p});
+    // ── RESULTS TABS ────────────────────────────────────────────
+    var activeResTab = 'synthese';
+    function switchResTab(tab) {
+      activeResTab = tab;
+      // Update tab buttons
+      document.querySelectorAll('.res-tab-btn').forEach(function(btn){
+        btn.classList.toggle('active', btn.id === 'rtab-' + tab);
       });
-
-      // Draw connectors first (below boxes)
-      partCoords.forEach(function(pc) {
-        var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', pc.x);
-        line.setAttribute('y1', pc.y);
-        line.setAttribute('x2', cx);
-        line.setAttribute('y2', cy);
-        line.setAttribute('stroke', '#ccc');
-        line.setAttribute('stroke-width', '1');
-        line.setAttribute('stroke-dasharray', '5,4');
-        line.setAttribute('marker-end', 'url(#arrowhead)');
-        svg.appendChild(line);
-      });
-
-      // Draw part boxes + callout labels
-      partCoords.forEach(function(pc, idx) {
-        var p = pc.p;
-        var px = pc.x, py = pc.y;
-        var bx = px - BOX_W / 2;
-        var by = py - BOX_H / 2;
-
-        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        g.setAttribute('id', 'ev-part-g-' + p.id);
-        g.style.cursor = 'pointer';
-        g.onclick = function() { highlightEvPart(p.id, idx); };
-
-        // Box
-        var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        rect.setAttribute('x', bx);
-        rect.setAttribute('y', by);
-        rect.setAttribute('width', BOX_W);
-        rect.setAttribute('height', BOX_H);
-        rect.setAttribute('rx', '8');
-        rect.setAttribute('fill', 'white');
-        rect.setAttribute('stroke', '#ddd');
-        rect.setAttribute('stroke-width', '1.5');
-        rect.setAttribute('id', 'ev-rect-' + p.id);
-        g.appendChild(rect);
-
-        // Part ID label (top-left of box)
-        var idTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        idTxt.setAttribute('x', bx + 8);
-        idTxt.setAttribute('y', by + 16);
-        idTxt.setAttribute('font-size', '12');
-        idTxt.setAttribute('font-weight', '800');
-        idTxt.setAttribute('fill', '#6c63ff');
-        idTxt.setAttribute('font-family', 'system-ui, sans-serif');
-        idTxt.textContent = p.id;
-        g.appendChild(idTxt);
-
-        // Part name (truncated)
-        var nameTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        nameTxt.setAttribute('x', px);
-        nameTxt.setAttribute('y', by + 30);
-        nameTxt.setAttribute('text-anchor', 'middle');
-        nameTxt.setAttribute('font-size', '10');
-        nameTxt.setAttribute('fill', '#333');
-        nameTxt.setAttribute('font-family', 'system-ui, sans-serif');
-        var name = p.name || '';
-        if (name.length > 16) name = name.substring(0, 15) + '…';
-        nameTxt.textContent = name;
-        g.appendChild(nameTxt);
-
-        // Qty badge (bottom right)
-        if (p.qty && p.qty > 1) {
-          var qtyCirc = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          qtyCirc.setAttribute('cx', bx + BOX_W - 8);
-          qtyCirc.setAttribute('cy', by + BOX_H - 8);
-          qtyCirc.setAttribute('r', '9');
-          qtyCirc.setAttribute('fill', '#ff6b6b');
-          g.appendChild(qtyCirc);
-          var qtyTxt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          qtyTxt.setAttribute('x', bx + BOX_W - 8);
-          qtyTxt.setAttribute('y', by + BOX_H - 4);
-          qtyTxt.setAttribute('text-anchor', 'middle');
-          qtyTxt.setAttribute('font-size', '10');
-          qtyTxt.setAttribute('font-weight', '700');
-          qtyTxt.setAttribute('fill', 'white');
-          qtyTxt.setAttribute('font-family', 'system-ui, sans-serif');
-          qtyTxt.textContent = 'x' + p.qty;
-          g.appendChild(qtyTxt);
+      // Show/hide sections based on data-restab attribute
+      document.querySelectorAll('[data-restab]').forEach(function(el) {
+        var elTab = el.getAttribute('data-restab');
+        // Only hide/show elements that were previously visible (not already hidden for other reasons)
+        if (elTab === tab) {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
         }
-
-        svg.appendChild(g);
       });
-
-      var svgWrap = document.createElement('div');
-      svgWrap.className = 'exploded-svg-wrap';
-      svgWrap.appendChild(svg);
-      container.appendChild(svgWrap);
-
-      // ── Parts legend
-      var legend = document.createElement('div');
-      legend.className = 'ev-legend';
-      legend.id = 'evLegend';
-      parts.forEach(function(p, idx) {
-        var mat = (materials && typeof p.material_ref === 'number') ? materials[p.material_ref] : null;
-        var item = document.createElement('div');
-        item.className = 'ev-legend-item';
-        item.id = 'ev-leg-' + p.id;
-        item.onclick = function() { highlightEvPart(p.id, idx); };
-
-        var idBadge = document.createElement('div');
-        idBadge.className = 'ev-legend-id';
-        idBadge.textContent = p.id;
-
-        var body = document.createElement('div');
-        body.className = 'ev-legend-body';
-
-        var nameDiv = document.createElement('div');
-        nameDiv.className = 'ev-legend-name';
-        nameDiv.textContent = (p.qty > 1 ? p.qty + '× ' : '') + (p.name || '');
-
-        var noteDiv = document.createElement('div');
-        noteDiv.className = 'ev-legend-note';
-        noteDiv.textContent = p.note || (mat ? mat.name : '');
-
-        body.appendChild(nameDiv);
-        body.appendChild(noteDiv);
-        item.appendChild(idBadge);
-        item.appendChild(body);
-        legend.appendChild(item);
-      });
-      container.appendChild(legend);
+      // Journal special case
+      var journal = document.getElementById('journalSection');
+      if (journal) journal.style.display = (tab === 'journal') ? '' : 'none';
     }
 
-    var evActiveId = null;
-    function highlightEvPart(id, idx) {
-      // Deselect previous
-      if (evActiveId) {
-        var prevRect = document.getElementById('ev-rect-' + evActiveId);
-        if (prevRect) { prevRect.setAttribute('fill','white'); prevRect.setAttribute('stroke','#ddd'); }
-        var prevLeg = document.getElementById('ev-leg-' + evActiveId);
-        if (prevLeg) prevLeg.classList.remove('active');
-      }
-      if (evActiveId === id) { evActiveId = null; return; }
-      evActiveId = id;
-      var rect = document.getElementById('ev-rect-' + id);
-      if (rect) { rect.setAttribute('fill','rgba(108,99,255,0.08)'); rect.setAttribute('stroke','#6c63ff'); }
-      var leg = document.getElementById('ev-leg-' + id);
-      if (leg) { leg.classList.add('active'); leg.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+    function showResTabsBar() {
+      var bar = document.getElementById('resTabsBar');
+      if (bar) bar.style.display = 'flex';
+      switchResTab('synthese');
     }
     // ══════════════════════════════════════════════════════════
-    // END EXPLODED VIEW JS
-    // ══════════════════════════════════════════════════════════
-    // ══════════════════════════════════════════════════════════
-    // END WIZARD JS
+    // END WIZARD V2
     // ══════════════════════════════════════════════════════════
 </script>
 </body>

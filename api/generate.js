@@ -220,12 +220,26 @@ RÈGLES ABSOLUES :
 9. electrical_schema.needed = false si pas d'électricité dans ce projet
 
 PROJET À PLANIFIER :
-${projectConfig ? "\n--- CONFIGURATION UTILISATEUR ---\n" + projectConfig + "\n---\n" : ""}Projet : ${projectDescription}
+${projectConfig ? "\n=== CONFIGURATION MAKER ===\n" + projectConfig + "\n=========================\n" : ""}Projet : ${projectDescription}
+Niveau : ${level}
+Budget max : ${budget}€
+Type : ${projectType || 'Non spécifié'}
 ${projectType ? 'Type : ' + projectType : ''}
 ${budget ? 'Budget maximum : ' + budget + '€' : ''}
 ${level ? 'Niveau utilisateur : ' + level : ''}
 ${choicesText}
 
+INSTRUCTIONS CRITIQUES selon la configuration maker :
+- Base "objet existant" → focus démontage, identification pièces, modification, compatibilité
+- Base "matériaux bruts méca" → plans de coupe/formage, approvisionnement, méthodes d'assemblage
+- Base "composants élec bruts" → schéma complet, BOM avec références exactes (valeurs résistances, Refs CI, valeurs capa)
+- Base "kit assemblage" → séquence montage, câblage, calibration, procédure première mise en tension
+- Si domaine Électronique/Automatisme → OBLIGATOIRE schéma de câblage dans electrical_schema, références précises (ex: R1=10kΩ, C1=100nF, U1=ATmega328P)
+- Si domaine Impression 3D → paramètres d'impression par pièce (hauteur couche, remplissage%, support, orientation)
+- Si domaine Soudure → paramètres précis (ampérage, type/diam fil, gaz, temp préchauffage)
+- Niveau Expert → terminologie professionnelle, tolérances, états de surface, procédures de test
+- TOUJOURS générer assembly_diagram avec positions réalistes des pièces
+- Les pièces de assembly_diagram doivent correspondre exactement à la liste matériaux
 Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises markdown.`;
 
   try {
