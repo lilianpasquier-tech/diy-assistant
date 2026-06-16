@@ -244,10 +244,9 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises mar
 
   // Fallback chain: 70b (best quality, 100k TPD) → 70b alt → 8b instant (500k TPD) → gemma2 (500k TPD)
   const MODELS = [
-    'llama-3.3-70b-versatile',
-    'llama3-70b-8192',
-    'llama-3.1-8b-instant',
-    'gemma2-9b-it',
+    'llama-3.3-70b-versatile',   // 100k TPD
+    'llama-3.1-8b-instant',       // 500k TPD
+    'gemma2-9b-it',               // last resort
   ];
 
   const callGroq = async (model) => {
@@ -277,12 +276,11 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises mar
         break;
       }
       const errBody = await groqRes.text();
-      // Only retry on rate-limit (429) errors
-      if (groqRes.status === 429) {
-        console.warn(`[generate] Rate limit on ${model}, trying next model…`);
+      // Retry on rate-limit or decommissioned model
+      if (groqRes.status === 429 || (groqRes.status === 400 && errBody.includes('model_decommissioned'))) {
+        console.warn(`[generate] Skipping ${model} (${groqRes.status}), trying next…`);
         continue;
       }
-      // Any other error: return immediately
       return res.status(groqRes.status).json({ error: 'Erreur API Groq (' + model + ') : ' + errBody });
     }
 
