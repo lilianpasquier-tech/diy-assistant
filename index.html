@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DIY Assistant IA â Planificateur de Projets</title>
+  <title>DIY Assistant IA &#8212; Planificateur de Projets</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -32,7 +32,7 @@
       min-height: 100vh;
     }
 
-    /* ââ HEADER ââ */
+    /* &#9472;&#9472; HEADER &#9472;&#9472; */
     header {
       background: linear-gradient(135deg, #1a1d27 0%, #12152a 100%);
       border-bottom: 1px solid var(--border);
@@ -66,10 +66,10 @@
       text-transform: uppercase;
     }
 
-    /* ââ MAIN ââ */
+    /* &#9472;&#9472; MAIN &#9472;&#9472; */
     main { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
 
-    /* ââ HERO ââ */
+    /* &#9472;&#9472; HERO &#9472;&#9472; */
     .hero {
       text-align: center;
       margin-bottom: 48px;
@@ -91,7 +91,7 @@
       line-height: 1.6;
     }
 
-    /* ââ FEATURES ââ */
+    /* &#9472;&#9472; FEATURES &#9472;&#9472; */
     .features {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -109,7 +109,7 @@
     .feature h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
     .feature p { font-size: 12px; color: var(--text2); }
 
-    /* ââ FORM CARD ââ */
+    /* &#9472;&#9472; FORM CARD &#9472;&#9472; */
     .form-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -163,7 +163,7 @@
     }
     select option { background: var(--surface); }
 
-    /* ââ EXAMPLES ââ */
+    /* &#9472;&#9472; EXAMPLES &#9472;&#9472; */
     .examples {
       margin-bottom: 24px;
     }
@@ -193,7 +193,7 @@
       background: rgba(108,99,255,0.1);
     }
 
-    /* ââ BUTTON ââ */
+    /* &#9472;&#9472; BUTTON &#9472;&#9472; */
     .btn-generate {
       width: 100%;
       padding: 18px;
@@ -215,7 +215,7 @@
     .btn-generate:active { transform: translateY(0); }
     .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-    /* ââ LOADER ââ */
+    /* &#9472;&#9472; LOADER &#9472;&#9472; */
     .loader {
       display: none;
       flex-direction: column;
@@ -245,7 +245,7 @@
     .loader-step:nth-child(4) { animation-delay: 6s; }
     @keyframes fadeIn { to { opacity: 1; } }
 
-    /* ââ ERROR ââ */
+    /* &#9472;&#9472; ERROR &#9472;&#9472; */
     .error-box {
       display: none;
       background: rgba(255,107,107,0.1);
@@ -257,7 +257,7 @@
     }
     .error-box.visible { display: block; }
 
-    /* ââ RESULTS ââ */
+    /* &#9472;&#9472; RESULTS &#9472;&#9472; */
     #results { display: none; }
     #results.visible { display: block; }
 
@@ -289,7 +289,7 @@
     }
     .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* ââ STATS BAR ââ */
+    /* &#9472;&#9472; STATS BAR &#9472;&#9472; */
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -316,7 +316,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* ââ SECTION CARDS ââ */
+    /* &#9472;&#9472; SECTION CARDS &#9472;&#9472; */
     .section-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -337,7 +337,7 @@
     }
     .section-card h3 .icon { font-size: 18px; }
 
-    /* ââ MATERIALS TABLE ââ */
+    /* &#9472;&#9472; MATERIALS TABLE &#9472;&#9472; */
     .materials-table { width: 100%; border-collapse: collapse; }
     .materials-table th {
       text-align: left;
@@ -374,7 +374,7 @@
       color: var(--text2);
     }
 
-    /* ââ TOOLS GRID ââ */
+    /* &#9472;&#9472; TOOLS GRID &#9472;&#9472; */
     .tools-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -391,7 +391,7 @@
     .tool-buy { color: var(--warn); }
     .tool-own { color: var(--success); }
 
-    /* ââ STEPS ââ */
+    /* &#9472;&#9472; STEPS &#9472;&#9472; */
     .steps-list { display: flex; flex-direction: column; gap: 20px; }
     .step {
       display: flex;
@@ -445,7 +445,7 @@
       color: var(--danger);
     }
 
-    /* ââ SAFETY ââ */
+    /* &#9472;&#9472; SAFETY &#9472;&#9472; */
     .safety-items { display: flex; flex-direction: column; gap: 10px; }
     .safety-item {
       display: flex; align-items: flex-start; gap: 12px;
@@ -458,7 +458,7 @@
     }
     .safety-item .icon { font-size: 18px; flex-shrink: 0; }
 
-    /* ââ ALTERNATIVES ââ */
+    /* &#9472;&#9472; ALTERNATIVES &#9472;&#9472; */
     .alts-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -474,7 +474,7 @@
       color: var(--text2);
     }
 
-    /* ââ PRO TIPS ââ */
+    /* &#9472;&#9472; PRO TIPS &#9472;&#9472; */
     .tips-list { display: flex; flex-direction: column; gap: 10px; }
     .tip-item {
       display: flex; align-items: flex-start; gap: 12px;
@@ -487,7 +487,7 @@
     }
     .tip-icon { font-size: 18px; flex-shrink: 0; }
 
-    /* ââ HISTORY ââ */
+    /* &#9472;&#9472; HISTORY &#9472;&#9472; */
     .history-section {
       margin-top: 40px;
       padding-top: 40px;
@@ -524,7 +524,7 @@
       color: var(--text);
     }
 
-    /* ââ RESPONSIVE ââ */
+    /* &#9472;&#9472; RESPONSIVE &#9472;&#9472; */
     @media (max-width: 768px) {
       .features { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
@@ -534,7 +534,7 @@
       .form-card { padding: 24px; }
     }
 
-    /* ââ PRINT ââ */
+    /* &#9472;&#9472; PRINT &#9472;&#9472; */
     @media print {
       body { background: white; color: black; }
       header, .form-card, .btn-secondary, .results-actions, .history-section { display: none; }
@@ -543,206 +543,379 @@
   </style>
 </head>
 <body>
+
 <header>
   <div class="logo">
-    <div class="logo-icon">ð¤§</div>
+    <div class="logo-icon">&#128295;</div>
     <h1>DIY <span>Assistant</span> IA</h1>
   </div>
-  <span class="badge">â¡ Powered by Gemini AI</span>
+  <span class="badge">&#9889; Powered by Claude AI</span>
 </header>
+
 <main>
+  <!-- HERO -->
   <div class="hero">
     <h2>Planifiez n'importe quel<br/>projet DIY en quelques secondes</h2>
-    <p>DÃ©crivez votre projet, l'IA gÃ©nÃ¨re instantanÃ©ment le plan complet, la liste de matÃ©riaux, le chiffrage et le guide Ã©tape par Ã©tape.</p>
+    <p>D&#233;crivez votre projet, l'IA g&#233;n&#232;re instantan&#233;ment le plan complet, la liste de mat&#233;riaux, le chiffrage et le guide &#233;tape par &#233;tape.</p>
   </div>
+
+  <!-- FEATURES -->
   <div class="features">
     <div class="feature">
-      <div class="icon">ð</div>
-      <h3>Plan dÃ©taillÃ©</h3>
-      <p>Vue d'ensemble complÃ¨te du projet avec estimation de durÃ©e</p>
+      <div class="icon">&#128208;</div>
+      <h3>Plan d&#233;taill&#233;</h3>
+      <p>Vue d'ensemble compl&#232;te du projet avec estimation de dur&#233;e</p>
     </div>
     <div class="feature">
-      <div class="icon">ð</div>
-      <h3>Liste de matÃ©riaux</h3>
-      <p>Chaque piÃ¨ce avec quantitÃ©, prix estimÃ© et oÃ¹ l'acheter</p>
+      <div class="icon">&#128722;</div>
+      <h3>Liste de mat&#233;riaux</h3>
+      <p>Chaque pi&#232;ce avec quantit&#233;, prix estim&#233; et o&#249; l'acheter</p>
     </div>
     <div class="feature">
-      <div class="icon">ð</div>
-      <h3>Guide pas-Ã -pas</h3>
-      <p>Instructions dÃ©taillÃ©es avec conseils de pro et avertissements</p>
+      <div class="icon">&#128203;</div>
+      <h3>Guide pas-&#224;-pas</h3>
+      <p>Instructions d&#233;taill&#233;es avec conseils de pro et avertissements</p>
     </div>
   </div>
+
+  <!-- FORM -->
   <div class="form-card">
-    <h3>ð Nouveau projet</h3>
+    <h3>&#128640; Nouveau projet</h3>
+
     <div class="examples">
       <p>Exemples de projets :</p>
       <div class="example-chips">
-        <span class="chip" onclick="setExample(this)">Installer une prise Ã©lectrique 220V</span>
+        <span class="chip" onclick="setExample(this)">Installer une prise &#233;lectrique 220V</span>
         <span class="chip" onclick="setExample(this)">Construire une cabane en bois pour enfant</span>
-        <span class="chip" onclick="setExample(this)">Station mÃ©tÃ©o Arduino avec Ã©cran LCD</span>
+        <span class="chip" onclick="setExample(this)">Station m&#233;t&#233;o Arduino avec &#233;cran LCD</span>
         <span class="chip" onclick="setExample(this)">Poser du carrelage dans une cuisine</span>
-        <span class="chip" onclick="setExample(this)">Fabriquer une Ã©tagÃ¨re murale en bois</span>
-        <span class="chip" onclick="setExample(this)">CrÃ©er un systÃ¨me d'arrosage automatique</span>
+        <span class="chip" onclick="setExample(this)">Fabriquer une &#233;tag&#232;re murale en bois</span>
+        <span class="chip" onclick="setExample(this)">Cr&#233;er un syst&#232;me d'arrosage automatique</span>
       </div>
     </div>
+
     <div class="form-grid">
       <div class="form-group full">
         <label>Description du projet *</label>
-        <textarea id="description" placeholder="DÃ©crivez votre projet en dÃ©tail..."></textarea>
+        <textarea id="description" placeholder="D&#233;crivez votre projet en d&#233;tail... Plus vous &#234;tes pr&#233;cis, meilleur sera le plan. Ex: Je veux construire une terrasse en bois en ip&#233; de 20m&#178; avec une rambarde, sur une dalle b&#233;ton existante."></textarea>
       </div>
       <div class="form-group">
         <label>Type de projet</label>
         <select id="projectType">
           <option value="">Tous types</option>
-          <option value="Construction / RÃ©novation">ðï¸ Construction / RÃ©novation</option>
-          <option value="Menuiserie / Bois">ðªµ Menuiserie / Bois</option>
-          <option value="Ãlectronique / Arduino">â© Ãlectronique / Arduino</option>
-          <option value="Plomberie">ð§ Plomberie</option>
-          <option value="ÃlectricitÃ©">ð¡ ÃlectricitÃ©</option>
-          <option value="Jardin / ExtÃ©rieur">ð¿ Jardin / ExtÃ©rieur</option>
-          <option value="Peinture / DÃ©coration">ð¨ Peinture / DÃ©coration</option>
-          <option value="MÃ©canique">âï¸ MÃ©canique</option>
+          <option value="Construction / R&#233;novation">&#127959;&#65039; Construction / R&#233;novation</option>
+          <option value="Menuiserie / Bois">&#129717; Menuiserie / Bois</option>
+          <option value="&#201;lectronique / Arduino">&#9889; &#201;lectronique / Arduino</option>
+          <option value="Plomberie">&#128295; Plomberie</option>
+          <option value="&#201;lectricit&#233;">&#128161; &#201;lectricit&#233;</option>
+          <option value="Jardin / Ext&#233;rieur">&#127807; Jardin / Ext&#233;rieur</option>
+          <option value="Peinture / D&#233;coration">&#127912; Peinture / D&#233;coration</option>
+          <option value="M&#233;canique">&#9881;&#65039; M&#233;canique</option>
         </select>
       </div>
       <div class="form-group">
         <label>Niveau du bricoleur</label>
         <select id="level">
-          <option value="DÃ©butant">ð¢ DÃ©butant</option>
-          <option value="IntermÃ©diaire" selected>ð¡ IntermÃ©diaire</option>
-          <option value="AvancÃ©">ð´ AvancÃ© / Expert</option>
+          <option value="D&#233;butant">&#128994; D&#233;butant</option>
+          <option value="Interm&#233;diaire" selected>&#128993; Interm&#233;diaire</option>
+          <option value="Avanc&#233;">&#128308; Avanc&#233; / Expert</option>
         </select>
       </div>
       <div class="form-group">
-        <label>Budget maximum (â¬)</label>
+        <label>Budget maximum (&#8364;)</label>
         <input type="number" id="budget" placeholder="Ex: 500" min="0" />
       </div>
     </div>
-    <div class="error-box" id="errorBox">â ï¸ <span id="errorMsg"></span></div>
+
+    <div class="error-box" id="errorBox">&#9888;&#65039; <span id="errorMsg"></span></div>
+
     <button class="btn-generate" id="generateBtn" onclick="generatePlan()">
-      <span>â¡</span> GÃ©nÃ©rer le plan complet
+      <span>&#9889;</span> G&#233;n&#233;rer le plan complet
     </button>
+
+    <!-- LOADER -->
     <div class="loader" id="loader">
       <div class="spinner"></div>
-      <p>L'IA analyse votre projetâ¦</p>
+      <p>L'IA analyse votre projet&#8230;</p>
       <div class="loader-steps">
-        <div class="loader-step">ð Conception du plan gÃ©nÃ©ralâ¦</div>
-        <div class="loader-step">ð Calcul de la liste de matÃ©riauxâ¦</div>
-        <div class="loader-step">ð RÃ©daction du guide Ã©tape par Ã©tapeâ¦</div>
-        <div class="loader-step">ð¡ Ajout des conseils de proâ¦</div>
+        <div class="loader-step">&#128208; Conception du plan g&#233;n&#233;ral&#8230;</div>
+        <div class="loader-step">&#128722; Calcul de la liste de mat&#233;riaux&#8230;</div>
+        <div class="loader-step">&#128203; R&#233;daction du guide &#233;tape par &#233;tape&#8230;</div>
+        <div class="loader-step">&#128161; Ajout des conseils de pro&#8230;</div>
       </div>
     </div>
   </div>
+
+  <!-- RESULTS -->
   <div id="results">
     <div class="results-header">
       <h2 id="resultsTitle">Plan du projet</h2>
       <div class="results-actions">
-        <button class="btn-secondary" onclick="window.print()">ð¨ï¸ Imprimer</button>
-        <button class="btn-secondary" onclick="exportJSON()">ð¾ Exporter JSON</button>
-        <button class="btn-secondary" onclick="scrollToForm()">ð Nouveau projet</button>
+        <button class="btn-secondary" onclick="window.print()">&#128424;&#65039; Imprimer</button>
+        <button class="btn-secondary" onclick="exportJSON()">&#128190; Exporter JSON</button>
+        <button class="btn-secondary" onclick="scrollToForm()">&#128260; Nouveau projet</button>
       </div>
     </div>
+
+    <!-- STATS BAR -->
     <div class="stats-bar" id="statsBar"></div>
+
+    <!-- OVERVIEW -->
     <div class="section-card" id="overviewCard">
-      <h3><span class="icon">ð</span> Vue d'ensemble</h3>
+      <h3><span class="icon">&#128204;</span> Vue d'ensemble</h3>
       <p id="overviewText" style="font-size:15px;line-height:1.7;color:var(--text2);"></p>
       <br/>
       <p id="difficultyText" style="font-size:14px;"></p>
     </div>
+
+    <!-- MATERIALS -->
     <div class="section-card" id="materialsCard">
-      <h3><span class="icon">ð</span> Liste de matÃ©riaux</h3>
+      <h3><span class="icon">&#128722;</span> Liste de mat&#233;riaux</h3>
       <div style="overflow-x:auto;">
         <table class="materials-table" id="materialsTable">
-          <thead><tr><th>MatÃ©riau</th><th>QuantitÃ©</th><th>Prix estimÃ©</th><th>OÃ¹ acheter</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Mat&#233;riau</th>
+              <th>Quantit&#233;</th>
+              <th>Prix estim&#233;</th>
+              <th>O&#249; acheter</th>
+            </tr>
+          </thead>
           <tbody id="materialsBody"></tbody>
         </table>
       </div>
     </div>
+
+    <!-- TOOLS -->
     <div class="section-card" id="toolsCard">
-      <h3><span class="icon">ð§</span> Outils nÃ©cessaires</h3>
+      <h3><span class="icon">&#128295;</span> Outils n&#233;cessaires</h3>
       <div class="tools-grid" id="toolsGrid"></div>
     </div>
+
+    <!-- STEPS -->
     <div class="section-card" id="stepsCard">
-      <h3><span class="icon">ð</span> Guide Ã©tape par Ã©tape</h3>
+      <h3><span class="icon">&#128203;</span> Guide &#233;tape par &#233;tape</h3>
       <div class="steps-list" id="stepsList"></div>
     </div>
+
+    <!-- SAFETY -->
     <div class="section-card" id="safetyCard">
-      <h3><span class="icon">â ï¸</span> SÃ©curitÃ©</h3>
+      <h3><span class="icon">&#9888;&#65039;</span> S&#233;curit&#233;</h3>
       <div class="safety-items" id="safetyItems"></div>
     </div>
+
+    <!-- ALTERNATIVES -->
     <div class="section-card" id="altsCard">
-      <h3><span class="icon">ð<option> Variantes &amp; alternatives</h3>
+      <h3><span class="icon">&#128256;</span> Variantes & alternatives</h3>
       <div class="alts-grid" id="altsGrid"></div>
     </div>
+
+    <!-- PRO TIPS -->
     <div class="section-card" id="tipsCard">
-      <h3><span class="icon">ð¡</span> Conseils de pro</h3>
+      <h3><span class="icon">&#128161;</span> Conseils de pro</h3>
       <div class="tips-list" id="tipsList"></div>
     </div>
   </div>
+
+  <!-- HISTORY -->
   <div class="history-section" id="historySection" style="display:none;">
-    <h3>ð Projets rÃ©cents</h3>
+    <h3>&#128193; Projets r&#233;cents</h3>
     <div class="history-list" id="historyList"></div>
   </div>
 </main>
+
 <script>
+  // &#9472;&#9472; CONFIGURATION &#9472;&#9472;
+  // Si vous d&#233;ployez sur Vercel, laissez '/api/generate'
+  // Si vous testez en local, changez par l'URL de votre serveur local
   const API_URL = '/api/generate';
+
   let currentPlan = null;
-  function setExample(el) { document.getElementById('description').value = el.textContent; }
-  function scrollToForm() { document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' }); }
+
+  // &#9472;&#9472; EXAMPLES &#9472;&#9472;
+  function setExample(el) {
+    document.getElementById('description').value = el.textContent;
+  }
+
+  function scrollToForm() {
+    document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // &#9472;&#9472; GENERATE &#9472;&#9472;
   async function generatePlan() {
     const description = document.getElementById('description').value.trim();
     const projectType = document.getElementById('projectType').value;
     const level = document.getElementById('level').value;
     const budget = document.getElementById('budget').value;
-    if (!description) { showError('Veuillez dÃ©crire votre projet.'); return; }
-    if (description.length < 10) { showError('Description trop courte.'); return; }
-    hideError(); setLoading(true);
+
+    // Validation
+    if (!description) {
+      showError('Veuillez d&#233;crire votre projet avant de g&#233;n&#233;rer le plan.');
+      return;
+    }
+    if (description.length < 10) {
+      showError('Description trop courte. Donnez plus de d&#233;tails sur votre projet.');
+      return;
+    }
+
+    hideError();
+    setLoading(true);
+
     try {
-      const resp = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ projectDescription: description, projectType, level, budget }) });
+      const resp = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectDescription: description, projectType, level, budget }),
+      });
+
       const data = await resp.json();
-      if (!resp.ok) { throw new Error(data.error || 'Erreur'); }
-      currentPlan = data; displayResults(data, description); saveToHistory(description, data);
-    } catch (err) { showError(err.message); } finally { setLoading(false); }
+
+      if (!resp.ok) {
+        throw new Error(data.error || 'Erreur lors de la g&#233;n&#233;ration');
+      }
+
+      currentPlan = data;
+      displayResults(data, description);
+      saveToHistory(description, data);
+
+    } catch (err) {
+      showError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
+
+  // &#9472;&#9472; DISPLAY &#9472;&#9472;
   function displayResults(plan, description) {
-    document.getElementById('resultsTitle').textContent = 'Plan : ' + description.slice(0, 60);
+    // Title
+    document.getElementById('resultsTitle').textContent = `&#128208; ${description.slice(0, 60)}${description.length > 60 ? '&#8230;' : ''}`;
+
+    // Stats bar
     const statsBar = document.getElementById('statsBar');
-    const budgetMid = plan.totalBudgetMin && plan.totalBudgetMax ? plan.totalBudgetMin + 'â' + plan.totalBudgetMax + 'â¬' : 'â';
-    statsBar.innerHTML = `<div class="stat"><div class="val">${budgetMid}</div><div class="key">Budget</div></div><div class="stat"><div class="val">${plan.duration || 'â'}</div><div class="key">DurÃ©e</div></div><div class="stat"><div class="val">${plan.materials ? plan.materials.length : 0}</div><div class="key">MatÃ©riaux</div></div><div class="stat"><div class="val">${plan.steps ? plan.steps.length : 0}</div><div class="key">Ãtapes</div></div>`;
+    const budgetMid = plan.totalBudgetMin && plan.totalBudgetMax
+      ? `${plan.totalBudgetMin}&#8211;${plan.totalBudgetMax}&#8364;`
+      : '&#8212;';
+    const matCount = plan.materials ? plan.materials.length : '&#8212;';
+    const stepCount = plan.steps ? plan.steps.length : '&#8212;';
+    const duration = plan.duration || '&#8212;';
+
+    statsBar.innerHTML = `
+      <div class="stat"><div class="val">${budgetMid}</div><div class="key">Budget estim&#233;</div></div>
+      <div class="stat"><div class="val">${duration}</div><div class="key">Dur&#233;e totale</div></div>
+      <div class="stat"><div class="val">${matCount}</div><div class="key">Mat&#233;riaux</div></div>
+      <div class="stat"><div class="val">${stepCount}</div><div class="key">&#201;tapes</div></div>
+    `;
+
+    // Overview
     document.getElementById('overviewText').textContent = plan.overview || '';
     const diff = plan.difficulty || {};
-    document.getElementById('difficultyText').innerHTML = diff.level ? '<strong>DifficultÃ© :</strong> <span style="color:var(--accent)">' + diff.level + '</span> â ' + (diff.explanation || '') : '';
+    document.getElementById('difficultyText').innerHTML = diff.level
+      ? `<strong>Difficult&#233; :</strong> <span style="color:var(--accent)">${diff.level}</span> &#8212; ${diff.explanation || ''}`
+      : '';
+
+    // Materials
     const tbody = document.getElementById('materialsBody');
     tbody.innerHTML = '';
     (plan.materials || []).forEach(m => {
       const tr = document.createElement('tr');
-      tr.innerHTML = '<td><strong>' + (m.name || '') + '</strong></td><td>' + (m.quantity || '') + ' ' + (m.unit || '') + '</td><td><span class="price-badge">' + (m.estimatedPrice != null ? m.estimatedPrice + 'â¬' : 'â') + '</span></td><td><span class="store-badge">' + (m.where_to_buy || 'â') + '</span></td>';
+      tr.innerHTML = `
+        <td><strong>${m.name || ''}</strong></td>
+        <td>${m.quantity || ''} ${m.unit || ''}</td>
+        <td><span class="price-badge">${m.estimatedPrice != null ? m.estimatedPrice + '&#8364;' : '&#8212;'}</span></td>
+        <td><span class="store-badge">${m.where_to_buy || '&#8212;'}</span></td>
+      `;
       tbody.appendChild(tr);
     });
-    document.getElementById('toolsGrid').innerHTML = (plan.tools || []).map(t => '<div class="tool-item"><div class="tool-name">ð§ ' + (t.name || '') + '</div><div class="tool-meta ' + (t.owned_or_buy === 'Ã  acheter' ? 'tool-buy' : 'tool-own') + '">' + (t.owned_or_buy === 'Ã  acheter' ? 'ð Ã acheter' + (t.approxPrice ? ' â ' + t.approxPrice + 'â¬' : '') : 'â Disponible') + '</div></div>').join('');
-    document.getElementById('stepsList').innerHTML = (plan.steps || []).map(s => '<div class="step"><div class="step-num">' + (s.stepNumber || '?') + '</div><div class="step-body"><div class="step-title">' + (s.title || '') + '</div><div class="step-desc">' + (s.description || '') + '</div><div class="step-meta">' + (s.duration ? '<span class="step-tag time">â±' + s.duration + '</span>' : '') + (s.tips ? '<span class="step-tag tip">ð¡' + s.tips + '</span>' : '') + (s.warnings ? '<span class="step-tag warn">â ï¸' + s.warnings + '</span>' : '') + '</div></div></div>').join('');
+
+    // Tools
+    const toolsGrid = document.getElementById('toolsGrid');
+    toolsGrid.innerHTML = (plan.tools || []).map(t => `
+      <div class="tool-item">
+        <div class="tool-name">&#128295; ${t.name || ''}</div>
+        <div class="tool-meta ${t.owned_or_buy === '&#224; acheter' ? 'tool-buy' : 'tool-own'}">
+          ${t.owned_or_buy === '&#224; acheter' ? `&#128722; &#192; acheter${t.approxPrice ? ' &#8212; ' + t.approxPrice + '&#8364;' : ''}` : '&#9989; Probablement disponible'}
+        </div>
+      </div>
+    `).join('');
+
+    // Steps
+    const stepsList = document.getElementById('stepsList');
+    stepsList.innerHTML = (plan.steps || []).map(s => `
+      <div class="step">
+        <div class="step-num">${s.stepNumber || '?'}</div>
+        <div class="step-body">
+          <div class="step-title">${s.title || ''}</div>
+          <div class="step-desc">${s.description || ''}</div>
+          <div class="step-meta">
+            ${s.duration ? `<span class="step-tag time">&#9201; ${s.duration}</span>` : ''}
+            ${s.tips ? `<span class="step-tag tip">&#128161; ${s.tips}</span>` : ''}
+            ${s.warnings ? `<span class="step-tag warn">&#9888;&#65039; ${s.warnings}</span>` : ''}
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    // Safety
+    const safetyItems = document.getElementById('safetyItems');
     const safety = Array.isArray(plan.safety) ? plan.safety : (plan.safety ? [plan.safety] : []);
-    document.getElementById('safetyItems').innerHTML = safety.map(s => '<div class="safety-item"><span class="icon">â ï¸</span><span>' + s + '</span></div>').join('');
-    document.getElementById('altsGrid').innerHTML = (plan.alternatives || []).map(a => '<div class="alt-item">ð ' + a + '</div>').join('');
-    document.getElementById('tipsList').innerHTML = (plan.proTips || []).map(t => '<div class="tip-item"><span class="tip-icon">ð¡</span><span>' + t + '</span></div>').join('');
+    safetyItems.innerHTML = safety.map(s => `
+      <div class="safety-item"><span class="icon">&#9888;&#65039;</span><span>${s}</span></div>
+    `).join('');
+
+    // Alternatives
+    const altsGrid = document.getElementById('altsGrid');
+    altsGrid.innerHTML = (plan.alternatives || []).map(a => `
+      <div class="alt-item">&#128256; ${a}</div>
+    `).join('');
+
+    // Pro Tips
+    const tipsList = document.getElementById('tipsList');
+    tipsList.innerHTML = (plan.proTips || []).map(t => `
+      <div class="tip-item"><span class="tip-icon">&#128161;</span><span>${t}</span></div>
+    `).join('');
+
+    // Show results
     const resultsEl = document.getElementById('results');
     resultsEl.classList.add('visible');
     resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  // &#9472;&#9472; HISTORY &#9472;&#9472;
   function saveToHistory(description, plan) {
     let history = JSON.parse(localStorage.getItem('diy_history') || '[]');
-    history.unshift({ description, plan, date: new Date().toLocaleDateString('fr-FR'), id: Date.now() });
-    history = history.slice(0, 10);
+    history.unshift({
+      description,
+      plan,
+      date: new Date().toLocaleDateString('fr-FR'),
+      id: Date.now(),
+    });
+    history = history.slice(0, 10); // garde les 10 derniers
     localStorage.setItem('diy_history', JSON.stringify(history));
     renderHistory();
   }
+
   function renderHistory() {
     const history = JSON.parse(localStorage.getItem('diy_history') || '[]');
     const section = document.getElementById('historySection');
     const list = document.getElementById('historyList');
-    if (history.length === 0) { section.style.display = 'none'; return; }
+
+    if (history.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+
     section.style.display = 'block';
-    list.innerHTML = history.map((h, i) => '<div class="history-item" onclick="loadFromHistory(' + i + ')"><div><div class="name">' + h.description.slice(0, 80) + '</div><div class="date">ð ' + h.date + '</div></div><button class="load-btn">Charger â</button></div>').join('');
+    list.innerHTML = history.map((h, i) => `
+      <div class="history-item" onclick="loadFromHistory(${i})">
+        <div>
+          <div class="name">${h.description.slice(0, 80)}${h.description.length > 80 ? '&#8230;' : ''}</div>
+          <div class="date">&#128197; ${h.date}</div>
+        </div>
+        <button class="load-btn">Charger &#8594;</button>
+      </div>
+    `).join('');
   }
+
   function loadFromHistory(index) {
     const history = JSON.parse(localStorage.getItem('diy_history') || '[]');
     const item = history[index];
@@ -751,26 +924,45 @@
     currentPlan = item.plan;
     displayResults(item.plan, item.description);
   }
+
+  // &#9472;&#9472; EXPORT &#9472;&#9472;
   function exportJSON() {
     if (!currentPlan) return;
     const blob = new Blob([JSON.stringify(currentPlan, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = 'diy-plan-' + Date.now() + '.json'; a.click();
+    a.href = url;
+    a.download = `diy-plan-${Date.now()}.json`;
+    a.click();
   }
+
+  // &#9472;&#9472; UI HELPERS &#9472;&#9472;
   function setLoading(on) {
     document.getElementById('loader').classList.toggle('visible', on);
     document.getElementById('generateBtn').disabled = on;
-    if (on) { document.getElementById('results').classList.remove('visible'); }
+    if (on) {
+      document.getElementById('results').classList.remove('visible');
+      // Reset loader steps animation by re-inserting
+      const steps = document.querySelectorAll('.loader-step');
+      steps.forEach(s => { s.style.animation = 'none'; void s.offsetWidth; s.style.animation = ''; });
+    }
   }
+
   function showError(msg) {
     document.getElementById('errorMsg').textContent = msg;
     document.getElementById('errorBox').classList.add('visible');
   }
-  function hideError() { document.getElementById('errorBox').classList.remove('visible'); }
+
+  function hideError() {
+    document.getElementById('errorBox').classList.remove('visible');
+  }
+
+  // &#9472;&#9472; INIT &#9472;&#9472;
   document.addEventListener('DOMContentLoaded', () => {
     renderHistory();
-    document.getElementById('description').addEventListener('keydown', e => { if (e.ctrlKey && e.key === 'Enter') generatePlan(); });
+    // Enter key on textarea = Ctrl+Enter to generate
+    document.getElementById('description').addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key === 'Enter') generatePlan(); });
   });
 </script>
 </body>
