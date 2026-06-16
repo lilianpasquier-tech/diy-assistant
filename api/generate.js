@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Méthode non autorisée' });
 
-  const { projectDescription, projectType, budget, level, userChoices } = req.body;
+  const { projectDescription, projectType, budget, level, userChoices, projectConfig } = req.body;
   if (!projectDescription) return res.status(400).json({ error: 'Description du projet manquante' });
 
   const apiKey = process.env.GROQ_API_KEY;
@@ -16,94 +16,214 @@ export default async function handler(req, res) {
     ? `\nCHOIX VALIDÉS PAR L'UTILISATEUR : ${JSON.stringify(userChoices)}\nAdapte le plan en conséquence.`
     : '';
 
-  const prompt = `Tu es un expert polyvalent en projets DIY, construction, rénovation, menuiserie, électronique et mécanique.
+  const prompt = `Tu es un EXPERT PLURIDISCIPLINAIRE de niveau professionnel en : électronique embarquée, mécanique, robotique, impression 3D, menuiserie, électricité, plomberie, domotique, maçonnerie et projets DIY complexes.
 
-Génère un plan COMPLET et TRÈS DÉTAILLÉ en JSON avec EXACTEMENT cette structure :
+Génère un PROGRAMME PROFESSIONNEL COMPLET pour amateur passionné. JSON strict avec EXACTEMENT cette structure :
 
 {
-  "overview": "Résumé du projet en 2-3 phrases claires",
-  "difficulty": { "level": "Débutant|Intermédiaire|Avancé|Expert", "explanation": "Pourquoi ce niveau" },
-  "duration": "Durée totale ex: 2 jours",
-  "constraints": ["Contrainte technique 1", "Contrainte 2", "Contrainte 3"],
+  "title": "Titre accrocheur du projet",
+  "overview": "Description technique complète du projet : ce que c'est, comment ça fonctionne, ses performances, ses spécificités techniques — 4-5 phrases riches",
+  "hero_keyword": "english keyword 3-5 words for Unsplash photo of the FINISHED project, ex: 'electric motocross bike offroad' or 'handmade oak dining table workshop'",
+  "difficulty": { "level": "Débutant|Intermédiaire|Avancé|Expert", "explanation": "Explication précise des compétences requises" },
+  "duration": "Durée totale réaliste avec détail par phase",
+  "constraints": ["Contrainte technique précise 1", "Contrainte 2", "Contrainte 3", "Contrainte 4"],
+
+  "project_phases": {
+    "study": {
+      "title": "Phase 1 — Étude et Conception",
+      "duration": "X jours/semaines",
+      "description": "Objectifs de cette phase",
+      "tasks": [
+        "Définir les spécifications : [liste de specs techniques à définir pour CE projet spécifique]",
+        "Rechercher les normes applicables : [normes spécifiques au projet : CE, UL, IP, etc.]",
+        "Faire un schéma fonctionnel : [blocs fonctionnels spécifiques à ce projet]",
+        "Dimensionner les composants critiques : [calculs spécifiques : puissance, charge, résistance, etc.]",
+        "Valider la faisabilité avec un prototype ou maquette rapide"
+      ],
+      "deliverables": ["Cahier des charges", "Schéma de principe", "Liste de matériaux validée", "Budget détaillé"]
+    },
+    "design": {
+      "title": "Phase 2 — Conception Détaillée",
+      "duration": "X jours",
+      "description": "Conception complète avant toute réalisation",
+      "tasks": [
+        "Dessiner les plans cotés avec [logiciel adapté : FreeCAD / Fusion360 / LibreCAD / KiCAD]",
+        "Créer les fichiers d'impression 3D (STL/3MF) pour [pièces spécifiques à imprimer]",
+        "Réaliser le schéma électrique / électronique complet",
+        "Définir le planning de fabrication avec les dépendances entre tâches",
+        "Commander les composants avec délai de livraison anticipé"
+      ],
+      "software_tools": [
+        { "name": "Nom du logiciel", "purpose": "À quoi il sert sur ce projet", "free": true, "url": "https://..." }
+      ],
+      "deliverables": ["Plans CAO 3D", "Schéma électrique", "Fichiers STL pour impression", "Nomenclature complète"]
+    },
+    "preparation": {
+      "title": "Phase 3 — Préparation et Approvisionnement",
+      "duration": "X jours",
+      "tasks": [
+        "Vérifier la livraison de tous les composants selon la liste",
+        "Préparer l'espace de travail : [besoins spécifiques en surface, éclairage, alimentation électrique]",
+        "Calibrer et vérifier les outils : [outils à calibrer avant utilisation]",
+        "Réaliser des tests unitaires sur les composants critiques avant assemblage",
+        "Marquer et préparer les pièces selon le plan de débit"
+      ]
+    },
+    "realization": {
+      "title": "Phase 4 — Réalisation",
+      "duration": "X jours",
+      "description": "Construction proprement dite, étape par étape",
+      "key_milestones": [
+        "Jalon 1 : [Premier assemblage structurel ou sous-ensemble critique terminé]",
+        "Jalon 2 : [Premier test fonctionnel partiel]",
+        "Jalon 3 : [Assemblage complet avant finition]",
+        "Jalon 4 : [Test final complet]"
+      ]
+    },
+    "testing": {
+      "title": "Phase 5 — Tests, Validation et Mise au Point",
+      "duration": "X jours",
+      "tests": [
+        { "test": "Nom du test", "method": "Protocole précis du test", "success_criteria": "Valeur ou observation attendue", "tools_needed": "Instruments de mesure nécessaires" }
+      ]
+    },
+    "use_maintenance": {
+      "title": "Phase 6 — Utilisation et Maintenance",
+      "first_use": ["Étape de première mise en service 1", "Étape 2", "Étape 3"],
+      "regular_maintenance": [
+        { "frequency": "Avant chaque utilisation|Mensuel|Annuel", "task": "Tâche de maintenance précise", "duration": "Xmin" }
+      ],
+      "troubleshooting": [
+        { "symptom": "Symptôme observable", "likely_cause": "Cause probable", "solution": "Solution pas à pas" }
+      ]
+    }
+  },
+
   "preliminary_questions": [
     {
-      "question": "Question décisive sur un choix structurant du projet",
-      "why": "Impact concret de ce choix sur les matériaux, le coût, la durée ou la technique",
+      "question": "Question décisive sur un choix structurant",
+      "why": "Impact concret sur le coût, la technique, les matériaux",
       "options": [
-        { "label": "Option A (ex: Bois massif)", "impact": "Impact court : coût +30%, plus solide, nécessite rabotage", "materials_hint": ["planche chêne 27mm", "colle à bois PVA"] },
-        { "label": "Option B (ex: Contreplaqué)", "impact": "Impact court : moins cher, plus rapide, suffisant pour usage intérieur", "materials_hint": ["contreplaqué bouleau 18mm", "placage adhésif"] }
+        { "label": "Option A", "impact": "Impact concis : coût, difficulté, performance", "materials_hint": ["matériau spécifique 1", "matériau 2"] },
+        { "label": "Option B", "impact": "Impact concis", "materials_hint": ["matériau 1", "matériau 2"] }
       ]
     }
   ],
+
   "materials": [
     {
-      "name": "Nom précis du matériau avec spécification",
-      "quantity": 3,
-      "unit": "m²",
-      "priceMinUnit": 12,
-      "priceMaxUnit": 18,
-      "totalPriceMin": 36,
-      "totalPriceMax": 54,
-      "where_to_buy": "Leroy Merlin",
-      "searchKeyword": "TERME PRÉCIS pour trouver CE produit sur Amazon.fr ou Leroy Merlin : ex 'planche pin raboté 200x20x2000mm'",
-      "specifications": "Dimensions exactes, classe, norme CE, résistance, densité — tout ce qui permet de choisir le bon produit",
-      "criticalPoints": "Ce qu'il NE faut PAS rater à l'achat : qualité minimale, piège courant, erreur d'acheteur"
+      "name": "Nom précis avec référence/spécification",
+      "quantity": 1,
+      "unit": "pièce|m|m²|kg|L|rouleau",
+      "priceMinUnit": 10,
+      "priceMaxUnit": 20,
+      "totalPriceMin": 10,
+      "totalPriceMax": 20,
+      "where_to_buy": "Amazon FR|Leroy Merlin|Brico Dépôt|Aliexpress|RS Components|Mouser|Farnell",
+      "searchKeyword": "terme de recherche EXACT et PRÉCIS pour Amazon.fr ou Leroy Merlin incluant marque/modèle/dimension si connu",
+      "image_keyword": "3-4 english words for product photo search ex: 'hydraulic brake lever motorcycle' or '18v lithium battery pack'",
+      "specifications": "Caractéristiques techniques complètes : dimensions, tension, courant, résistance, classe, IP, norme, marque recommandée",
+      "criticalPoints": "ERREUR D'ACHAT fréquente à éviter + ce qui fait la différence entre un bon et mauvais produit",
+      "is_most_expensive": false
     }
   ],
+
   "tools": [
     {
-      "name": "Nom de l'outil",
+      "name": "Nom complet de l'outil",
       "isEssential": true,
-      "category": "Mesure|Coupe|Perçage|Vissage|Soudure|Finition|Sécurité|Manutention|Électronique",
+      "category": "Mesure|Coupe|Perçage|Vissage|Soudure|Électronique|Finition|Sécurité|Manutention|Fabrication numérique|Hydraulique",
       "approxPriceMin": 20,
-      "approxPriceMax": 80,
-      "searchKeyword": "terme précis pour trouver cet outil sur Amazon.fr ex 'perceuse visseuse sans fil 18V Bosch'",
-      "alternative": "Ce qu'on peut utiliser à la place si on ne possède pas cet outil"
+      "approxPriceMax": 150,
+      "searchKeyword": "terme précis Amazon.fr ex 'multimètre numérique Fluke 117' ou 'imprimante 3D Bambu Lab A1 mini'",
+      "specifications": "Spécifications techniques nécessaires pour CE projet : voltage, capacité, précision, diamètre",
+      "alternative": "Outil de substitution si non disponible",
+      "pro_tip": "Réglage ou technique spécifique pour ce type de projet"
     }
   ],
+
+  "print_3d": {
+    "needed": true,
+    "printer_specs": "Spécifications minimum d'imprimante nécessaires pour ce projet",
+    "parts_to_print": [
+      { "name": "Nom de la pièce", "material": "PLA|PETG|ASA|TPU|ABS", "infill": "20%", "supports": true, "print_time": "2h", "purpose": "Fonction de la pièce" }
+    ],
+    "thingiverse_search": "mots-clés anglais pour trouver des modèles 3D similaires sur Thingiverse",
+    "cad_files_note": "Description des fichiers à créer ou adapter"
+  },
+
+  
+"assembly_diagram": {
+  "parts": [
+    { "id": "A", "name": "Part name", "qty": 1, "connects_to": ["B","C"],
+      "position": "bottom-center", "material_ref": 0,
+      "note": "Base frame — placed first" },
+    { "id": "B", "name": "Next part", "qty": 2, "connects_to": ["A"],
+      "position": "top-left", "material_ref": 1,
+      "note": "Mounts onto A with M4 bolts" }
+  ],
+  "assembly_sequence": ["A","B","C"],
+  "exploded_note": "2-sentence description of overall assembly logic"
+},
+"electrical_schema": {
+    "needed": true,
+    "description": "Description du schéma électrique/électronique à réaliser",
+    "components": ["Composant 1 : rôle dans le circuit", "Composant 2 : rôle"],
+    "connections": ["Connexion 1 : de A vers B via câble X section Y", "Connexion 2"],
+    "safety_notes": ["Protection requise 1", "Protection 2"]
+  },
+
   "steps": [
     {
       "stepNumber": 1,
-      "title": "Titre court de l'étape",
-      "description": "Ce qu'on accomplit dans cette étape et pourquoi c'est important",
+      "title": "Titre précis de l'étape",
+      "description": "Ce qu'on réalise et pourquoi — importance dans le projet global",
       "duration": "1h30",
       "phase": "Préparation|Construction|Assemblage|Finition|Vérification",
       "detailedInstructions": [
-        "Avec [outil précis] : [action technique précise] [objet] [dimension/paramètre] — vérifier que [critère mesurable]",
-        "Poser [matériau X] sur [support Y] en alignant [repère] avec [repère], laisser un jeu de [Xmm] pour [raison technique]",
-        "Régler [outil] à [paramètre exact : vitesse/pression/température] pour [matériau/épaisseur]",
-        "Appliquer [produit] en couche de [épaisseur] avec [outil], en suivant le fil du bois/sens de pose",
-        "Contrôler avec [instrument de mesure] : tolérance acceptée ± [Xmm/degré]",
-        "En cas d'erreur [problème courant] : [solution immédiate concrète]",
-        "Nettoyer [outil/zone] avec [produit] avant de passer à l'étape suivante"
+        "Avec [outil précis + réglage] : [action technique précise] sur [objet/matériau] — paramètre : [valeur exacte]",
+        "Positionner [pièce X] sur [support Y] en alignant [repère A] avec [repère B], jeu de [Xmm] pour [raison technique]",
+        "Régler [outil] à [valeur exacte : vitesse/couple/température/tension] adapté à [matériau/épaisseur/diamètre]",
+        "Appliquer [produit] avec [outil] : épaisseur [X mm], direction [sens], temps de séchage [X min] avant manipulation",
+        "Vérifier avec [instrument] : valeur attendue [X ± tolérance] — si hors tolérance : [action corrective]",
+        "Erreur fréquente : [problème précis] → conséquence [Y] → prévention : [geste précis]",
+        "Documenter avec une photo de [ce qu'il faut photographier] pour référence future et journal de chantier"
       ],
-      "tips": "Astuce de pro qui fait gagner du temps ou améliore la qualité",
-      "warnings": "Danger concret ou difficulté technique principale — être très précis",
-      "validationCriteria": "TEST PRÉCIS à faire avant de passer à l'étape suivante : ex 'Vérifier l'équerrage avec équerre : diagonales égales ± 2mm'",
-      "commonMistakes": "L'ERREUR la plus fréquente sur cette étape avec sa CONSÉQUENCE et comment l'éviter"
+      "tips": "Astuce de professionnel spécifique à ce type de matériau ou technique",
+      "warnings": "DANGER ou point de non-retour critique avec conséquence si mal exécuté",
+      "validationCriteria": "TEST CONCRET avant de passer à la suite : [mesure ou observation précise attendue]",
+      "commonMistakes": "Erreur n°1 sur cette étape : [erreur] → conséquence : [Y] → prévention : [Z]"
     }
   ],
-  "safety": ["EPI requis + pourquoi", "Risque spécifique + geste de prévention"],
-  "totalBudgetMin": 150,
-  "totalBudgetMax": 280,
-  "alternatives": ["Variante A : description et dans quel cas la préférer", "Variante B : ..."],
-  "proTips": ["Astuce niveau pro 1", "Astuce 2"],
-  "optimizations": ["Optimisation possible 1", "Optimisation 2"]
+
+  "safety": [
+    "EPI obligatoire : [liste précise] — pourquoi : [risque spécifique à ce projet]",
+    "Risque principal : [danger] — prévention : [mesure concrète]"
+  ],
+
+  "totalBudgetMin": 100,
+  "totalBudgetMax": 500,
+  "alternatives": ["Variante moins chère : [description + économie réalisée]", "Variante plus performante : [description + surcoût]"],
+  "proTips": ["Astuce pro 1 que peu de tutoriels mentionnent", "Astuce 2"],
+  "optimizations": ["Optimisation coût : [action concrète]", "Optimisation qualité : [action concrète]"]
 }
 
 RÈGLES ABSOLUES :
-- preliminary_questions.options doit TOUJOURS avoir "label", "impact" et "materials_hint"
-- Minimum 3 preliminary_questions sur des choix structurants réels
-- MINIMUM 7 detailedInstructions par étape — chacune commence par "Avec [outil]:" ou une action concrète
-- Chaque instruction doit contenir des données techniques : dimensions, paramètres, tolérances, produits nommés
-- searchKeyword = terme de recherche Amazon.fr ou Leroy Merlin TRÈS PRÉCIS avec marque/type/dimension si possible
-- Les prix sont ceux du marché français 2024-2025
-- phase = une des 5 valeurs exactes listées
+1. hero_keyword = 3-5 mots anglais précis pour trouver UNE PHOTO DU PROJET FINI sur Unsplash
+2. image_keyword sur chaque matériau = 3-4 mots anglais très précis du PRODUIT PHYSIQUE
+3. is_most_expensive = true uniquement sur LE matériau le plus cher (1 seul)
+4. MINIMUM 8 detailedInstructions par étape — chacune commence par "Avec [outil]:" ou une action physique précise avec paramètres techniques
+5. MINIMUM 15 tools différents couvrant toutes les phases du projet
+6. searchKeyword = terme de recherche EXACT comme si vous l'écriviez sur Amazon.fr maintenant
+7. project_phases doit couvrir tout le cycle de vie SPÉCIFIQUEMENT pour ce projet (pas générique)
+8. print_3d.needed = false si aucune impression 3D n'est utilisée dans ce projet
+9. electrical_schema.needed = false si pas d'électricité dans ce projet
 
-Projet : ${projectDescription}
+PROJET À PLANIFIER :
+${projectConfig ? "\n--- CONFIGURATION UTILISATEUR ---\n" + projectConfig + "\n---\n" : ""}Projet : ${projectDescription}
 ${projectType ? 'Type : ' + projectType : ''}
-${budget ? 'Budget max : ' + budget + '€' : ''}
-${level ? 'Niveau : ' + level : ''}
+${budget ? 'Budget maximum : ' + budget + '€' : ''}
+${level ? 'Niveau utilisateur : ' + level : ''}
 ${choicesText}
 
 Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises markdown.`;
@@ -115,7 +235,7 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises mar
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: prompt }],
-        temperature: 0.6,
+        temperature: 0.55,
         max_tokens: 8000,
         response_format: { type: 'json_object' },
       }),
