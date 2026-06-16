@@ -788,7 +788,7 @@
   // &#9472;&#9472; DISPLAY &#9472;&#9472;
   function displayResults(plan, description) {
     // Title
-    document.getElementById('resultsTitle').textContent = `&#128208; ${description.slice(0, 60)}${description.length > 60 ? '&#8230;' : ''}`;
+    document.getElementById('resultsTitle').textContent = `📋 ${description.slice(0, 60)}${description.length > 60 ? '…' : ''}`;
 
     // Stats bar
     const statsBar = document.getElementById('statsBar');
@@ -908,8 +908,8 @@
     list.innerHTML = history.map((h, i) => `
       <div class="history-item" onclick="loadFromHistory(${i})">
         <div>
-          <div class="name">${h.description.slice(0, 80)}${h.description.length > 80 ? '&#8230;' : ''}</div>
-          <div class="date">&#128197; ${h.date}</div>
+          <div class="name">${h.description.slice(0, 80)}${h.description.length > 80 ? '…' : ''}</div>
+          <div class="date">📅 ${h.date}</div>
         </div>
         <button class="load-btn">Charger &#8594;</button>
       </div>
@@ -966,4 +966,4 @@
   });
 </script>
 </body>
-</html>
+</html>                  
