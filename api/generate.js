@@ -243,13 +243,14 @@ INSTRUCTIONS CRITIQUES selon la configuration maker :
 Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises markdown.`;
 
   // Fallback chain: 70b (best quality, 100k TPD) → 70b alt → 8b instant (500k TPD) → gemma2 (500k TPD)
+  // max_tokens adapté par modèle (TPM limits : versatile=unlimited, 8b=6000 TPM, gemma=15000 TPM)
   const MODELS = [
-    'llama-3.3-70b-versatile',   // 100k TPD
-    'llama-3.1-8b-instant',       // 500k TPD
-    'gemma2-9b-it',               // last resort
+    { model: 'llama-3.3-70b-versatile', maxTokens: 5500 },  // 100k TPD, best quality
+    { model: 'llama-3.1-8b-instant',    maxTokens: 2000 },  // TPM 6000 — input ~3600 + 2000 < 6000
+    { model: 'gemma2-9b-it',            maxTokens: 4000 },  // TPM 15000 — last resort
   ];
 
-  const callGroq = async (model) => {
+  const callGroq = async (model, maxTokens) => {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
@@ -257,7 +258,7 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises mar
         model,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.55,
-        max_tokens: 5500,
+        max_tokens: maxTokens,
         response_format: { type: 'json_object' },
       }),
     });
@@ -268,15 +269,15 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises mar
     let response = null;
     let usedModel = null;
 
-    for (const model of MODELS) {
-      const groqRes = await callGroq(model);
+    for (const { model, maxTokens } of MODELS) {
+      const groqRes = await callGroq(model, maxTokens);
       if (groqRes.ok) {
         response = groqRes;
         usedModel = model;
         break;
       }
       const errBody = await groqRes.text();
-      // Retry on rate-limit or decommissioned model
+      // Retry on rate-limit (429) or decommissioned model
       if (groqRes.status === 429 || (groqRes.status === 400 && errBody.includes('model_decommissioned'))) {
         console.warn(`[generate] Skipping ${model} (${groqRes.status}), trying next…`);
         continue;
