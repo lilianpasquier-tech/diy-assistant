@@ -1,5 +1,5 @@
 // api/generate.js — Vercel Serverless Function
-// Proxy sécurisé vers l'API Gemini de Google (gratuit jusqu'à 1500 req/jour)
+// Proxy sécurisé vers l'API Groq (gratuit : 14 400 req/jour, Llama 3.3 70B)
 
 export default async function handler(req, res) {
   // CORS headers — permet l'accès depuis le navigateur
@@ -21,9 +21,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Description du projet manquante' });
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: 'Clé API Gemini non configurée sur le serveur' });
+    return res.status(500).json({ error: 'Clé API Groq non configurée sur le serveur' });
   }
 
   const prompt = `Tu es un expert polyvalent en projets DIY et construction. Tu maîtrises :
@@ -55,31 +55,33 @@ Réponds UNIQUEMENT en JSON valide, sans texte avant ou après, sans balises mar
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      'https://api.groq.com/openai/v1/chat/completions',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 4096,
-            responseMimeType: 'application/json',
-          },
+          model: 'llama-3.3-70b-versatile',
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.7,
+          max_tokens: 4096,
+          response_format: { type: 'json_object' },
         }),
       }
     );
 
     if (!response.ok) {
       const err = await response.text();
-      return res.status(response.status).json({ error: `Erreur API Gemini : ${err}` });
+      return res.status(response.status).json({ error: `Erreur API Groq : ${err}` });
     }
 
     const data = await response.json();
-    const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    const content = data.choices?.[0]?.message?.content;
 
     if (!content) {
-      return res.status(500).json({ error: 'Réponse vide de Gemini' });
+      return res.status(500).json({ error: 'Réponse vide de Groq' });
     }
 
     // Parse JSON — on nettoie au cas où il y aurait des backticks
