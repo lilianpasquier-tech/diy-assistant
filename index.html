@@ -909,32 +909,31 @@
     tbody.innerHTML = '';
     materials.forEach(m => {
       const priceUnit = (m.priceMinUnit != null && m.priceMaxUnit != null)
-        ? `${m.priceMinUnit}–${m.priceMaxUnit}€ / ${m.unit || 'u.'}`
-        : (m.estimatedPrice != null ? `${m.estimatedPrice}€` : '—');
+        ? m.priceMinUnit + '–' + m.priceMaxUnit + '€ / ' + (m.unit || 'u.')
+        : (m.estimatedPrice != null ? m.estimatedPrice + '€' : '—');
       const priceTotalStr = (m.totalPriceMin != null && m.totalPriceMax != null)
-        ? `${m.totalPriceMin}–${m.totalPriceMax}€` : '—';
+        ? m.totalPriceMin + '–' + m.totalPriceMax + '€' : '—';
       const kw = m.searchKeyword || m.name || '';
-      const imgSrc = `https://source.unsplash.com/56x56/?${encodeURIComponent(kw + ',hardware,construction')}`;
+      const imgSrc = 'https://source.unsplash.com/56x56/?' + encodeURIComponent(kw + ' hardware construction');
 
       const tr = document.createElement('tr');
-      tr.innerHTML = \`
-        <td class="mat-thumb-cell">
-          <img class="mat-thumb" src="\${imgSrc}" alt="\${esc(m.name)}" loading="lazy"
-            onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'56\' height=\'56\'><rect width=\'100%\' height=\'100%\' fill=\'%23e5e7eb\'/><text x=\'50%\' y=\'55%\' text-anchor=\'middle\' font-size=\'22\'>🧱</text></svg>'">
-        </td>
-        <td>
-          <div class="mat-name">\${esc(m.name || '')}</div>
-          \${m.specifications ? \`<div class="mat-specs">📐 \${esc(m.specifications)}</div>\` : ''}
-          \${m.criticalPoints ? \`<div class="mat-critical">⚠ \${esc(m.criticalPoints)}</div>\` : ''}
-        </td>
-        <td class="qty-cell">\${esc(String(m.quantity || ''))} \${esc(m.unit || '')}</td>
-        <td><div class="price-unit">\${priceUnit}</div></td>
-        <td><div class="price-unit">\${priceTotalStr}</div></td>
-        <td>
-          \${m.where_to_buy ? \`<div style="font-size:11px;color:var(--text2);margin-bottom:4px;">\${esc(m.where_to_buy)}</div>\` : ''}
-          \${buyLinksHTML(kw)}
-        </td>
-      \`;
+      let html = '<td class="mat-thumb-cell">'
+        + '<img class="mat-thumb" src="' + imgSrc + '" alt="' + esc(m.name) + '" loading="lazy"'
+        + ' onerror="this.hidden=true">'
+        + '</td>'
+        + '<td>'
+        + '<div class="mat-name">' + esc(m.name || '') + '</div>'
+        + (m.specifications ? '<div class="mat-specs">📐 ' + esc(m.specifications) + '</div>' : '')
+        + (m.criticalPoints ? '<div class="mat-critical">⚠ ' + esc(m.criticalPoints) + '</div>' : '')
+        + '</td>'
+        + '<td class="qty-cell">' + esc(String(m.quantity || '')) + ' ' + esc(m.unit || '') + '</td>'
+        + '<td><div class="price-unit">' + priceUnit + '</div></td>'
+        + '<td><div class="price-unit">' + priceTotalStr + '</div></td>'
+        + '<td>'
+        + (m.where_to_buy ? '<div style="font-size:11px;color:var(--text2);margin-bottom:4px;">' + esc(m.where_to_buy) + '</div>' : '')
+        + buyLinksHTML(kw)
+        + '</td>';
+      tr.innerHTML = html;
       tbody.appendChild(tr);
     });
   }
@@ -1053,8 +1052,7 @@
                     title="Marquer comme fait" />
                   <div class="substep-num">${j + 1}</div>
                   <div class="substep-text">${esc(ins)}</div>
-                  <button class="substep-ask-btn" onclick="askAboutSubstep(${i}, ${j}, '${esc(ins).replace(/'/g,"\'").replace(/
-/g,' ')}')" title="Demander un détail à l'IA">💬</button>
+                  <button class="substep-ask-btn" data-step="${i}" data-sub="${j}" onclick="onSubstepAskClick(this)" title="Demander un détail à l'IA">💬</button>
                 </div>
               `).join('')}
             </div>
@@ -1269,10 +1267,19 @@
     }
   }
 
+  function onSubstepAskClick(btn) {
+    const stepIdx = parseInt(btn.dataset.step);
+    const subIdx = parseInt(btn.dataset.sub);
+    const textEl = btn.previousElementSibling;
+    const text = textEl ? textEl.textContent.trim() : '';
+    askAboutSubstep(stepIdx, subIdx, text);
+  }
+
   function askAboutSubstep(stepIdx, subIdx, text) {
     if (!chatOpen) toggleChat();
     const step = currentPlan?.steps?.[stepIdx];
-    const question = `Pour l'étape "${step?.title || stepIdx+1}", sous-étape ${subIdx+1} : "${text}" — peux-tu expliquer comment faire ça concrètement avec plus de détails ?`;
+    const stepTitle = step?.title || ('étape ' + (stepIdx + 1));
+    const question = 'Pour "' + stepTitle + '", sous-étape ' + (subIdx + 1) + ' : ' + text + ' — explique comment faire ça concrètement avec plus de détails techniques.';
     document.getElementById('chatInput').value = question;
     sendChatMessage();
   }
